@@ -1,0 +1,2428 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX TS-program = lualatex
+% !TEX spellcheck = en_US
+\documentclass[a4paper,12pt]{book}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian,english]{babel}
+
+\usepackage{microtype}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\usepackage{amsmath,amssymb,mathtools,xcolor,booktabs,caption,amsthm,dsfont,cancel,braket,tensor}
+\usepackage[separate-uncertainty=true,multi-part-units=single]{siunitx}
+\usepackage{tikz-feynman}
+\tikzfeynmanset{compat=1.0.0}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks   = true,    % Colours links instead of ugly boxes
+  urlcolor     = blue,    % Colour for external hyperlinks
+  linkcolor    = blue,    % Colour of internal links
+  citecolor    = blue      % Colour of citations
+}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+%\captionsetup[table]{name=Figure}
+%\Crefname{table}{Figure}{Figures}
+
+\newcommand{\ped}[1]{\textormath{\textsubscript{#1}}{_{\mathrm{#1}}}}
+\newcommand{\ap}[1]{\textormath{\textsuperscript{#1}}{^{\mathrm{#1}}}}
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\renewcommand{\vec}{\mathbf}
+%\newcommand{\ver}[1]{\vec{\hat #1}}
+
+\newcommand{\dd}{\mathop{\mathrm{d}\!}{}}
+
+\DeclareMathOperator\artanh{artanh}
+\DeclareMathOperator\sgn{sgn}
+\DeclareMathOperator\diag{diag}
+\DeclareMathOperator\tr{tr}
+\DeclareMathOperator\Li{Li}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+%for \dddot
+\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathb}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathb
+      <10.95> mathb10 <12> <14.4> <17.28> <20.74> <24.88> mathb12
+      }{}
+\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
+\DeclareFontSubstitution{U}{mathb}{m}{n}
+\let\dddot\relax
+\DeclareMathAccent{\dddot}{0}{mathb}{"3B}
+%%%
+
+
+\begin{document}
+
+\author{Giovanni Maria Tomaselli}
+\title{Theories of Gravitation\\ \vspace{0.5em} \footnotesize{Transcription of Damiano Anselmi's lectures (a.y.~2018/2019).}}
+\date{}
+\maketitle
+
+Stato e todo delle dispense al \today:
+\begin{itemize}
+\item dopo tre revisioni (una mia, due di Salvatore) mi aspetto che gli errori (di fisica e di grammatica) e i typos siano almeno un ordine di grandezza in meno rispetto alla prima versione: adesso le dispense cominciano ad essere presentabili; tuttavia ``un ordine di grandezza in meno'' non vuol dire affatto zero, quindi continuate a segnalare;
+\item deve essere ripensato l'allineamento di qualche formula;
+\item mi piacerebbe avere un check sul termine $\abs{u}$ nell'effetto Unruh (nel caso del moto iperbolico);
+\item prima o poi forse vorrò riscrivere gli indici dei tensori col pacchetto tensor (che già uso, ma per altre cose).
+\end{itemize}
+\vfill
+These notes are a non-official transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{https://www.youtube.com/watch?v=VRAMDa6kpqw&list=PLlx_2qxtgAiO_FCa3WvC-39J6c_EpE2wK}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my only fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}.
+
+\vspace{1cm}
+Last update: \today.
+\vspace{1cm}
+
+\paragraph{Acknowledgements.} Huge thanks to Salvatore Raucci, without whom these notes would have been full of errors and typos.
+
+\tableofcontents
+
+\chapter{Differential geometry}
+
+
+\section{Manifolds}
+
+\begin{definition}
+A \emph{topological space} is a pair $\{X,V\}$, where
+\begin{itemize}
+\item $X$ is a non-empty set;
+\item $V$ is a family of subsets of $X$, called \emph{open sets}, such that
+\begin{enumerate}
+\item $X\in V$, $\varnothing\in V$;
+\item $A,B\in V\implies A\cup B\in V$, $A\cap B\in V$;
+\item the union of an infinite number of subsets $A_i\in V$ belongs to $V$.
+\end{enumerate}
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+A \emph{closed set} is the complement of an open set.
+\end{definition}
+
+\begin{definition}
+A topological space $\{X,V\}$ is \emph{separated} (or a \emph{Hausdorff space}) if $\forall\, p,q\in X$, $p\ne q$, $\exists\, U_p,U_q\in V$ such that $p\in U_p$, $q\in U_q$, $U_p\cap U_q=\varnothing$.
+\end{definition}
+
+\begin{definition}
+Given a topological space $\{X,V\}$ and a point $p\in X$, a \emph{neighbourhood} of $p$ is any open set that contains $p$.
+\end{definition}
+
+\begin{definition}
+A \emph{cover} of a topological space $\{X,V\}$ is a family $\mathcal U$ of open sets $U_i\in V$ such that
+\[\bigcup_i U_i=X.\]
+\end{definition}
+
+\begin{definition}
+A function $f\colon X\to Y$ between two topological spaces $\{X,V\}$ and $\{Y,W\}$ is \emph{continuous} if $A\in W\implies f^{-1}(A)\in V$.
+\end{definition}
+
+\begin{definition}
+A \emph{homeomorphism} is a continuous bijective function between topological spaces such that its inverse is also continuous.
+\end{definition}
+
+\begin{definition}
+A \emph{topological manifold} is a separated topological space that admits a cover $\mathcal U$ such that for every $U_i\in\mathcal U$ there exists a homeomorphism $\varphi_i\colon U_i\to\mathbb{R}^n$ for some $n$. Every pair $(U_i,\varphi_i)$ is called \emph{chart}; the family of charts is called \emph{atlas}.
+\end{definition}
+
+\begin{example}
+Every open subset of $\mathbb R^n$ is a topological manifold.
+\end{example}
+
+\begin{example}
+The $n$-sphere $S^n=\{(x_1,\ldots,x_{n+1})\in\mathbb{R}^{n+1}\mid x_1^2+\ldots+x_{n+1}^2=1\}$ with the cover
+\[\mathcal U=\{U_i^\pm\}_{i=1}^{n+1},\quad U_i^\pm=\{(x_1,\ldots,x_{n+1})\in S^n\mid x_i\gtrless0\}\]
+and the homeomorphisms $\varphi_i^\pm\colon U_i^\pm\to R^n$ defined as
+\[\varphi_i^\pm(x_1,\ldots,x_{i-1},x_i,x_{i+1},\ldots,x_{n+1})=(x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_{n+1})\]
+is a topological manifold.
+\end{example}
+
+\begin{example}
+The Schwarzschild black hole, with Schwarzschild and Eddington-Finkelstein coordinates.
+\end{example}
+
+\begin{example}
+If $X$ and $Y$ are topological manifolds, $X\times Y$ is a topological manifold.
+\end{example}
+
+\begin{definition}
+A topological manifold is a \emph{differentiable manifold of class $C^k$} if for every two charts $(U_i,\varphi_i)$ and $(U_j,\varphi_j)$ such that $U_{ij}\equiv U_i\cap U_j\ne\varnothing$, the function $\varphi_{ij}\equiv \varphi_i\circ\varphi_j^{-1}\colon\varphi_j(U_{ij})\to\varphi_i(U_{ij})$ between open subsets of $\mathbb R^n$ is $k$ times differentiable. If $k>0$ the maps $\varphi_{ij}$ are called \emph{diffeomorphisms}.
+\end{definition}
+
+\begin{definition}
+Let $M$ denote a differentiable manifold of class $C^k$, $k\ge1$, and $I$ denote an interval of $\mathbb R$. A \emph{curve} of class $C^k$ is a map $\gamma\colon I\to M$ such that $\forall\, t\in I$ and $\forall\, (U,\varphi)$ chart such that $U$ is a neighbourhood of $\gamma(t)$, the function $\varphi\circ\gamma\big|_{\gamma^{-1}(U)}\colon \gamma^{-1}(U)\to \mathbb R^n$ is $k$ times differentiable.
+\end{definition}
+
+\begin{definition}
+Let $M$ be a differentiable manifold, $p\in M$ and $\gamma_1(t)\colon I_1\to M$ and $\gamma_2(t)\colon I_2\to M$ two curves such that $p\in\gamma(I_1)$ and $p\in\gamma(I_2)$. Than, if $(U,\varphi)$ is a chart such that $U$ is a neighbourhood of $p$, the two curves are \emph{tangent in $p$} if
+\[\frac{\dd}{\dd t}\Bigl(\varphi\circ\gamma_1\big|_{\gamma_1^{-1}(U)}\Bigr)\Big|_{t=\gamma_1^{-1}(p)}=\frac{\dd}{\dd t}\Bigl(\varphi\circ\gamma_2\big|_{\gamma_2^{-1}(U)}\Bigr)\Big|_{t=\gamma_2^{-1}(p)}.\]
+\end{definition}
+This definition does not depend on the chart. In fact, let $(U',\varphi')$ be another chart such that $p\in U'$. Than (omitting the appropriate restriction of every function),
+\[
+\begin{split}
+\frac{\dd}{\dd t}\bigl(\varphi'\circ\gamma_1\bigr)\Big|_{t=\gamma_1^{-1}(p)}&=\frac{\dd}{\dd t}\bigl(\varphi'\circ\varphi^{-1}\circ\varphi\circ\gamma_1\bigr)\Big|_{t=\gamma_1^{-1}(p)}=\\
+&=\nabla(\varphi'\circ\varphi^{-1})\Big|_{\varphi(p)}\ \frac{\dd}{\dd t}\bigl(\varphi\circ\gamma_1\bigr)\Big|_{t=\gamma_1^{-1}(p)}
+\end{split}
+\]
+and $\nabla(\varphi'\circ\varphi^{-1})\big|_{\varphi(p)}$ does not depend on the curve. This allows us to define an equivalence relation between curves.
+
+\begin{definition}
+Let $M$ be a differentiable manifold, $p\in M$, $\Omega(p)$ the set of all curves $\gamma$ that pass through $p$. Let us define the following equivalence relation: $\gamma_1\sim_p\gamma_2$ if they are tangent in $p$. The quotient $T_p\equiv\Omega(p)/\sim_p$ is the \emph{tangent space} in $p$ to $M$.
+\end{definition}
+
+Every tangent space is naturally endowed with a structure of vector space, thanks to the isomorphism between $T_p$ and $\mathbb R^n$ given by $[\gamma]\to\frac{\dd}{\dd t}\bigl(\varphi\circ\gamma\bigr)\big|_{t=\gamma^{-1}(p)}$, where we have fixed a chart $(U,\varphi)$.
+
+\section{Vector fields}
+
+\begin{definition}
+A \emph{smooth} manifold is a differentiable manifold of class $C^\infty$.
+\end{definition}
+
+\begin{definition}
+Let $M$ be a smooth manifold. A function $f\colon U\to R$, where $(U,\varphi)$ is a chart, is of class $C^k$ (or \emph{smooth}) if $f\circ\varphi^{-1}$ is $C^k$ (or $C^\infty$).
+\end{definition}
+
+From now on, $M$ will denote a smooth manifold of dimension $n$ and we will refer to the points of $M$ and to the functions $f$ defined on $M$ as their ``coordinates'' in any chosen chart. For example, $C^k(M)$ will denote the set of functions that are $C^k$ in every chart.
+
+\begin{definition}
+Two smooth functions $f$ and $g$ are equivalent ($f\sim_p g$) with respect to a point $p\in M$ if there exists a neighbourhood of $p$ where they coincide. The quotient $\mathcal G_p$ between the set of smooth functions in $p$ and $\sim_p$ is called \emph{space of the germs of the smooth functions in $p$}.
+\end{definition}
+
+\begin{definition}
+A \emph{derivation} in $p$ is a map $X\colon \mathcal G_p\to\mathbb R$ such that
+\begin{itemize}
+\item $X(f+g)=X(f)+X(g)$;
+\item $X(\lambda)=0\ \forall\,\lambda\in\mathbb R$;
+\item $X(fg)=f(p)X(g)+X(f)g(p)$.
+\end{itemize}
+From the last two properties follows that $X(\lambda f)=\lambda X(f)$.
+\end{definition}
+The space $\mathcal D_p$ of derivations in $p$ is a vector space.
+
+\begin{lemma}
+\label{lemma:smooth}
+Let $U\subseteq\mathbb R^n$ be an open set, $p=(p_1,\ldots,p_n)\in U$, and $f\in C^\infty(U)$. Then, there exist smooth functions $g_i\in C^\infty(U)$ such that $\forall\, x\in U$ the two following identities hold:
+\[f(x)-f(p)=\sum_{i=1}^n(x_i-p_i)g_i(x)\quad\text{and}\quad g_i(p)=\frac{\partial f}{\partial x_i}(p).\]
+\end{lemma}
+\begin{proof}
+Let us assume $p=0$ without loss of generality. Then
+\[f(x)-f(0)=\int_0^1\frac{\dd f}{\dd t}(tx_1,\ldots,tx_n)\dd t=\int_0^1\sum_{i=1}^nx_i\frac{\partial f}{\partial x_i}(tx)\dd t\]
+therefore $g_i(x)=\int_0^1\frac{\partial f}{\partial x_i}(tx)\dd t$ and $g_i(0)=\frac{\partial f}{\partial x_i}(0)$.
+\end{proof}
+
+\begin{theorem}
+Let $U\subseteq\mathbb R^n$ denote an open set, $p\in U$. Then,
+\[X_i=\frac{\partial}{\partial x_i}\bigg|_p\]
+is a basis of $\mathcal D_p$.
+\end{theorem}
+\begin{proof}
+Let $X\in\mathcal D_p$ and $a_i=X(x_i)$. We want to show that $X=a_iX_i$, that is $Y=X-a_iX_i=0\ \forall\,f\in\mathcal G_p$. In fact, $Y(x_i)=X(x_i)-a_jX_j(x_i)=a_i-a_j\delta_{ij}=0$ and, using \cref{lemma:smooth},
+\[Y(f)=Y(f(p))+Y(x_i-p_i)g_i(x)+(p_i-p_i)Y(g_i)=0+0+0=0.\]
+\end{proof}
+
+$T_p$ is isomorphic to $\mathcal D_p$ through $\zeta\colon T_p\to\mathcal D_p$,
+\[\zeta(v)(f)=\frac{\dd}{\dd t}f(\gamma(t))\bigg|_{t=0}\]
+where $v=[\gamma(t)]\in T_p$, $\gamma(0)=p$. In fact, let us consider $v_i=[te_i]$, where $e_i=(0,\ldots,0,1,0,\ldots,0)$ (in the $i$-th place) in a given chart, in which the coordinates of $p$ are $(0,\ldots,0)$. Then,
+\[\zeta(v_i)(f)=\frac{\dd}{\dd t}f(0,\ldots,0,t,0,\ldots,0)\bigg|_{t=0}=\frac{\partial f}{\partial x_i}\bigg|_{t=0}=X_i(f).\]
+
+\begin{definition}
+A \emph{vector field} is a linear function $X\colon C^k(M)\to C^{k-1}(M)$ such that
+\begin{itemize}
+\item $X(fg)=fX(g)+gX(f)$;
+\item given two charts where $X=a^i(x)\frac{\partial}{\partial x_i}$ and $X=b^i(y)\frac{\partial}{\partial y^i}$ the following transformation rule holds
+\[a^i(x)=b^j(y(x))\frac{\partial x^i}{\partial y^j}.\]
+\end{itemize}
+The space of smooth vector fields on $M$ is denoted by $\chi^\infty(M)$.
+\end{definition}
+
+If $X$ and $Y$ are vector fields, $XY$ is not a vector field in general, because it does not obey the Leibniz rule:
+\[X(Y(fg))=X(fY(g)+gY(f))=X(f)Y(g)+fXY(g)+X(g)Y(f)+gXY(f).\]
+However, $Z=[X,Y]=XY-YX$ is a vector field, because the first and third terms in the above expresion cancel out. Locally, if
+\[X=a_i(x)\frac{\partial}{\partial x^i},\quad Y=b_i(x)\frac{\partial}{\partial x^i},\]
+then
+\[\begin{split}
+Z(f)&=[X,Y](f)=X(Y(f))-Y(X(f))=\\
+&=a_i\frac{\partial}{\partial x^i}\biggl(b_j\frac{\partial f}{\partial x^j}\biggr)-b_i\frac{\partial}{\partial x^i}\biggl(a_j\frac{\partial f}{\partial x^j}\biggr)=\\
+&=a_i\frac{\partial b_j}{\partial x^i}\frac{\partial f}{\partial x^i}-b_i\frac{\partial a_j}{\partial x^i}\frac{\partial f}{\partial x^i},
+\end{split}\]
+therefore
+\[Z=[X,Y]=c_i(x)\frac{\partial}{\partial x^i},\qquad c_i=a_j\frac{\partial b_i}{\partial x^j}-b_j\frac{\partial a_i}{\partial x^j}.\]
+The commutator satisfies the following properties
+\begin{itemize}
+\item $[X,Y]=-[Y,X]$;
+\item $[X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0$;
+\item $[fX,Y]=f[X,Y]-Y(f)X$, in fact
+\[[fX,Y](g)=fXY(g)-Y(fX(g))=fXY(g)-Y(f)X(g)-fYX(g).\]
+\end{itemize}
+\begin{definition}
+If $\mathcal A$ is an algebra, a \emph{derivation} $D$ of $\mathcal A$ is a linear map $D\colon \mathcal A\to \mathcal A$ such that $D(ab)=aD(b)+bD(a)\ \forall\,a,b\in\mathcal A$.
+\end{definition}
+
+Let $\mathcal A=C^\infty(M)$ and $X\in\chi^\infty(M)$. Then $f\to X(f)$ is a derivation of $\mathcal A$. Conversely, every derivation of $\mathcal A$ is associated with one and only one vector field $X\in\chi^\infty(M)$.
+
+\begin{definition}
+The \emph{tangent bundle} $T_M=\bigcup_{p\in M}T_p$ of $M$ is a $(2n)$-dimensional smooth manifold which is a ``local product'' between the charts of $M$ and $\mathbb R^n$. This means that a point $p=(x_1,\ldots,x_n)$ and a tangent vector $X=a_i\frac{\partial}{\partial x^i}$ identify a point in $T_M$ with coordinates $(x_1,\ldots,x_n,a_1,\ldots,a_n)$. Indeed, the changes of coordinates $b^i=\frac{\partial y^i}{\partial x^j}a^j$ are smooth functions.
+\end{definition}
+
+\begin{definition}
+A \emph{section of the tangent bundle} is a function $s\colon M\to T_M$ which is the identity on the first $n$ coordinates. Clearly, vector fields are in one-to-one correspondance with the sections of $T_M$, since $s(x)=(x_1,\ldots,x_n,a_1(x),\ldots,a_n(x))$.
+\end{definition}
+
+\begin{definition}
+Let $p\in M$, $f\colon M\to \mathbb R$, $f\in C^k(M)$, $k\ge1$. The \emph{differential} of $f$ in $p$ is $\dd f(p)\colon T_p\to\mathbb R$ defined as $\dd f(X)=X(f)\ \forall\,X\in T_p$. In local coordinates, if $X=a^i(x)\frac{\partial}{\partial x^i}$, then $\dd f(X)=X(f)=a^i(p)\frac{\partial f}{\partial x^i}\big|_p$. The differential is an element of the dual of $T_p$ (called \emph{cotangent space}), that is, $\dd f(p)\in T_p^*$.
+\end{definition}
+
+\begin{example}
+\label{example:differential}
+If $f=x^i$, then $\dd x^i(X)=X(x_i)=a^i$ and $\dd x^i\bigl(\frac{\partial}{\partial x^j}\bigr)=\delta^i_j$. So, in general, $\dd f(X)=\frac{\partial f}{\partial x^i}\dd x^i(X)$ (dropping the arguments we find the familiar formula $\dd f=\frac{\partial f}{\partial x^i}\dd x^i$). This expression shows that the $\dd x^i$ are a basis of $T_p^*$.
+\end{example}
+
+\begin{example}
+$\dd f(gX)=gX(f)=g\dd f(X)$, so we can take function out of differentials.
+\end{example}
+
+Let us see what happens when we change coordinates from $x$ to $y$, using the results of \cref{example:differential}.
+\[\dd y^k\biggl(\frac{\partial}{\partial x^j}\biggr)=\frac{\partial y^k}{\partial x^i}\dd x^i\biggl(\frac{\partial}{\partial x^j}\biggr)=\frac{\partial y^k}{\partial x^i}\delta^i_j=\frac{\partial y^k}{\partial x^j}\]
+Using this expression,
+\[\dd x^i\biggl(\frac{\partial}{\partial x^j}\biggr)=\delta^i_j=\frac{\partial y^k}{\partial x^j}\frac{\partial x^i}{\partial y^k}=\frac{\partial x^i}{\partial y^k}\dd y^k\biggl(\frac{\partial}{\partial x^j}\biggr),\]
+therefore (dropping the arguments)
+\begin{equation}
+\dd x^i=\frac{\partial x^i}{\partial y^j}\dd y^j.
+\label{eqn:changediff}
+\end{equation}
+
+\begin{definition}
+The \emph{cotangent bundle} $T_M^*=\bigcup_{p\in M}T_p^*$ is a $(2n)$-dimensional smooth manifold which is a ``local product'' between the charts of $M$ and $\mathbb R^n$. This means that a point $p=(x_1,\ldots,x_n)$ and a cotangent vector $\omega_i\dd x_i$ identify a point in $T_M^*$ with coordinates $(x_1,\ldots,x_n,\omega_1,\ldots,\omega_n)$. Indeed, the changes of coordinates $\omega'_i=\omega_j\frac{\partial x^j}{\partial y^i}$ are smooth functions (this formula comes from $\omega_i\dd x^i=\omega_i\frac{\partial x^i}{\partial y^j}\dd y^j=\omega'_j\dd y^j$, where we used \cref{eqn:changediff}).
+\end{definition}
+
+\begin{definition}
+A \emph{section of the cotangent bundle} (or \emph{1-form}, or \emph{differential form}) is a function $\omega\colon M\to T_M^*$ which is the identity on the first $n$ coordinates. Locally, $\omega=\omega_i(x)\dd x^i$.
+\end{definition}
+
+The action of a differetial form on a vector field $X=a^i(x)\frac{\partial}{\partial x^i}$ is
+\[\omega(X)=\omega_i(x)\dd x^i\biggl(a^j(x)\frac{\partial}{\partial x^j}\biggr)=\omega_i(x)a^j(x)\dd x^i\biggl(\frac{\partial}{\partial x^i}\biggr)=\omega_i(x)a^i(x).\]
+
+\begin{definition}
+An \emph{antisymmetric form of degree $s=2$}, denoted as
+\[\omega_2=\frac{\omega_{ij}(x)}{2}\dd x^i\wedge x^j,\] is a map $\omega_2\colon T_p\times T_p\to\mathbb R$ defined via the action of the differentials
+\[\dd x^i\wedge \dd x^j(X,Y)=\det
+\begin{pmatrix}
+\dd x^i(X)& \dd x^i(Y)\\
+\dd x^j(X)& \dd x^j(Y)
+\end{pmatrix}=\det
+\begin{pmatrix}
+a^i& b^i\\
+a^j& b^j
+\end{pmatrix}=a^ib^j-a^jb^i.\]
+Thanks to the antisymmetry, $\omega_2(X,Y)=\omega_{ij}a^ib^j$. The generalization to a form of arbitrary degree $s$
+\[\omega_s=\frac{1}{s!}\omega_{i_1,\ldots,i_s}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_s}\]
+is straightforward ($\omega_{i_1,\ldots,i_s}$ is completely antisymmetric).
+\end{definition}
+
+\begin{definition}
+$\wedge^sT_M^*$ is the space of the antisymmetric forms of degree $s$.
+\end{definition}
+
+\begin{definition}
+A \emph{symmetric form of degree $s=2$}, denoted as
+\[g=\frac{g_{ij}(x)}{2}\dd x^i\otimes x^j,\] is a map $g\colon T_p\times T_p\to\mathbb R$ defined via the action of the differentials
+\[\dd x^i\otimes \dd x^j(X,Y)=a^ib^j+a^jb^i.\]
+Thanks to the symmetry, $g(X,Y)=g_{ij}a^ib^j$. We do not specify the definition for arbitrary degree $s$.
+\end{definition}
+
+\begin{definition}
+$\bigl(T_M^*\bigr)^{\otimes s}$ is the space of the symmetric forms of degree $s$.
+\end{definition}
+
+The symbols $\wedge$ and $\otimes$ are often omitted and left understood.
+
+\begin{definition}
+The \emph{exterior derivative} $\dd\colon\wedge^mT_M^*\to\wedge^{m+1}T_M^*$ is defined locally on
+\[\omega=\frac{1}{m!}\omega_{i_1,\ldots,i_m}(x)\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_m}\]
+as
+\[\dd\omega=\frac{1}{m!}\partial_j\omega_{i_1,\ldots,i_m}(x)\dd x^j\wedge\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_m}\]
+\end{definition}
+
+\begin{exercise}
+Transformations under a change of coordinates: no need to define a ``covariant derivative'' here.
+\end{exercise}
+
+The exterior derivative is nilpotent ($\dd^2=0$): in fact, the two partial derivatives commute and are contracted with an antisymmetric object.
+
+\begin{definition}
+A differential form $\omega$ is \emph{closed} if $\dd\omega=0$. Locally,
+\[\partial_{[i}\omega_{i_1,\ldots,i_m]}=0.\]
+\end{definition}
+
+\begin{definition}
+A differential form $\omega$ of degree $k\ge 1$ is \emph{exact} if there exists a differential form $\alpha$ of degree $k-1$ such that $\omega=\dd\alpha$.
+\end{definition}
+
+An exact form is always closed thanks to the nilpotency of $\dd$. It is not true that a closed form is always exact, but it is in an open subset of $\mathbb R^n$. Let us see some examples, wich will be proved rigourously in a while.
+
+\begin{example}
+Let us consider the circle $S^1$ parametrized by the angle $\theta$. Consider the differential form $\omega=\dd\theta$. It is closed ($\dd\omega=0$), but not exact. In fact, the expression $\omega=\dd\theta$ is local and does not make sense globally, since $\theta$ is not a 0-form (it is not a smooth function defined on $S^1$).
+\end{example}
+
+\begin{example}
+On the torus $T=S^1\times S^1$ parametrized by the angles $x$ and $y$ on the two circles, the forms $1$, $\dd x$, $\dd y$ and the volume form $\dd x\wedge \dd y$ are not exact.
+\end{example}
+
+\begin{example}
+On $S^2$ parametrized in spherical coordinates, the form $1$ and the volume form $\dd\Omega=\sin\theta\dd\theta\wedge\dd\phi$ are not exact.
+\end{example}
+
+\begin{theorem}[Stokes]
+Let $V$ denote an open set and $\partial V$ its boundary. If $\omega$ is a differential form, then
+\[\int_V\dd\omega=\int_{\partial V}\omega.\]
+\end{theorem}
+
+\begin{corollary}
+A volume form $\omega$ (for example on $S^2$) is never exact, because if $\omega=\dd\sigma$ for a differential form $\sigma$, then
+\[4\pi=\int_{S^2}\omega=\int_{S^2}\dd\sigma=\int_{\partial S^2}\sigma=0.\]
+\end{corollary}
+
+In electromanetism, from the vector potential $A=A_\mu\dd x^\mu$ we define the field strength
+\[F=\dd A=\partial_\nu A_\mu\dd x^\nu\wedge x^\mu=\frac{1}{2}F_{\mu\nu}\dd x^\mu\wedge\dd x^\nu,\qquad F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu.\]
+The equation $\dd F=0$ is called Bianchi identity.
+
+\begin{definition}
+Two differential forms $\omega_1$ and $\omega_2$ are \emph{equivalent} ($\omega_1\sim\omega_2$) if $\omega_1-\omega_2$ is exact. The quotient $\wedge^s T_M^*/\sim$ defines the \emph{cohomology} of differential forms.
+\end{definition}
+
+\begin{example}
+An exact differential form is equivalent to 0.
+\end{example}
+
+The boundary operator is nilpotent: $\partial^2=0$. This allows to define the notion of \emph{homology}.
+
+\begin{example}
+On $S^2$, the point (``dual'' of the volume form $\dd\Omega$) is not the boundary of anything, just like $S^2$ itself (``dual'' of the form 1). There are no 1-forms that are cohomologically non trivial, because there are no closed curves (their dual) that are homologically non trivial, since they are the boundary of something.
+\end{example}
+
+\begin{example}
+On the torus, there are two types of closed curves which are not the boundary of anything. The homology is given by the point, these two classes of curves, and the torus itself.
+\end{example}
+
+\begin{example}
+On a Riemann surface with a genus $g$, there are $2g$ types of closed curves which are not the boundary of anything. The homology is given by the point, these $2g$ classes of curves, and the manifold itself.
+\end{example}
+
+\begin{definition}
+The \emph{Betti numbers} are the dimensions of the homology classes.
+\end{definition}
+
+\begin{example}
+On a Riemann surface with a genus (``number of holes'') $g$, the Betti numbers are $b_0=1$ (the point), $b_1=2g$ and $b_2=1$ (the manifold). The quantity $b_0-b_1+b_2=2-2g$ is the Euler characteristics (the quantity that for polyhedra is $\text{\#vertices}-\text{\#edges}+\text{\#faces}$) of the Riemann surface.
+\end{example}
+
+\begin{definition}
+The \emph{exterior product} of two differential forms
+\[\omega=\omega_{i_1,\ldots,i_m}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_m}\quad\text{and}\quad\Omega=\Omega_{i_1,\ldots,i_n}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_n}\]
+is
+\[\omega\wedge\Omega=\omega_{i_1,\ldots,i_m}\Omega_{i_{m+1},\ldots,i_{m+n}}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_{m+n}}.\]
+\end{definition}
+
+The rule
+\[\omega\wedge\Omega=(-1)^{\deg\omega\cdot\deg\Omega}\Omega\wedge\omega\]
+says how to commute differential forms in a exterior product.
+
+\begin{example}
+$\dd x\wedge\dd y=-\dd y\wedge\dd x$ and $\dd x\wedge\dd y\wedge\dd z=\dd y\wedge\dd z\wedge\dd x$.
+\end{example}
+
+\begin{exercise}
+The exterior derivative of the exterior product is
+\[\dd(\omega\wedge\Omega)=\dd\omega\wedge\Omega+(-1)^{\deg\omega}\omega\wedge\dd\Omega.\]
+\end{exercise}
+
+\begin{definition}
+A \emph{derivation of a vector field} (or \emph{linear connection}) is a map $\nabla\colon \chi^\infty(M)\times\chi^\infty(M)\to\chi^\infty(M)$, $(X,Y)\to\nabla_XY\equiv Z$ such that $\forall\, f,g\in C^\infty(M)$, $\forall\,X,Y,Z\in\chi^\infty(M)$ the following properties hold:
+\begin{itemize}
+\item $\nabla_{fX+gY}Z=f\nabla_XZ+g\nabla_YZ$;
+\item $\nabla_X(Y+Z)=\nabla_XY+\nabla_XZ$;
+\item $\nabla_X(fY)=f\nabla_XY+X(f)Y$;
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Locally, let us consider the canonical basis $\frac{\partial}{\partial x^i}$ of derivations. Then,
+\[\nabla_{\frac{\partial}{\partial x^i}}\biggl(\frac{\partial}{\partial x^j}\biggr)=\Gamma_{ij}^k\frac{\partial}{\partial x^k}\]
+where $\Gamma_{ij}^k$ are called \emph{Christoffel symbols}.
+\end{definition}
+
+For a generic basis $X_i$, $\nabla_{X_i}X_j=b_{ij}^kX_k$ defines some other coefficients $b_{ij}^k$.
+
+Let $\gamma(t)$ denote a curve $\gamma(t)=(a_1(t),\ldots,a_n(t))$. Let us define $\frac{\dd}{\dd t}=\dot a_i(t)\frac{\partial}{\partial x^i}$ (the ``total derivative along $\gamma$''). Let $X$ denote a vector field $u^i(x)\frac{\partial}{\partial x^i}$. Then, the derivative of $X$ along $\gamma$ is
+\begin{multline*}\nabla_{\frac{\dd}{\dd t}}X=\nabla_{\frac{\dd}{\dd t}}\biggl(u^i(x)\frac{\partial}{\partial x^i}\biggr)=u^i\nabla_{\frac{\dd}{\dd t}}\biggl(\frac{\partial}{\partial x^i}\biggr)+\frac{\dd u^i}{\dd t}\frac{\partial}{\partial x^i}=\\
+=u^i\dot a_j\nabla_{\frac{\partial}{\partial x^j}}\biggl(\frac{\partial}{\partial x^i}\biggr)+\frac{\dd u^i}{\dd t}\frac{\partial}{\partial x^i}=\frac{\dd u^i}{\dd t}\frac{\partial}{\partial x^i}+u^i\dot a_j\Gamma_{ij}^k\frac{\partial}{\partial x^k}=\\
+=\biggl[\frac{\dd u^i}{\dd t}+\Gamma_{kj}^i\dot a_ju^k\biggr]\frac{\partial}{\partial x^i}.\end{multline*}
+
+\begin{definition}
+$X$ is \emph{parallel} to $\gamma$ if $\nabla_{\frac{\dd}{\dd t}}X=0$, that is,
+\begin{equation}
+\label{eqn:paralleltransport}
+\frac{\dd u^i}{\dd t}+\Gamma_{kj}^i\dot a_ju^k=0.
+\end{equation}
+\end{definition}
+
+Given a point $p\in M$ and a vector $v\in T_p$ and a curve $\gamma$ such that $\gamma(0)=p$, there exists a unique field $X$ such that $X(0)=v$ and $\nabla_{\frac{\dd}{\dd t}}X=0$, which is obtained by solving the Cauchy problem \cref{eqn:paralleltransport}. Its unique solution is the \emph{parallel transport} of the vector $v$ along $\gamma$.
+
+\begin{definition}
+The \emph{curvature} $R_\nabla$ of the connection $\nabla$ is a map $\chi^\infty(M)\times\chi^\infty(M)\times\chi^\infty(M)\to\chi^\infty(M)$ defined as
+\[R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z\]
+where we used that the commutator of two vector fields is a vector field. Shorting the notation, $R(X,Y)=\nabla_X\nabla_Y-\nabla_Y\nabla_X-\nabla_{[X,Y]}$.
+\end{definition}
+
+The curvature satisfies the following properties:
+\begin{itemize}
+\item $R(X,Y)Z$ is linear in $X$, $Y$ and $Z$;
+\item $R(X,Y)Z=-R(Y,X)Z$;
+\item \leavevmode\par\vspace*{\dimexpr-4pt-\parskip-\baselineskip}
+\begin{exercise}$R(fX,gY)(hZ)=fghR(X,Y)Z$.\end{exercise}
+\end{itemize}
+
+\begin{definition}
+Let us take $X=\frac{\partial}{\partial x^i}$, $Y=\frac{\partial}{\partial x^j}$ and $Z=\frac{\partial}{\partial x^k}$. Shortening $\frac{\partial}{\partial x^i}=\partial_i$,
+\begin{multline*}R(\partial_i,\partial_j)\partial_k=\nabla_{\partial_i}\nabla_{\partial_j}\partial_k-\nabla_{\partial_j}\nabla_{\partial_i}\partial_k=\nabla_{\partial_i}(\Gamma_{jk}^l\partial_l)-\nabla_{\partial_j}(\Gamma_{ik}^l\partial_l)=\\
+=\Gamma_{jk}^l\nabla_{\partial_i}(\partial_l)+\partial_i\Gamma_{jk}^l\partial_l-\Gamma_{ik}^l\nabla_{\partial_j}(\partial_l)-\partial_j\Gamma_{ik}^l\partial_l=\\
+=\Gamma_{jk}^l\Gamma_{il}^m\partial_m+\partial_i\Gamma_{jk}^m\partial_m-\Gamma_{ik}^l\Gamma_{jl}^m\partial_m-\partial_j\Gamma_{ik}^m\partial_m=\\
+=(\partial_i\Gamma_{jk}^m-\partial_j\Gamma_{ik}^m+\Gamma_{il}^m\Gamma_{jk}^l-\Gamma_{jl}^m\Gamma_{ik}^l)\partial_m\equiv R_{ij}{}^m{}_k\partial_m\end{multline*}
+where in the last line we defined the \emph{Riemann tensor} $R_{ij}{}^m{}_k$.
+\end{definition}
+
+\begin{definition}
+The \emph{torsion} is a map $\chi^\infty(M)\times\chi^\infty(M)\to\chi^\infty(M)$ defined as
+\[T(X,Y)=\nabla_XY-\nabla_YX-[X,Y].\]
+\end{definition}
+The torsion satisfies the following properties:
+\begin{itemize}
+\item $T(X,Y)=-T(Y,X)$;
+\item $T(fX,gY)=fgT(X,Y)$, in fact, using the properties of $\nabla$,
+\begin{multline*}
+\nabla_{fX}(gY)-\nabla_{gY}(fX)-[fX,gY]=\\
+=f(\nabla_XYg+X(g)Y)-g(\nabla_YXf+Y(f)X)-fXgY+gYfX=\\
+=fg(\nabla_XY-\nabla_YX)+fX(g)Y-gY(f)X-fg[X,Y]-fX(g)Y+gY(f)X=\\
+=fg(\nabla_XY-\nabla_YX-[X,Y]).
+\end{multline*}
+\end{itemize}
+The torsion vanishes if and only if the Christoffel symbols are symmetric:
+\[T(\partial_i,\partial_j)=\nabla_{\partial_i}(\partial_j)-\nabla_{\partial_j}(\partial_i)=(\Gamma_{ij}^k-\Gamma_{ji}^k)\partial_k.\]
+
+\begin{exercise}[First Bianchi identity]
+\label{bianchitorsion}
+\begin{multline*}
+R(X,Y)Z+R(Y,Z)X+R(Z,X)Y=\\
+=\nabla_XT(Y,Z)+\nabla_YT(Z,X)+\nabla_ZT(X,Y)+\\
++T(X,[Y,Z])+T(Y,[Z,X])+T(Z,[X,Y])
+\end{multline*}
+\end{exercise}
+
+\begin{exercise}[Second Bianchi identity]
+\begin{multline*}\nabla_XR(Y,Z)W+\nabla_YR(Z,X)W+\nabla_ZR(X,Y)W=\\
+=R(X,T(Y,Z))W+R(Y,T(Z,X))W+R(Z,T(X,Y))W\end{multline*}
+\end{exercise}
+
+\begin{definition}
+A \emph{Riemannian manifold} is a pair $(M,g)$ where $M$ is a smooth manifold and $g$ is a \emph{metric}, that is, a positive definite section of $(T_M^*)^{\otimes2}$.
+\end{definition}
+
+Expanded in the basis of $(T_M^*)^{\otimes2}$,
+\[g=g_{ij}\frac{\dd x^i\otimes\dd x^j}{2}=g_{ij}\dd x^i\dd x^j\]
+where we left understood the symmetry and the positivity of $g$. Let us recall that the action of $g$ on two vector fields is $g(V,W)=g_{ij}V^iW^j$, where $V=V^i\frac{\partial}{\partial x^i}$ and $W=W^i\frac{\partial}{\partial x^i}$ and this follow from $\dd x^i\bigl(\frac{\partial}{\partial x^j}\bigr)=\delta^i_j$.
+
+We can orthonormalize $g$: let $E_i$ denote vector fields such that $g(E_i,E_j)=\delta_{ij}$ and expand all vector fields in this basis $X=a^iE_i$ obtaining
+\[g(X,E_i)=a^jg(E_j,E_i)=a^j\delta_{ji}=a_i\implies X=g(X,E_i)E_i.\]
+
+Let $\nabla$ denote a linear connection and $\nabla_g\colon\chi^\infty(M)\times\chi^\infty(M)\times\chi^\infty(M)\to C^\infty(M)$ defined as
+\[\nabla_g(X,Y,Z)=X(g(Y,Z))-g(\nabla_XY,Z)-g(Y,\nabla_XZ)\]
+
+\begin{exercise}
+$\nabla_g(fX,hY,kZ)=fhk\nabla_g(X,Y,Z)$ $\forall\,f,h,k\in C^\infty(M)$.
+\end{exercise}
+
+\begin{definition}
+The connection $\nabla_g$ is \emph{compatible} with the metric $g$ if $\nabla_g\equiv0$.
+\end{definition}
+
+\begin{theorem}
+In a Riemannian manifold there exists one and only one torsionless connection that is compatible with the metric. Such connection is called \emph{Levi-Civita connection}.
+\end{theorem}
+
+\begin{proof}
+We have to solve $\nabla_g=0$ and $T=0$. We work in the canonical basis $\partial_i$ and recall that $T=0\iff\Gamma_{ij}^k=\Gamma_{ji}^k$.
+\begin{multline*}\nabla_g(\partial_i,\partial_j,\partial_k)=\partial_i(g(\partial_j,\partial_k))-g(\nabla_{\partial_i}\partial_j,\partial_k)-g(\partial_j,\nabla_{\partial_i}\partial_k)=\\
+=\partial_i(g_{jk})-g(\Gamma_{ij}^m\partial_m,\partial_k)-g(\partial_j,\Gamma_{ik}^m\partial_m)=\partial_ig_{jk}-\Gamma_{ij}^mg_{mk}-\Gamma_{ik}^mg_{jm}=0\end{multline*}
+Using this equation along with the ones obtained by exchanging $i$ with $j$ and then $k$ with $j$,
+\[\begin{cases}
+\partial_ig_{jk}-\Gamma_{ij}^mg_{mk}-\Gamma_{ik}^mg_{jm}=0\\
+\partial_jg_{ik}-\Gamma_{ji}^mg_{mk}-\Gamma_{jk}^mg_{im}=0\\
+\partial_kg_{ij}-\Gamma_{ki}^mg_{mj}-\Gamma_{kj}^mg_{im}=0
+\end{cases}\]
+we obtain (subtracting the last one from the sum of the first two and using the symmetry of $\Gamma_{ij}^k$)
+\[\Gamma_{ij}^mg_{mk}=\frac{1}{2}(\partial_ig_{jk}+\partial_jg_{ki}-\partial_kg_{ij}).\]
+If we denote by $g^{ij}$ the inverse of the metric (that is, $g^{ij}g_{jk}=\delta^i_k$), we can multiply the previous expression by $g^{kn}$ obtaining
+\[\Gamma_{ij}^n=\frac{1}{2}g^{kn}(\partial_ig_{jk}+\partial_jg_{ki}-\partial_kg_{ij}).\]
+\end{proof}
+In the basis $E_i$, $g(E_i,E_j)=\delta_{ij}$. Let us define $\nabla_{E_i}E_j=b_{ij}^kE_k$ and $[E_i,E_j]=a_{ij}^kE_k$. Let us translate $T=0$ and $\nabla_g=0$ in this basis.
+\[0=T(E_i,E_j)=\nabla_{E_i}E_j-\nabla_{E_j}E_i-[E_i,E_j]=(b_{ij}^k-b_{ji}^k-a_{ij}^k)E_k\]
+so $a_{ij}^k=b_{ij}^k-b_{ji}^k$. The other condition gives
+\begin{multline*}
+0=\nabla_g(E_i,E_j,E_k)=E_i(g(E_j,E_k))-g(\nabla_{E_i}E_j,E_k)-g(E_j,\nabla_{E_i}E_k)=\\
+=-g(\nabla_{E_i}E_j,E_k)-g(E_j,\nabla_{E_i}E_k)=-g(b_{ij}^mE_m,E_k)-g(E_j,b_{ik}^mE_m)=\\
+=-b_{ij}^m\delta_{mk}-b_{ik}^m\delta_{jm}=-b_{ij}^k-b_{ik}^j\end{multline*}
+
+\begin{definition}
+The \emph{Riemann tensor} (again!) is a map $R\colon\chi^\infty(M)^4\to C^\infty(M)$ defined as
+\[R(X,Y,Z,W)=g(R(X,Y)Z,W)\]
+(recall that $R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z$).
+\end{definition}
+
+\begin{exercise}
+\[R(X,Y,Z,W)=-R(Y,X,Z,W)=-R(X,Y,W,Z)=R(Z,W,X,Y)\]
+\label{riemannsymmetries}
+\end{exercise}
+
+\begin{exercise}[Bianchi identity]
+$\nabla R=0$, where
+\begin{multline*}
+\nabla R(X,Y,Z,T,W)=X(R(Y,Z,T,W))-R(\nabla_XY,Z,T,W)-\\
+R(Y,\nabla_XZ,T,W)-R(Y,Z,\nabla_XT,W)-R(Y,Z,T,\nabla_XW).\end{multline*}
+Highlight if and where we need to use $T=0$ and $\nabla_g=0$.
+\end{exercise}
+
+\begin{definition}
+The \emph{Ricci tensor} is $\text{\emph{Ric}}(X,Y)=\sum_i R(X,E_i,Y,E_i)$.
+\end{definition}
+
+\begin{definition}
+The \emph{scalar curvature} is $R=\sum_i \text{\emph{Ric}}(E_i,E_i)$.
+\end{definition}
+
+\begin{definition}
+The \emph{interior product} (or \emph{contraction}) of a vector field $V$ and a $k$-form $\omega$ is a $(k-1)$-form defined as
+\[i_V\omega(V_1,\ldots,V_{k-1})=\omega(V,V_1,\ldots,V_{k-1}).\]
+\end{definition}
+
+In local coordinates, $i_V\omega=kV^i\omega_{i,i_1,\ldots,i_{k-1}}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_{k-1}}$.
+
+\begin{definition}
+The \emph{Lie derivative of a $k$-form} $\omega$ along a vector field $V$ is a $k$-form defined as $\mathcal L_V\omega=\dd i_V\omega+i_V\dd\omega$. Shortening the notation,
+\[\mathcal L_V=\dd i_V+i_V\dd.\]
+\end{definition}
+
+\begin{example}
+If $\omega$ is a 0-form (a function $f$), $\mathcal L_Vf=i_v\dd f=i_V\dd x^i\frac{\partial f}{\partial x^i}=V^i\frac{\partial f}{\partial x^i}.$
+\end{example}
+
+\begin{example}
+If $\omega$ is a 1-form ($\omega=\omega_i\dd x^i$), recalling that $i_v\omega=V^i\omega_i$ and $\dd\omega=\partial_j\omega_i\dd x^j\wedge\dd x^i$,
+\begin{align*}
+\mathcal L_V\omega&=(\partial_jV^i\omega_i\dd x^j+V^i\partial_j\omega_i\dd x^j)+(V^j\partial_j\omega_i\dd x^i-V^i\partial_j\omega_i\dd x^j)=\\
+&=(V^j\partial_j\omega_i+\partial_iV^j\omega_j)\dd x^i.\end{align*}
+\end{example}
+
+The Lie derivative satisfies the following properties:
+\begin{itemize}
+\item \leavevmode\par\vspace*{\dimexpr-4pt-\parskip-\baselineskip}
+\begin{exercise}$\mathcal L_V(\omega_1\wedge\omega_2)=\mathcal L_V\omega_1\wedge\omega_2+\omega_1\wedge\mathcal L_V\omega_2$;\end{exercise}
+\item for an $n$-form $\omega=\omega_{i_1,\ldots,i_n}\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_n}$,
+\[\mathcal L_V\omega=(V^i\partial_i\omega_{i_1,\ldots,i_n}+n\partial_{i_1}V^i\omega_{i,i_2,\ldots,i_n})\dd x^{i_1}\wedge\ldots\wedge\dd x^{i_n}.\]
+\end{itemize}
+
+\begin{definition}
+The \emph{Lie derivative of a vector field} $Y$ along the vector field $X$ is $\mathcal L_XY=[X,Y]$.
+\end{definition}
+
+\begin{definition}
+The \emph{flow of a vector field} $X=a^i(x)\frac{\partial}{\partial x^i}$ is defined by the curves $\gamma\colon[0,1]\to M$ whose coordinates $(\phi^{i_1}(t),\ldots,\phi^{i_n}(t))$ are given by the solution of the Cauchy problem
+\[\begin{cases}
+\frac{\dd \phi^i(t)}{\dd t}=a^i(\phi(t))\\
+\phi^i(0)=x^i
+\end{cases}\]
+for every point $(x_1,\ldots,x_n)$.
+\end{definition}
+
+We can rewrite the system and its solution as
+\[\begin{cases}
+\frac{\partial \phi^i(t,x)}{\partial t}=a^i(\phi(t,x))\\
+\phi^i(0,x)=x^i.
+\end{cases}\]
+By definition, $\frac{\partial \phi^i}{\partial x^j}\big|_{t=0}=\delta^i_j$. Let $f\colon M\to\mathbb R$. Then,
+\[\mathcal L_Xf=\lim_{t\to 0}\frac1t\bigl(f(\phi(t,x))-f(x)\bigr)=\frac{\partial f}{\partial x^i}(\phi(t,x))\frac{\partial\phi^i(t,x)}{\partial t}\bigg|_{t=0}=a^i(x)\frac{\partial f}{\partial x^i}(x).\]
+Let $Y=b^i\frac{\partial}{\partial x^i}$. Then, we can ``flow the vector'',
+\begin{align*}
+\mathcal L_XY&=\frac{\dd}{\dd t}\biggl[b^i(\phi(t,x))\frac{\partial}{\partial \phi^i}\biggr]_{t=0}=\\
+&=\frac{\dd}{\dd t}\biggl[b^i(\phi(t,x))\frac{\partial x^j}{\partial \phi^i}(\phi(t,x))\frac{\partial}{\partial x^j}\biggr]_{t=0}=\\
+&=\frac{\partial\phi^k}{\partial t}\frac{\partial b^i(\phi)}{\partial \phi^k}\frac{\partial x^j}{\partial \phi^i}\frac{\partial}{\partial x^j}\bigg|_{t=0}+b^i(\phi)\frac{\partial^2x^j}{\partial t\partial \phi^i}\frac{\partial}{\partial x^j}\bigg|_{t=0}=\\
+&=a^k(x)\partial_kb^i(x)\frac{\partial}{\partial x^i}-b^i(x)\partial_ia^j(x)\frac{\partial}{\partial x^j}=\\
+&=[X,Y]\end{align*}
+where we used that
+\[\frac{\partial^2x^j}{\partial t\partial \phi^i}\bigg|_{t=0}=-\partial_ia^j(x).\]
+Let's prove this last identity. Defining $M^i{}_j=\frac{\partial\phi^i}{\partial x^j}$ (and denoting for simplicity $\dd M^{-1}/\dd t\equiv\dot M^{-1}\ne (\dd M/\dd t)^{-1}$), we have $\dot M^{-1}=-M^{-1}\dot M M^{-1}$ and
+\begin{gather*}-\dot M^{-1}|_{t=0}=\dot M|_{t=0},\quad\dot M^i{}_j=\frac{\partial^2\phi^i}{\partial t\partial x^j}\\
+\implies (\dot M^{-1})^i{}_j\big|_{t=0}=-\frac{\partial^2\phi^i}{\partial t\partial x^j}\bigg|_{t=0}=-\frac{\partial^2\phi^i}{\partial x^j\partial t}\bigg|_{t=0}=-\partial_ja^i,\end{gather*}
+which is what we wanted to prove up to an exchange of indices.
+
+Let us now compute the Lie derivative of a 1-form $\omega=\omega_i(x)\dd x^i$. Consider $\omega_i(\phi(t,x))\dd \phi^i=\omega_i(\phi(t,x))\frac{\partial\phi^i}{\partial x^j}\dd x^j$. Then,
+\begin{align*}
+\mathcal L_V\omega&=\frac{\dd}{\dd t}\biggl[\omega_i(\phi(t,x))\frac{\partial\phi^i}{\partial x^j}\dd x^j\biggr]_{t=0}=\\
+&=\frac{\partial\phi^j}{\partial t}\bigg|_{t=0}\partial_j\omega_i(x)\dd x^i+\omega_i(x)\frac{\partial}{\partial x^j}\frac{\partial\phi^i}{\partial t}\bigg|_{t=0}\dd x^j=\\
+&=(a^j\partial_j\omega_i+\omega_j\partial_ia^j)\dd x^i
+\end{align*}
+
+The Lie derivative tells how the objects change under infinitesimal diffeomorphisms. To see that, let us finally compute the Lie derivative of the metric $g_{ij}\dd x^i\dd x^j$.
+\begin{align*}
+&\mathcal L_Xg=\frac{\dd}{\dd t}\biggl[g_{ij}(\phi(t,x))\frac{\partial\phi^i}{\partial x^n}\frac{\partial\phi^j}{\partial x^m}\dd x^n\dd x^m\biggr]_{t=0}=\\
+&=(a^l\partial_lg_{nm}+g_{ij}\partial_na^i\delta_m^j+g_{ij}\delta_n^i\partial_ma^j)\dd x^n\dd x^m=\\
+&=(a^l\partial_lg_{nm}+g_{lj}\partial_ia^l+g_{il}\partial_ja^l)\dd x^i\dd x^j,
+\end{align*}
+or, in components, $\mathcal L_Xg_{ij}=a^m\partial_mg_{ij}+g_{mj}\partial_ia^m+g_{im}\partial_ja^m$. Recalling that, under an infinitesimal change of coordinates $x'^\mu=x^\mu+\xi^\mu(x)$,
+\[g'_{\mu\nu}(x')=g_{\rho\sigma}(x)\frac{\partial x^\rho}{\partial x'^\mu}\frac{\partial x^\sigma}{\partial x'^\nu}=g'_{\mu\nu}(x+\xi)\approx g'_{\mu\nu}(x)+\xi^\rho\partial_\rho g'_{\mu\nu}(x)\]
+and that $\frac{\partial x'^\mu}{\partial x^\rho}\approx\delta_\rho^\mu+\partial_\rho\xi^\mu\implies \frac{\partial x^\rho}{\partial x'^\mu}\approx\delta^\rho_\mu-\partial_\mu\xi^\rho$ (the cross terms cancel in the product),
+\[g'_{\mu\nu}(x)=g_{\mu\nu}(x)-\partial_\mu\xi^\rho g_{\rho\nu}-\partial_\nu \xi^\rho g_{\rho\mu}-\xi^\rho\partial_\rho g_{\mu\nu}=g_{\mu\nu}(x)-\mathcal L_\xi g_{\mu\nu}.\]
+
+For a scalar field, $\phi'(x')=\phi(x)=\phi'(x+\xi)\approx\phi'(x)+\xi^\rho\partial_\rho\phi'$, so also in this case $\phi'(x)-\phi(x)\approx-\mathcal L_\xi\phi$.
+
+\section{Lorentzian manifolds}
+
+An invertible metric with signature $(1,-1,-1,-1)$ is assumed. From now on, we will use the standard notation in physics, where the coordinates are $x^\mu$, upper and lower indices are not equivalent, the following conventions are used
+\[\eta_{\mu\nu}=\diag(1,-1,-1,-1),\qquad \frac{\partial}{\partial x^\mu}=\partial_\mu,\qquad \dd x^\mu\biggl(\frac{\partial}{\partial x^\nu}\biggr)=\delta^\mu_\nu\]
+and the Christoffel symbols are defined by $\nabla_{\partial_\mu}(\partial_\nu)=\Gamma_{\mu\nu}^\rho\partial_\rho$.
+
+The analogue of the basis $E_i$, in which $g(E_i,E_j)=\delta_{ij}$, will be
+\[e_a,\qquad g(e_a,e_b)=\eta_{ab}.\]
+$e_a$ are a basis for vector fields and are related to the other basis $\partial_\mu$ by
+\[e_a=e_a^\mu\partial_\mu.\]
+In this basis, the Christoffel symbols are
+\[\nabla_{e_a}(e_b)=\gamma_{ab}^ce_c.\]
+The latin indices $a$, $b$, $c$, \ldots are the \emph{flat-space indices}, while the greek indices $\mu$, $\nu$, $\rho$, \ldots are the \emph{spacetime indices}.
+
+Let us introduce differential forms $e^a$ dual to $e_a$.
+\[e^a=H_\mu^a\dd x^\mu,\qquad \delta^a_b=e^a(e_b)=H_\mu^a\dd x^\mu(e_b^\nu\partial_\nu)=H_\mu^ae_b^\nu\dd x^\mu(\partial_\nu)=H_\mu^ae_b^\mu\]
+$H_\mu{}^a$ is therefore the inverse matrix of $e^\mu{}_a$ (here the indices are displaced for clarity; they won't be any longer). We can write $H_\mu^a=e_\mu^a$ without risk of confusion, because the position of the spacetime/flat-space indices is different in the two cases. Therefore, $e^a_\mu e^\mu_b=\delta^a_b$ and $e^a=e^a_\mu\dd x^\mu$. Since any matrix commutes with its inverse,
+\[e^a{}_\mu e^\mu{}_b=\delta^a{}_b\implies e^\mu{}_ae^a{}_\nu=\delta^\mu{}_\nu,\]
+which we will write simply as $e^\mu_ae^a_\nu=\delta^\mu_\nu$.
+
+From the previous definitions,
+\[\eta_{ab}=g(e_a,e_b)=g_{\mu\nu}e^\mu_ae^\nu_b.\]
+Multiplying by $e^a_\rho e^b_\sigma$, $e^a_\rho \eta_{ab} e^b_\sigma=e^a_\rho e^b_\sigma g_{\mu\nu}e^\mu_ae^\nu_b=\delta^\mu_\rho g_{\mu\nu}\delta^\nu_\sigma=g_{\rho\sigma}$, or
+\[g_{\mu\nu}=e^a_\mu\eta_{ab}e^b_\nu.\]
+The $e^a_\mu$'s (called \emph{tetrad}, or \emph{vierbein}) relate the metric components in the two bases and can be used to transform spacetime to flat-space indices, or vice versa. For example,
+\[g_{\mu\nu}e^\nu_c=e^\nu_ce^a_\mu\eta_{ab}e^b_\nu=e^a_\mu\eta_{ac}.\]
+In other words, $g_{\mu\nu}$ ``lowers'' spacetime indices, while $\eta_{ab}$ ``lowers'' flat-space indices.
+
+We want to translate all these objects in the language of differential forms. Let's start with the connection
+$\nabla_{e_a}(e_b)=\gamma_{ab}^ce_c$. The metric compatibility condition is
+\[\nabla_g(X,Y,Z)=X(g(Y,Z))-g(\nabla_XY,Z)-g(Y,\nabla_XZ)=0.\]
+Applying it to the basis $e_a$,
+\begin{align*}
+0=\nabla_g(e_a,e_b,e_c)&=e_a(g(e_b,e_c))-g(\nabla_{e_a}e_b,e_c)-g(e_b,\nabla_{e_a}e_c)=\\
+&=e_a(\eta_{bc})-\gamma_{ab}^dg(e_d,e_c)-g(e_b,e_d)\gamma_{ac}^d=\\
+&=-\gamma_{ab}^d\eta_{dc}-\gamma_{ac}^d\eta_{db}.
+\end{align*}
+We define the \emph{spin connection} $\omega^a{}_b=\omega^a_{\mu b}\dd x^\mu=\gamma_{cb}^ae^c$ so we can multiply the previous expression by $e^a$ obtaining
+\[\omega^d{}_b\eta_{dc}+\omega^d{}_c\eta_{db}=0\implies \omega^{ab}=-\omega^{ba}.\]
+
+Then, the torsion.
+\[T(e_a,e_b)=\nabla_{e_a}e_b-\nabla_{e_b}(e_a)-[e_a,e_b]=\gamma_{ab}^ce_c-\gamma_{ba}^ce_c-[e_a,e_b]\]
+Multiplying the expression by $\frac{e^a\wedge e^b}{2}$ we obtain
+\begin{align*}
+\frac{e^a\wedge e^b}{2}T(e_a,e_b)&=\frac{e^a\wedge e^b}{2}(2\gamma_{ab}^ce_c-2e_ae_b)=\\
+&=\omega^c{}_b\wedge e^be_c-e^a\wedge e^be_ae_b=\\
+&=\omega^a{}_b\wedge e^be_a-e_\mu^a\dd x^\mu\wedge e_\nu^b\dd x^\nu e^\rho_a\partial_\rho e^\sigma_b\partial_\sigma=\\
+&=\omega^a{}_be^be_a-\dd x^\mu\wedge e^b\partial_\mu e_b=\\
+&=\omega^a{}_be^be_a-\dd x^\mu e^b_\nu\dd x^\nu \partial_\mu e^\sigma_b\partial_\sigma=\\
+&=\omega^a{}_be^be_a-\dd x^\mu e^b_\nu \dd x^\nu e^\sigma_b\partial_\mu\partial_\sigma-\dd x^\mu e^b_\nu \dd x^\nu (\partial_\mu e^\sigma_b)\partial_\sigma=\\
+&=\omega^a{}_be^be_a-\dd x^\mu e^b_\nu \dd x^\nu (\partial_\mu e^\sigma_b)\partial_\sigma=\\
+&=\omega^a{}_be^be_a+\dd x^\mu\partial_\mu e^b_\nu\dd x^\nu e^\sigma_b\partial_\sigma=\\
+&=\omega^a{}_be^be_a+\dd e^be_b=\\
+&=(\dd e^a+\omega^a{}_be^b)e_a
+\end{align*}
+and we define $T^a=\dd e^a+\omega^a{}_be^b=\nabla e^a$, which will be called torsion from now on.
+
+Let's do the same with the curvature $R(X,Y)Z=[\nabla_X,\nabla_Y]Z-\nabla_{[X,Y]}Z$. Defining $[e_a,e_b]=a_{ab}^de_d$,
+\begin{align*}
+R(e_a,e_b)e_c&=\nabla_{e_a}\nabla_{e_b}e_c-\nabla_{e_b}\nabla_{e_a}e_c-\nabla_{[e_a,e_b]}e_c=\\
+&=\nabla_{e_a}(\gamma_{bc}^de_d)-\nabla_{e_b}(\gamma_{ac}^de_d)-a_{ab}^d\gamma_{dc}^fe_f=\\
+&=\gamma_{bc}^d\gamma_{ad}^fe_f+e_a(\gamma_{bc}^d)e_d-\gamma_{ac}^d\gamma_{bd}^fe_f-e_b(\gamma_{ac}^d)e_d-a_{ab}^d\gamma_{dc}^fe_f.
+\end{align*}
+Let us multiply by $\frac{e^a\wedge e^b}{2}$:
+\begin{align*}
+\frac{e^a\wedge e^b}{2}R(e_a,e_b)e_c&=\omega^f{}_d\omega^d{}_ce_f+e^a\wedge e^b e_a(\gamma_{bc}^d)e_d-\frac{1}{2}e^a\wedge e^b a_{ab}^d\gamma_{dc}^fe_f\\
+&=\omega^f{}_d\omega^d{}_ce_f+e^a\wedge e^b e_a(\gamma_{bc}^d)e_d-\frac{1}{2}e^a\wedge e^b a_{ab}^ge^de_g\gamma_{dc}^fe_f.
+\end{align*}
+We can simplify the last two terms as follows:
+\[e^a\wedge e^b e_a(\gamma_{bc}^d)e_d=e_\mu^ae_\nu^b\dd x^\mu\dd x^\nu e^\rho_a\partial_\rho(\gamma_{bc}^d)e_d=\dd\gamma_{bc}^de^be_d=\dd\omega^d{}_ce_d-\gamma_{bc}^d\dd e^be_d,\]
+\begin{align*}
+-\frac{1}{2}e^a\wedge e^b a_{ab}^c e_c&=-\frac{1}{2}e^a\wedge e^b[e_a,e_b]=\\
+&=-e_\mu^ae_\nu^b\dd x^\mu\dd x^\nu e^\rho_a(\partial_\rho e^\sigma_b)\partial_\sigma=\\
+&=-\dd e^\sigma_be^b_\nu\dd x^\nu\partial_\sigma=\\
+&=\dd e^b_\nu\dd x^\nu e_b=\\
+&=\partial_\mu e^b_\nu\dd x^\mu\dd x^\nu e_b=\\
+&=\dd e^b e_b.
+\end{align*}
+Summarizing,
+\begin{align*}
+\frac{e^a\wedge e^b}{2}R(e_a,e_b)e_c&=\omega^e{}_d\wedge\omega^d{}_ce_e+\dd\omega^d{}_ce_d-\cancel{\gamma_{bc}^d\dd e^be_d}+\cancel{e^d\dd e^ge_g\gamma_{dc}^fe_f}=\\
+&=(\dd\omega^d{}_c+\omega^d{}_b\wedge\omega^b{}_c)e_d\equiv R^d{}_ce_d.
+\end{align*}
+We can shorten the notation: $R=\dd\omega+\omega\omega$ and $T=\nabla e=\dd e+\omega e$. Curvature and torsion are both $2$-forms, but the former has two indices and the latter only one.
+
+Let $\wedge^k_{(m,n)}$ be the space of $k$-forms that have $m$ flat-space indices up and $n$ flat-space indices down. We have
+\[e^a\in\wedge^1_{(1,0)}\qquad T^a\in\wedge^2_{(1,0)},\qquad R^a{}_b\in\wedge^2_{(1,1)}.\]
+Let $T^{a_1\ldots a_m}_{b_1\ldots b_n}\in\wedge^k_{(m,n)}$. The \emph{covariant derivative} is defined as
+\begin{equation}
+\nabla T^{a_1,\ldots, a_m}_{b_1,\ldots, b_n}=\dd T^{a_1,\ldots, a_m}_{b_1,\ldots, b_n}+\sum_{i=1}^m\omega^{a_i}{}_cT^{a_1,\ldots ,c,\ldots, a_m}_{b_1,\ldots, b_n}-(-1)^k\sum_{i=1}^nT^{a_1,\ldots, a_m}_{b_1,\ldots, c,\ldots b_n}\omega^c{}_{b_i},
+\label{eqn:covariantderivative}
+\end{equation}
+where the index $c$ replaces $a_i$ and $b_i$ in the two cases.
+For example, for the torsion ($k=1$) this definition correctly gives $T^a=\nabla e^a=\dd e^a+\omega^a{}_be^b$. If instead $W^a\in\wedge^0_{(1,0)}$ and $V_a\in\wedge^0_{(0,1)}$,
+\[\nabla W^a=\dd W^a+\omega^a{}_bW^b,\qquad \nabla V_a=\dd V_a-V_c\omega^c{}_a.\]
+The covariant derivative defined in this way obeys the Leibniz rule:
+\begin{align*}
+\nabla(W^aV_a)&=\nabla W^aV_a+W^a\nabla V_a=\\
+&=\dd W^aV_a+\omega^a{}_bW^bV_a+W^a\dd V_a-W^aV_b\omega^b{}_a=\\
+&=\dd(W^aV_a)\end{align*}
+
+\begin{exercise}
+In general, if $T^{a_1,\ldots,a_m}_{b_1,\ldots,b_n}\in\wedge^k_{(m,n)}$ and $S^{c_1,\ldots,c_r}_{d_1,\ldots,d_p}\in\wedge^h_{(r,p)}$,
+\[\nabla(T^{a_1,\ldots,a_m}_{b_1,\ldots,b_n}\wedge S^{c_1,\ldots,c_r}_{d_1,\ldots,d_p})=\nabla T^{a_1,\ldots,a_m}_{b_1,\ldots,b_n}\wedge S^{c_1,\ldots,c_r}_{d_1,\ldots,d_p} +(-1)^kT^{a_1,\ldots,a_m}_{b_1,\ldots,b_n}\wedge\nabla S^{c_1,\ldots,c_r}_{d_1,\ldots,d_p}.\]
+\end{exercise}
+
+Let's see how the Bianchi identities read in this language.
+\begin{align*}
+\nabla T&=\dd T+\omega T=\\
+&=\dd(\dd e+\omega e)+\omega(\dd e+\omega e)=\\
+&=\dd\omega e-\omega\dd e+\omega\dd e+\omega\omega e=\\
+&=Re
+\end{align*}
+Notice that it is the same expression as the one of \cref{bianchitorsion}. If $T=0$ the Bianchi identity is $R\wedge e=R^a{}_be^b=0$. Expanding the curvature in the basis,
+\[R^a{}_b=R_{cd}{}^a{}_b\frac{e^c\wedge e^d}{2},\]
+where $R_{cd}{}^a{}_b$ are the components of the Riemann tensor (more frequently, in what follows, we will define them as $R^a{}_{bcd}$ instead). Therefore, the condition means $0=R^a{}_be^b=\frac{1}{2}R_{cd}{}^a{}_be^ce^de^b$, which, given the complete antisymmetry of $e^ce^de^b$, means
+\[R_{ab}{}^c{}_d+R_{da}{}^c{}_b+R_{bd}{}^c{}_a=0.\]
+
+The second Bianchi identity is $\nabla R=0$, that is,
+\[\nabla R^a{}_b=\dd R^a{}_b+\omega^a{}_cR^c{}_b-R^a{}_c\omega^c{}_b=0\]
+or simply $\nabla R=\dd R+\omega R-R\omega=0$. Indeed, substituting $R=\dd\omega+\omega\omega$,
+\begin{align*}
+\nabla R&=\dd(\dd\omega+\omega\omega)+\omega(\dd\omega+\omega\omega)-(\dd\omega+\omega\omega)\omega=\\
+&=\dd\omega\omega-\omega\dd\omega+\omega\dd\omega+\omega\omega\omega-\dd\omega\omega-\omega\omega\omega=\\
+&=0.
+\end{align*}
+
+\section{Change of basis for flat-space indices}
+If a local change of coordinates transforms the differential forms as
+\[e'^a=\Omega^a{}_be^b,\qquad \Omega=\Omega(x),\]
+the same change of coordinates transforms the vector fields as
+\[e'_a=(\Omega^{-1})^b{}_ae_b.\]
+Indeed, $e'^a(e'_b)=\Omega^a{}_ce^c((\Omega^{-1})^d{}_be_d)=\Omega^a{}_c(\Omega^{-1})^d{}_b\delta^c{}_d=\delta^a_b$. For the moment, $\Omega\in\text{GL}(4,\mathbb{R})$ without any particular restriction.
+
+Let's check how does $\omega$ transform, so we can later derive the transformation laws for torsion and curvature. Remind that $\nabla_{e_a}e_b=\gamma_{ab}^ce_c$; therefore,
+\begin{align*}
+\nabla_{e'_a}e'_b&=\gamma'^c_{ab}e'_c=\\
+&=\nabla_{(\Omega^{-1})^d{}_ae_d}((\Omega^{-1})^e{}_be_e)=\\
+&=(\Omega^{-1})^d{}_a\nabla_{e_d}((\Omega^{-1})^e{}_be_e)=\\
+&=(\Omega^{-1})^d{}_a(\Omega^{-1})^e{}_b\nabla_{e_d}e_e+(\Omega^{-1})^d{}_ae_d((\Omega^{-1})^e{}_b)e_e=\\
+&=(\Omega^{-1})^d{}_a(\Omega^{-1})^e{}_b\gamma_{de}^f\Omega^g{}_fe'_g+(\Omega^{-1})^d{}_ae_d((\Omega^{-1})^e{}_b)\Omega^g{}_ee'_g.
+\end{align*}
+Renaming the indices, we can read the transformation law of $\gamma$:
+\[\gamma'^g_{ab}=(\Omega^{-1})^d{}_a(\Omega^{-1})^e{}_b\gamma_{de}^f\Omega^g{}_f+(\Omega^{-1})^d{}_ae_d((\Omega^{-1})^e{}_b)\Omega^g{}_e,\]
+and finally the one of $\omega$:
+\begin{align*}
+\omega'^a{}_b&=\gamma'^a_{cb}e'^c=\\
+&=(\Omega^{-1})^e{}_b\gamma_{ce}^f\Omega^a{}_fe^c+e_c((\Omega^{-1})^e{}_b)\Omega^a{}_ee^c=\\
+&=\Omega^a{}_f\omega^f{}_e(\Omega^{-1})^e{}_b+\Omega^a{}_ee^ce_c(\Omega^{-1})^e{}_b.
+\end{align*}
+Using that
+\[e^ce_c(f)=e^c_\mu\dd x^\mu e^\nu_c\frac{\partial}{\partial x^\nu}f=\delta^\nu_\mu\dd x^\mu\frac{\partial}{\partial x^\nu}f=\dd f,\]
+and suppressing the indices, the expression eventually simplifies to
+\begin{equation}
+\omega'=\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1}.
+\label{eqn:transomega}
+\end{equation}
+
+From this equation, together with $e'=\Omega e$, we can derive the transformation laws of the other forms.
+\begin{itemize}
+\item Torsion ($T=\nabla e=\dd e+\omega e$). The differential is not affected by the change of coordinates because it has no indices, so
+\begin{align*}
+T'&=\nabla' e'=\\
+&=\dd e'+\omega' e'=\\
+&=\dd(\Omega e)+(\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1})\Omega e=\\
+&=\dd\Omega e+\Omega\dd e+\Omega\omega e+\Omega\dd\Omega^{-1}\Omega e=\\
+&=\Omega\dd e+\Omega\omega e=\\
+&=\Omega\nabla e=\\
+&=\Omega T,
+\end{align*}
+where, in the fifth line, we used that
+\begin{equation}
+1=\Omega\Omega^{-1}\implies0=\dd\Omega\Omega^{-1}+\Omega\dd\Omega^{-1}\implies 0=\dd\Omega+\Omega\dd\Omega^{-1}\Omega.
+\label{eqn:identityomega}
+\end{equation}
+\item Curvature ($R=\dd\omega+\omega\omega$). Using \cref{eqn:identityomega} twice,
+\begin{align*}
+R'=&\dd\omega'+\omega'\omega'=\\
+=&\dd(\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1})+(\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1})(\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1})=\\
+=&\dd\Omega\omega\Omega^{-1}+\Omega\dd\omega\Omega^{-1}-\Omega\omega\dd\Omega^{-1}+\dd\Omega\dd\Omega^{-1}+\Omega\omega\omega\Omega^{-1}+\\
+&\Omega\dd\Omega^{-1}\Omega\omega\Omega^{-1}+\Omega\omega\dd\Omega^{-1}+\Omega\dd\Omega^{-1}\omega\dd\Omega^{-1}=\\
+=&\Omega(\dd\omega+\omega\omega)\Omega^{-1}=\\
+=&\Omega R\Omega^{-1}.
+\end{align*}
+\item Covariant derivative. Using for example the transformation law of $T$,
+\[T'=\Omega T=\Omega\nabla e=\Omega\nabla\Omega^{-1}e'=\nabla'e',\]
+therefore
+\[\nabla'=\Omega\nabla\Omega^{-1}.\]
+\end{itemize}
+
+\subsection{Lorentz transformations}
+Note that if $g_{\mu\nu}=e_\mu^a\eta_{ab}e_\nu^b$, it is not true in general that, after a change of coordinates $e'^a_\mu=\Omega^a{}_be^b_\mu$, we still have $g'_{\mu\nu}=e^a_\mu\eta_{ab}e^b_\nu$. In fact, the basis $e_a$ is the one that diagonalizes $g$, $g(e_a,e_b)=\eta_{ab}$.
+
+The relation, however, is preserved by Lorentz transformations. In fact, the metric is preserved 
+\[g'_{\mu\nu}=\Omega^a{}_ce^c_\mu\eta_{ab}\Omega^b{}_de^d_\nu=g_{\mu\nu}\]
+if and only if $\Omega^a{}_c\eta_{ab}\Omega^b{}_d=\eta_{cd}$.
+A change of basis that preserves the metric everywhere is called a \emph{local Lorentz transformation}. For these transformations, we will use the symbol $\Lambda$ instead of $\Omega$: $e'^a(x)=\Lambda^a{}_b(x)e^b$, which is no longer a generic element of $\text{GL}(4,\mathbb{R})$. The defining property of Lorentz transformations is therefore
+\[\eta_{ab}=\Lambda^c{}_a(x)\eta_{cd}\Lambda^d{}_b(x).\]
+Lorentz transformations are the ones for which the new basis still diagonalizes the metric, $g(e'_a,e'_b)=\eta_{ab}$.
+
+A generic change of coordinates won't do that job. For example, the definition $e^a=e^a_\mu\dd x^\mu$ can be interpreted as the transformation that changes the canonical basis $\dd x^\mu$ into the flat-space basis $e^a$. We can use this to compute the transformation laws between the two basis.
+\begin{itemize}
+\item Connection. It is defined as $\nabla_{\partial_\mu}(\partial_\nu)=\Gamma_{\mu\nu}^\rho\partial_\rho$ in the canonical basis and as $\nabla_{e_a}(e_b)=\gamma_{ab}^ce_c$ in the flat-space basis. We defined $\omega^a{}_b=\gamma^a_{cb}e^c$, hence we should define $\Gamma^\mu{}_\nu=\Gamma^\mu_{\rho\nu}\dd x^\rho$ as well. Using \cref{eqn:transomega} and the definition of the inverse of the vierbein,
+\[\omega^a{}_b=e^a_\mu\Gamma^\mu{}_\nu e^\nu_b+e^a_\mu\dd e^\mu_b.\]
+This is a relation between 1-forms. We can insert the differentials $\dd x^\mu$ everywhere and equating the coefficients, writing
+\[\omega_{\mu b}^a=e^a_\rho\Gamma^\rho_{\mu\nu}e^\nu_b+e^a_\nu\partial_\mu e^\nu_b.\]
+This is a completely general relation about the Christoffel symbols in one basis and in another (where they are called spin connection) and no assumption (metric compatibility, torsionless, \ldots) is needed.
+
+\end{itemize}
+
+
+The definition of covariant derivative given in \cref{eqn:covariantderivative} is written in flat-space indices, but can be easily extended to objects with spacetime indices, or even to objects with an arbitrary number of, raised or lowered, flat-space or spacetime indices (that is, $T^{a_1\ldots a_m\nu_1\ldots\nu_s}_{b_1\ldots b_n\mu_1\ldots\mu_r}$), just by appropriately replacing $\omega$ with $\Gamma$. For example,
+\begin{equation}
+\nabla e^a_\mu=\dd e^a_\mu+\omega^a{}_be^b_\mu-e^a_\nu\Gamma^\nu{}_\mu.
+\label{eqn:nablavierbein}
+\end{equation}
+This last expression is identically zero, regardless of any assumption (differently from the covariant derivative of the metric, which is zero by definition only under metric compatibility). In fact, it is just a rewriting of the transformation law of the connection:
+\begin{gather*}
+\dd x^\rho\nabla_\rho e^a_\mu=\dd x^\rho\partial_\rho e^a_\mu+\dd x^\rho\omega_{\rho b}^ae^b_\mu-\dd x^\rho e^a_\nu\Gamma^\nu_{\rho\mu}\overset{?}{=}0\\
+\partial_\rho e^a_\mu+\omega_{\rho b}^ae^b_\mu-e^a_\nu\Gamma^\nu_{\rho\mu}\overset{?}{=}0\\
+\partial_\rho e^a_\mu+(e^a_\sigma\Gamma^\sigma_{\rho\nu}e^\nu_b+e^a_\nu\partial_\rho e^\nu_b)e^b_\mu-e^a_\nu\Gamma^\nu_{\rho\mu}\overset{?}{=}0\\
+\partial_\rho e^a_\mu+e^a_\sigma\Gamma^\sigma_{\rho\mu}+e^a_\nu\partial_\rho e^\nu_be^b_\mu-e^a_\nu\Gamma^\nu_{\rho\mu}\overset{?}{=}0\\
+\partial_\rho e^a_\mu+e^a_\nu\partial_\rho e^\nu_be^b_\mu\overset{?}{=}0
+\end{gather*}
+which is an identity because $e^a_\sigma\partial_\rho e^\sigma_b=-\partial_\rho e^a_\sigma e^\sigma_b$. The vierbein is hence always covariantly constant.
+
+Let's consider the covariant derivative of the metric:
+\[\nabla g_{\mu\nu}=\dd g_{\mu\nu}-g_{\rho\nu}\Gamma^\rho{}_\mu-g_{\mu\rho}\Gamma^\rho{}_\nu,\]
+or, in components,
+\[\nabla_\rho g_{\mu\nu}=\partial_\rho g_{\mu\nu}-g_{\sigma\nu}\Gamma^\sigma_{\rho\mu}-g_{\mu\sigma}\Gamma^\sigma_{\rho\nu}.\]
+Recall that if $T=0$, which means $\Gamma_{\mu\nu}^\rho=\Gamma_{\nu\mu}^\rho$, and $\nabla_\rho g_{\mu\nu}=0$ then the connection is a function of the metric only, $\Gamma^\rho_{\mu\nu}=\Gamma^\rho_{\mu\nu}(g)$, which implies that the spin connection is a function of the vierbein,
+\[\omega_{\mu b}^a=e^a_\rho\Gamma^\rho_{\mu\nu}(g)e^\nu_b+e^a_\nu\partial_\mu e^\nu_b=\omega_{\mu b}^a(e),\]
+because $g_{\mu\nu}$ is a function of the vierbein via $g_{\mu\nu}=e^a_\mu\eta_{ab}e^b_\nu$.
+
+\cref{eqn:nablavierbein} has been derived without using the specific properties of the vierbein, which is that $e^a$ diagonalize the metric. If we apply it to $\delta^\mu_\nu$ (coefficients of $\dd x^\mu=\delta^\mu_\nu\dd x^\nu$), we correctly find
+\[\nabla\delta^\nu_\mu=\dd\delta^\nu_\mu+\Gamma^\nu{}_\rho\delta^\rho_\mu-\delta^\nu_\rho\Gamma^\rho{}_\mu=0,\]
+because $\delta^\nu_\mu$ is an invariant tensor.
+
+We can check the torsionless condition in the basis $\dd x^\mu$ by applying the general covariant derivative rule:
+\[T^\mu=\nabla\dd x^\mu=\dd\dd x^\mu+\Gamma^\mu{}_\nu\dd x^\nu=\Gamma^\mu{}_\nu\dd x^\nu=0.\]
+Recall that $\Gamma^\mu{}_\nu\dd x^\nu=\dd x^\rho\dd x^\nu\Gamma^\mu_{\rho\nu}$ is a two form, so it is zero if and only if $\Gamma^\mu_{[\rho\nu]}=0$.
+
+Alternatively, we can write
+\[T^a=\nabla e^a=\nabla(e^a_\mu\dd x^\mu)=(\nabla e^a_\mu)\dd x^\mu+e^a_\mu(\nabla\dd x^\mu)=e^a_\mu(\nabla\dd x^\mu)=e^a_\mu\nabla\dd x^\mu,\]
+where we used \cref{eqn:nablavierbein}, which again tells that the torsion is zero in one basis if and only if it is zero in another one: $\nabla e^a=0\iff\nabla\dd x^\mu=0$.
+
+Let's see how the Bianchi identities look like in coordinates.
+\begin{itemize}
+\item 2\ap{nd} Bianchi identity: $\nabla R=0$, or, restoring indices, $\nabla R^a{}_b=0$. Recall that $R^a{}_b=R^a{}_{bcd}\frac{e^c\wedge e^d}{2}=R^a{}_{b\mu\nu}\frac{\dd x^\mu\wedge\dd x^\nu}{2}$ is a 2-form. We now know that to switch from one to the other we have to multiply by the vierbein, which commutes with $\nabla$, because it is covariantly constant. So, the Bianchi identity can be written as
+\[0=\nabla\biggl(R^a{}_{bcd}\frac{e^ce^d}{2}\biggr)=(\nabla R^a{}_{bcd})\frac{e^ce^d}{2},\]
+where we used the torsionless condition $T=\nabla e=0$. Since $\nabla R^a{}_{bcd}$ is a 1-form, it can be expanded in a basis, for example $e^f$: $0=e^f\nabla_fR^a{}_{bcd}\frac{e^ce^d}{2}$. This 3-form is zero if and only if
+\begin{equation}
+\nabla_c R^a{}_{bde}+\nabla_eR^a{}_{bcd}+\nabla_dR^a{}_{bec}=0.
+\label{eqn:secondbianchi}
+\end{equation}
+The same result is valid in spacetime indices, thanks to the covariant constance of the vierbein.
+\item Contracted Bianchi identities (under the metric compatibility assumption $\nabla\eta_{ab}=0$, equivalently in any basis). Recall that the Ricci tensor is defined as $R_{bd}=R^a{}_{bcd}\delta^c_a$. Contracting $a$ and $d$ in \cref{eqn:secondbianchi},
+\[\nabla_cR_{be}-\nabla_eR_{bc}+\nabla_aR^a{}_{bec}=0.\]
+Now multiplying by $\eta^{be}$ and using the metric compatibility condition (let's use the notation $\text{\emph{Ric}}$ for the Ricci tensor, to avoid confusion with the Riemann 2-form when an index is raised),
+\[\nabla_cR-\nabla_b\text{\emph{Ric}}^b{}_c-\nabla_a\text{\emph{Ric}}^a{}_c=0\]
+(where we used the symmetry properties coming from \cref{riemannsymmetries}), or
+\[\nabla_a\text{\emph{Ric}}^a{}_b=\frac{1}{2}\nabla_bR\qquad(\text{usually written as } \nabla_\mu R^\mu{}_\nu=\frac{1}{2}\nabla_\nu R).\]
+\end{itemize}
+
+
+
+\chapter{General Relativity}
+\section{Scalar field}
+A scalar field $\varphi$ is a function $\varphi\colon M\to\mathbb R$, thus it transforms as $\varphi'(x')=\varphi(x)$ under a change of coordinates. Its covariant derivative is just the partial derivative, in fact
+\[\dd x^\mu\nabla_\mu\varphi=\nabla\varphi=\dd\varphi=\dd x^\mu\partial_\mu\varphi\implies\nabla_\mu\varphi=\partial_\mu\varphi.\]
+A possible action that couples $\varphi$ to gravity is
+\begin{equation}
+S=\int_M\dd^4x\sqrt{-g}\,\mathcal L(x)=\frac{1}{2}\int_M\dd^4x\sqrt{-g}\Bigl[g^{\mu\nu}\nabla_\mu\varphi\nabla_\nu\varphi+\xi R\varphi^2-m^2\varphi^2\Bigr].
+\label{eqn:actioncurvedscalar}
+\end{equation}
+In flat space, where $g_{\mu\nu}(x)=\eta_{\mu\nu}$, $g=\det g_{\mu\nu}=-1$ and $R=0$, \cref{eqn:actioncurvedscalar} reduces to the usual
+\begin{equation}
+S=\frac{1}{2}\int_M\dd^4x\Bigr[\partial_\mu\varphi\partial^\mu\varphi-m^2\varphi^2\Bigr].
+\label{eqn:actionflatscalar}
+\end{equation}
+We have thus obtained \cref{eqn:actioncurvedscalar} by ``covariantizing'' \cref{eqn:actionflatscalar} (which means making it invariant under a general change of coordinates: $\partial_\mu\to\nabla_\mu$ and $\dd^4x\to\dd^4x\sqrt{-g}$) and adding a non-minimal term, the one of lowest dimension between the infinitely many possible.
+
+The integral on the manifold $\int_M$ is meant to be split and carried out separately in every chart. The integrand is built in a way such that the final result does not depend on the splitting chosen. In fact, under a change of coordinates, both $\mathcal L'(x')=\mathcal L(x)$ and $\dd^4x'\sqrt{-g'(x')}=\dd^4x\sqrt{-g(x)}$.
+
+In principle, infinitely many other terms can be added:
+\[R^{\mu\nu}\nabla_\mu\varphi\nabla_\nu\varphi,\quad (g^{\mu\nu}\nabla_\mu\varphi\nabla_\nu\varphi)^2,\quad\ldots\]
+In the end, the correct action will be determined by the physics.
+
+\section{Gauge field}
+From the 4-potential $A_\mu$ (embedded in a 1-form $A=A_\mu\dd x^\mu$) we can define the field strength $F=F_{\mu\nu}\frac{\dd x^\mu\dd x^\nu}{2}=\partial_\mu A_\nu\dd x^\mu\dd x^\nu\implies F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$. We know how differential forms transform, so:
+\[F'_{\mu\nu}(x')=\frac{\partial x^\rho}{\partial x'^\mu}F_{\rho\sigma}(x)\frac{\partial x^\sigma}{\partial x'^\nu}\]
+and we are sure that the action
+\[S=-\frac{1}{4}\int\dd^4x\sqrt{-g}F_{\mu\nu}F_{\rho\sigma}g^{\mu\rho}g^{\nu\sigma}\]
+transforms correctly. There has been no need to introduce covariant derivatives. Note that
+\begin{gather*}\dd x^\mu\nabla_\mu A_\nu=\nabla A_\nu=\dd A_\nu-A_\rho\Gamma^\rho{}_\nu=\dd x^\mu\partial_\mu A_\nu-A_\rho\dd x^\mu\Gamma_{\mu\nu}^\rho\\
+\nabla_\mu A_\nu=\partial_\mu A_\nu-\Gamma_{\mu\nu}^\rho A_\rho
+\end{gather*}
+and so
+\begin{gather*}
+\nabla_\mu A_\nu-\nabla_\nu A_\mu=\partial_\mu A_\nu-\Gamma_{\mu\nu}^\rho A_\rho-\partial_\nu A_\mu+\Gamma_{\nu\mu}^\rho A_\rho=F_{\mu\nu}-(\Gamma_{\mu\nu}^\rho-\Gamma_{\nu\mu}^\rho)A_\rho.
+\end{gather*}
+The quantity $\nabla_\mu A_\nu-\nabla_\nu A_\mu$ is equal to $F_{\mu\nu}$ only if the torsion vanishes; but even in the general case it would have the correct transformation rules (in fact, the difference between Christoffel symbols is a tensor) and would be a perfectly acceptable term in the action. Let's check that indeed the torsion (i.e.: the difference of Christoffel symbols) transforms correctly. In general the transformation of a connection is
+\[\omega'=\Omega\omega\Omega^{-1}+\Omega\dd\Omega^{-1}.\]
+We can use this formula replacing $\omega^a{}_b$ with $\Gamma^\mu{}_\nu=\Gamma^\mu_{\rho\nu}\dd x^\rho$ and $\Omega^a{}_b$ with $\Omega^\mu{}_\nu=\frac{\partial x'^\mu}{\partial x^\nu}$:
+\[\dd x'^\rho\Gamma'^\mu_{\rho\nu}=\Omega^\mu{}_\alpha\dd x^\rho\Gamma^\alpha_{\rho\beta}(\Omega^{-1})^\beta{}_\nu+\Omega^\mu{}_\alpha\dd x^\rho\partial_\rho(\Omega^{-1})^\alpha{}_\nu.\]
+Since $\dd x'^\rho\Gamma'^\mu_{\rho\nu}=\dd x^\rho\Omega^\sigma{}_\rho\Gamma'^\mu_{\sigma\nu}$, we have
+\begin{gather*}
+\Omega^\sigma{}_\rho\Gamma'^\mu_{\sigma\nu}=\Omega^\mu{}_\alpha\Gamma^\alpha_{\rho\beta}(\Omega^{-1})^\beta{}_\nu+\Omega^\mu{}_\alpha\partial_\rho(\Omega^{-1})^\alpha{}_\nu\\
+\Gamma'^\mu_{\sigma\nu}=\Omega^\mu{}_\alpha\Gamma^\alpha_{\rho\beta}(\Omega^{-1})^\rho{}_\sigma(\Omega^{-1})^\beta{}_\nu+\Omega^\mu{}_\alpha(\Omega^{-1})^\rho{}_\sigma\partial_\rho(\Omega^{-1})^\alpha{}_\nu.
+\end{gather*}
+The first term would be the expected transformation if $\Gamma^\mu_{\nu\rho}$ were a tensor. However, it is not, because of the second term, which however does not depend on $\Gamma^\mu_{\nu\rho}$ and simplifies in the difference, as anticipated:
+\begin{multline*}\Gamma'^\mu_{\sigma\nu}-\Gamma'^\mu_{\nu\sigma}=\Omega^\mu{}_\alpha(\Gamma^\alpha_{\rho\beta}-\Gamma^\alpha_{\beta\rho})(\Omega^{-1})^\rho{}_\sigma(\Omega^{-1})^\beta{}_\nu+\\
++\Omega^\mu{}_\alpha\bigl((\Omega^{-1})^\rho{}_\sigma\partial_\rho(\Omega^{-1})^\alpha{}_\nu-(\Omega^{-1})^\rho{}_\nu\partial_\rho(\Omega^{-1})^\alpha{}_\sigma\bigr)
+\end{multline*}
+and
+\begin{multline*}
+\Omega^\mu{}_\alpha\bigl((\Omega^{-1})^\rho{}_\sigma\partial_\rho(\Omega^{-1})^\alpha{}_\nu-(\Omega^{-1})^\rho{}_\nu\partial_\rho(\Omega^{-1})^\alpha{}_\sigma\bigr)=\\
+=-\partial_\rho\Omega^\mu{}_\alpha\bigl((\Omega^{-1})^\rho{}_\sigma(\Omega^{-1})^\alpha{}_\nu-(\Omega^{-1})^\rho{}_\nu(\Omega^{-1})^\alpha{}_\sigma\bigr)=0
+\end{multline*}
+because the term in brackets is antisymmetric in $\rho$ and $\alpha$, while $\partial_\rho\Omega^\mu{}_\alpha=\partial_\rho\partial_\alpha x'^\mu$ is symmetric.
+
+The two actions written so far are an integral over the manifold of a coordinate-dependent integrand, but they are still well-defined. They can be actually expressed in a coordinate-independent way, but there's simply no real advantage for our purposes. By the way, there are some examples of actions directly written in a manifestly invariant way, such as
+\[\int_MF\wedge F,\qquad F=F_{\mu\nu}\frac{\dd x^\mu\dd x^\nu}{2}\]
+which in coordinates reads
+\[\int_MF_{\mu\nu}F_{\rho\sigma}\frac{1}{4}\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma=\frac{1}{4}\int_MF_{\mu\nu}F_{\rho\sigma}\varepsilon^{\mu\nu\rho\sigma}\dd^4x.\]
+(In classical electrodynamics, this invariant corresponds to $\vec E\cdot \vec B$, while the usual $F_{\mu\nu}F^{\mu\nu}$ corresponds to $\vec E^2-\vec B^2$.) This action, however, is a topological invariant, because it is the integral of a total derivative. In fact, using Stokes' theorem and $\dd^2=0$,
+\[\int_MF\wedge F=\int_M\dd A\wedge\dd A=\int_M\dd(A\wedge\dd A)=\int_{\partial M}A\wedge\dd A.\]
+This might be of some interest in manifolds with non-trivial boundary, but here we won't cover such cases.
+
+\section{Non-Abelian gauge theories (Yang-Mills)}
+We can generalize the previous to the context of Yang-Mills theories associated to a gauge group $G$ (for example $\text{SU}(N)$). Let's denote with a dot the ``color'' indices, in the adjoint representation of $G$, to avoid confusion:
+\[F^{\dot a}_{\mu\nu}=\partial_\mu A^{\dot a}_\nu-\partial_\nu A^{\dot a}_\mu+f^{\dot a}{}_{\dot b\dot c}A^{\dot b}_\mu A^{\dot c}_\nu.\]
+The action
+\[-\frac{1}{4}\int_M\dd^4x\sqrt{-g}F^{\dot a}_{\mu\nu}F^{\dot a}_{\rho\sigma}g^{\mu\rho}g^{\nu\sigma}\]
+is invariant under changes of coordinates and the action of the gauge group $A'=UAU^{-1}+U\dd U^{-1}$, $F'=UFU^{-1}$ (which are reminiscent of $\omega'=\Omega\omega(\Omega^{-1})+\Omega\dd\Omega^{-1}$ and $R'=\Omega R\Omega^{-1}$).
+
+\section{Fermions}
+Fermions are more tricky to couple to gravity, because we cannot use the metric tensor directly; we need the vierbein.
+
+Let's first recall how do we treat them in flat space. The fermion field is a spinor $\psi=\begin{pmatrix}\chi\\ \phi\end{pmatrix}$ where $\chi$ and $\phi$ are doublets. The Pauli matrices $\sigma^\mu=(\sigma_0,\boldsymbol\sigma)$ are
+\[
+\sigma_0=\begin{pmatrix}1& 0\\ 0& 1\end{pmatrix},\quad
+\sigma_1=\begin{pmatrix}0& 1\\ 1& 0\end{pmatrix},\quad
+\sigma_2=\begin{pmatrix}0& -i\\ i& 0\end{pmatrix},\quad
+\sigma_3=\begin{pmatrix}1& 0\\ 0& -1\end{pmatrix}.\quad
+\]
+We also define $\tilde\sigma^\mu=(\sigma_0,-\boldsymbol\sigma)$. It's easy to check that
+\begin{equation}
+\tilde\sigma^\mu=\sigma_2(\sigma^\mu)^*\sigma_2.
+\label{eqn:identitysigmatilde}
+\end{equation} Then, we define the $4\times4$ gamma matrices $\gamma^\mu=\begin{pmatrix}0& \sigma^\mu\\ \tilde\sigma^\mu& 0\end{pmatrix}$, which satisfy the Dirac algebra $\{\gamma^\mu,\gamma^\nu\}=2\eta^{\mu\nu}$, which in turn implies $(\gamma^0)^2=1$.
+
+Lorentz transformations $x'^\mu=\Lambda^\mu{}_\nu x^\nu$ are such that $\eta_{\mu\nu}=\Lambda^\rho{}_\mu\eta_{\rho\sigma}\Lambda^\sigma{}_\nu$, or equivalently $x'^2=x^2$. Noting that
+\[\delta_\mu^\alpha=\eta_{\mu\nu}\eta^{\nu\alpha}=\Lambda^\rho{}_\mu\eta_{\rho\sigma}\Lambda^\sigma{}_\nu\eta^{\nu\alpha}=\Lambda^\rho{}_\mu\Lambda_\rho{}^\alpha\]
+we deduce that $(\Lambda^\rho{}_\mu)^t$ is the inverse of $\Lambda_\rho{}^\alpha$. Under a Lorentz transformation, the fermions transform as $\psi'=\mathcal A\psi$, with $\mathcal A=\begin{pmatrix}\tilde A& 0\\ 0& A\end{pmatrix}$ to be determined. The transformation of $\overline\psi=\psi^\dagger\gamma^0$ is
+\[\overline\psi'=\psi^\dagger \mathcal A^\dagger\gamma^0=\overline\psi\gamma^0\mathcal A^\dagger\gamma^0.\]
+We require the Dirac action to be invariant: mass term
+\begin{equation}
+\overline\psi'\psi'=\overline\psi\gamma^0\mathcal A^\dagger\gamma^0\mathcal A\psi=\overline\psi\psi\implies\gamma^0\mathcal A^\dagger\gamma^0\mathcal A=1\implies\gamma^0\mathcal A^\dagger\gamma^0=\mathcal A^{-1},
+\label{eqn:Agammazero}
+\end{equation}
+which implies $\overline\psi'=\overline\psi\mathcal A^{-1}$, and kinetic term (notice that the gamma matrices are invariant, since they are ``numbers'')
+\[\overline\psi'\gamma^\mu\partial_\mu'\psi'=\overline\psi\mathcal A^{-1}\gamma^\mu\frac{\partial x^\nu}{\partial x'^\mu}\frac{\partial}{\partial x^\nu}\mathcal A\psi=\overline\psi\gamma^\mu\partial_\mu\psi.\]
+As noted before, $\Lambda^\mu{}_\nu=\frac{\partial x'^\mu}{\partial x^\nu}\implies \frac{\partial x^\nu}{\partial x'^\mu}=\Lambda_\mu{}^\nu$, therefore (commuting $\mathcal A$ with $\partial_\nu$, since we are dealing with global transformations)
+\begin{equation}
+\mathcal A^{-1}\gamma^\mu\Lambda_\mu{}^\nu\mathcal A=\gamma^\nu.
+\label{eqn:AgammaLambda}
+\end{equation}
+This is indeed the statement that the gamma matrices are precisely invariant under the combined transformation of Dirac and Lorentz indices.
+
+In order to build $\mathcal A$, let's consider the group of complex $2\times2$ matrices with unit determinant, $\text{SL}(2,\mathbb C)$. In general, $A\in\text{SL}(2,\mathbb C)$ has the form $A=a\sigma_0+\vec b\cdot\boldsymbol\sigma$, with $a\in\mathbb C$, $\vec b\in\mathbb C^3$, $a^2-\vec b^2=1$. It is easy to check that $A^{-1}=a\sigma_0-\vec b\cdot\boldsymbol\sigma$. Since the sigma matrices are hermitian, $A^\dagger\sigma^\mu A$ is hermitian as well. From the fact that $\text{SL}(2,\mathbb C)$ is a double cover (the sign of $A$ is not determined) of $\text{SO}^+(1,3)$ (the connected component of the Lorentz group that contains the identity), it follows that the coefficient of the expansion in the basis of $\sigma^\nu$ are $\Lambda^\mu_\nu$:
+\begin{equation}
+A^\dagger\sigma^\mu A=\Lambda^\mu{}_\nu\sigma^\nu.
+\label{eqn:ALambda}
+\end{equation}
+
+We can check \cref{eqn:Agammazero}:
+\begin{gather}
+\gamma^0\mathcal A^\dagger\gamma^0=
+\begin{pmatrix}0&1\\ 1&0\end{pmatrix}
+\begin{pmatrix}\tilde A^\dagger&0\\ 0&A^\dagger\end{pmatrix}
+\begin{pmatrix}0&1\\ 1&0\end{pmatrix}=
+\begin{pmatrix} A^\dagger&0\\ 0&\tilde A^\dagger\end{pmatrix},
+\quad\mathcal A^{-1}=\begin{pmatrix}\tilde A^{-1}&0\\ 0&A^{-1}\end{pmatrix}\nonumber\\
+\gamma^0\mathcal A^\dagger\gamma^0=\mathcal A^{-1}\iff A^\dagger=\tilde A^{-1}.
+\label{eqn:Atildedagger}
+\end{gather}
+Using $A=a\sigma_0+\vec b\cdot\boldsymbol\sigma$, we find $\tilde A=(A^\dagger)^{-1}=a^*\sigma_0-\vec b^*\cdot\boldsymbol\sigma$. Using this expression in combination with \cref{eqn:ALambda} and \cref{eqn:identitysigmatilde}, it follows that
+\[A^\dagger\tilde\sigma^\mu A=\Lambda^\mu{}_\nu\tilde\sigma^\nu,\]
+which, together with \cref{eqn:ALambda} and \cref{eqn:Atildedagger} gives the desired \cref{eqn:AgammaLambda}, because
+\begin{multline*}
+\mathcal A^{-1}\gamma^\mu\mathcal A=
+\begin{pmatrix}A^\dagger&0\\ 0&\tilde A^\dagger\end{pmatrix}
+\begin{pmatrix}0&\sigma^\mu\\ \tilde\sigma^\mu&0\end{pmatrix}
+\begin{pmatrix}\tilde A&0\\ 0&A\end{pmatrix}=
+\begin{pmatrix}A^\dagger&0\\ 0&\tilde A^\dagger\end{pmatrix}
+\begin{pmatrix}0&\sigma^\mu A\\ \tilde\sigma^\mu \tilde A&0\end{pmatrix}=\\
+=\begin{pmatrix}0&A^\dagger\sigma^\mu A\\ \tilde A^\dagger\tilde\sigma^\mu\tilde A&0\end{pmatrix}=
+\Lambda^\mu{}_\nu\begin{pmatrix}0&\sigma^\nu\\ \tilde\sigma^\nu&0\end{pmatrix}=\Lambda^\mu{}_\nu\gamma^\nu.
+\end{multline*}
+
+The relation between $\Lambda^\mu{}_\nu$ and $\mathcal A$ can be written as follows. Let us define $\Lambda=e^T$; then,
+\[\mathcal A=e^{\Sigma^\mu{}_\nu T^\nu{}_\mu}=e^{\tr[\Sigma T]},\]
+where $\Sigma^\mu{}_\nu=-\frac{1}{8}[\gamma^\mu,\gamma_\nu]$ and the trace is on Lorentz indices. In order to prove $\mathcal A^{-1}\gamma^\mu\mathcal A=\Lambda^\mu{}_\nu\gamma^\nu$, we use the Baker-Campbell-Hausdorff formula $e^ABe^{-A}=e^{[A,\cdot]}B=B+[A,B]+\frac{1}{2!}[A,[A,B]]+\frac{1}{3!}[A,[A,[A,B]]]+\ldots$
+\begin{multline*}
+\mathcal A^{-1}\gamma^\mu\mathcal A=\gamma^\mu-[\tr[\Sigma T],\gamma^\mu]+\ldots=\gamma^\mu-T^\nu{}_\rho[\Sigma^\rho{}_\nu,\gamma^\mu]+\ldots=\\
+=\gamma^\mu+\frac{1}{2}(T^\mu{}_\nu\gamma^\nu-T_\nu{}^\mu\gamma^\nu)+\ldots=(e^T\gamma)^\mu=\Lambda^\mu{}_\nu\gamma^\nu,
+\end{multline*}
+where we used the relation $[\Sigma^{\rho\sigma},\gamma^\mu]=\frac{1}{2}(\eta^{\mu\rho}\gamma^\sigma-\eta^{\mu\sigma}\gamma^\rho)$, which is straightforward to check using the Dirac algebra, and that $T_{\mu\nu}=-T_{\nu\mu}$.
+
+Every relation written so far is of course still valid in flat-space indices. This is the observation that allows us to couple fermions to gravity, because we can write constant gamma matrices and let the vierbein do the job of transforming them appropriately to the canonical basis. The action that couples fermions to gravity is
+\[S=i\int_Me\dd^4x\,e^\mu_a\overline\psi\gamma^a(\partial_\mu+\tilde\omega_\mu)\psi-\int_Me\dd^4x\,m\overline\psi\psi,\]
+where
+\begin{itemize}
+\item $e=\det[e^a_\mu]=\sqrt{-g}$, in fact
+\[g=\det[g_{\mu\nu}]=\det[e^a_\mu\eta_{ab}e^b_\nu]=e\cdot(-1)\cdot e\implies -g=e^2;\]
+\item $\tilde\omega_\mu=\Sigma^a{}_b\omega^b_{\mu a}$, with $\Sigma^a{}_b=-\frac{1}{8}[\gamma^a,\gamma_b]$.
+\end{itemize}
+This action transforms correctly under diffeomorphisms and local Lorentz transformations.
+\begin{itemize}
+\item Diffeomorphisms. We already know that $e'(x')\dd^4x'=e(x)\dd^4x$. A spinor $\psi$ transforms like a scalar (its only indices are Dirac indices): $\psi'(x')=\psi(x)$, $\overline\psi'(x')=\overline\psi(x)$. Other known transformation laws are,
+\[\partial_\mu'=\frac{\partial x^\nu}{\partial x'^\mu}\partial_\nu,\qquad e'^\mu_a(x')=\frac{\partial x'^\mu}{\partial x^\nu}e^\nu_a(x).\]
+When considering diffeomorphisms, we ignore flat-space indices (and spinorial ones), so
+\[\omega'^a_{\mu b}(x')=\frac{\partial x^\nu}{\partial x'^\mu}\omega^a_{\nu b}(x)\implies\tilde\omega'_\mu(x')=\frac{\partial x^\nu}{\partial x'^\mu}\tilde\omega_\nu(x)\]
+because $\Sigma^a{}_b$ has only flat-space indices.
+Then, the Jacobians of $\partial_\mu$ and $\tilde\omega_\mu$ cancel the one of $e^\mu_a$ and the action is invariant.
+\item Local Lorentz transformations. They act on flat-space and spinorial (Dirac) indices. Since $x'^\mu=x^\mu$, we will omit the point ($x$ or $x'$) where all objects are evaluated. We know that
+\[e'^a_\mu=\Lambda^a{}_be^b_\mu,\qquad \psi'=\mathcal A\psi,\qquad\overline\psi'=\overline\psi\mathcal A^{-1}.\]
+Since the determinant can be written in a Lorentz-invariant way, we have $e'=e$. The mass term of the action is therefore invariant. We can easily check that the kinetic term
+\begin{align*}
+S'&=i\int e\dd^4xe^\mu_b\Lambda_a{}^b\overline\psi\mathcal A^{-1}\gamma^a(\partial_\mu+\tilde\omega'_\mu)\mathcal A\psi=\\
+&=i\int e\dd^4xe^\mu_b\Lambda_a{}^b\overline\psi\mathcal A^{-1}\gamma^a(\partial_\mu\mathcal A\psi+\mathcal A\partial_\mu\psi+\tilde\omega'_\mu\mathcal A\psi)
+\end{align*}
+is invariant if and only if $\tilde\omega'=\mathcal A\tilde\omega\mathcal A^{-1}+\mathcal A\dd \mathcal A^{-1}$. In fact, we find, for the terms in parentheses,
+\[\cancel{\partial_\mu\mathcal A\psi}+\mathcal A\partial_\mu\psi+\mathcal A\tilde\omega_\mu\psi+\cancel{\mathcal A\partial_\mu\mathcal A^{-1}\mathcal A\psi}=\mathcal A\partial_\mu\psi+\mathcal A\tilde\omega_\mu\psi\]
+and then we remain with
+\[e^\mu_b\Lambda_a{}^b\overline\psi\mathcal A^{-1}\gamma^a\mathcal A(\partial_\mu+\tilde\omega_\mu)\psi\]
+which is equal to
+\[e^\mu_b\overline\psi\gamma^b(\partial_\mu+\tilde\omega_\mu)\psi\]
+thanks to the transformation property $\Lambda_a{}^b\mathcal A^{-1}\gamma^a\mathcal A=\gamma^b$ of gamma matrices.
+
+Finally, we have to prove that the relation $\tilde\omega'=\mathcal A\tilde\omega\mathcal A^{-1}+\mathcal A\dd \mathcal A^{-1}$ indeed holds. For local Lorentz transformations ($\Omega=\Lambda$ in \cref{eqn:transomega}),
+\[\omega'=\Lambda\omega\Lambda^{-1}+\Lambda\dd\Lambda^{-1}.\]
+Then (recall that $\tilde\omega=\tr[\Sigma\omega]=\Sigma^a{}_b\omega^b{}_a$), we have
+\[\tilde\omega'=\tr[\Sigma\omega']=\tr[\Sigma\Lambda\omega\Lambda^{-1}]+\tr[\Sigma\Lambda\dd\Lambda^{-1}].\]
+Not surprisingly,
+\[\tr[\Sigma\Lambda\omega\Lambda^{-1}]=\mathcal A\tilde\omega\mathcal A^{-1},\qquad\text{and}\qquad\tr[\Sigma\Lambda\dd\Lambda^{-1}]=\mathcal A\dd\mathcal A^{-1}.\]
+The following calculations verify these statements.
+\begin{multline*}
+\tr[\Sigma\Lambda\omega\Lambda^{-1}]=\tr[\Lambda^{-1}\Sigma\Lambda\omega]=(\Lambda^{-1}\Sigma\Lambda)^a{}_b\omega^b{}_a=\\
+=(\Lambda^{-1})^a{}_c\Sigma^c{}_d\Lambda^d{}_b\omega^b{}_a=-\frac{1}{8}(\Lambda^{-1})^a{}_c[\gamma^c,\gamma_d]\Lambda^d{}_b\omega^b{}_a=\\
+=-\frac{1}{8}[\mathcal A\gamma^a\mathcal A^{-1},\mathcal A\gamma_b\mathcal A^{-1}]\omega^b{}_a=\mathcal A\Sigma^a{}_b\mathcal A^{-1}\omega^b{}_a=\mathcal A\tilde\omega\mathcal A^{-1}
+\end{multline*}
+
+\begin{multline*}
+\tr[\Sigma\Lambda\dd\Lambda^{-1}]=-\tr[\Sigma\dd\Lambda\Lambda^{-1}]=\frac18(\gamma^a\gamma_b-\gamma_b\gamma^a)\dd\Lambda^b{}_c(\Lambda^{-1})^c{}_a=\\
+=\frac18[(\Lambda^{-1})^c{}_a\gamma^a,\dd(\gamma_b\Lambda^b{}_c)]=\frac18[\mathcal A\gamma^c\mathcal A^{-1},\dd(\mathcal A\gamma_c\mathcal A^{-1})]=\\
+=\frac18\bigl(\mathcal A\gamma^c\mathcal A^{-1}(\dd\mathcal A\gamma_c\mathcal A^{-1}+\mathcal A\gamma_c\dd\mathcal A^{-1})-(\dd\mathcal A\gamma_c\mathcal A^{-1}+\mathcal A\gamma_c\dd\mathcal A^{-1})\mathcal A\gamma^c\mathcal A^{-1}\bigr)=\\
+=\frac12\mathcal A\dd\mathcal A^{-1}-\frac12\dd\mathcal A\mathcal A^{-1}=\mathcal A\dd\mathcal A^{-1}
+\end{multline*}
+In the second last passage, we used $\gamma^a\gamma_a=4$ and
+\[\gamma^a\gamma^b\gamma^c\gamma_a=4\eta^{bc}\overset{\text{symm.}}{\implies}\gamma^a\Sigma^b{}_c\gamma_a=0\implies\gamma^a\mathcal A^{-1}\dd\mathcal A\gamma_a=0\]
+where the last implication follows from the BCH formula for $\mathcal A=e^M=e^{\tr[\Sigma T]}$:
+\begin{gather*}
+e^{-M}\dd e^M=\int_0^1e^{(s-1)M}\dd Me^{(1-s)M}\\
+e^{-M}\dd Me^M=\dd M+[M,\dd M]+\frac{1}{2!}[M,[M,\dd M]]+\ldots
+\end{gather*}
+and the fact that commutators of $\Sigma$'s are $\Sigma$'s:
+\begin{gather}
+\label{eqn:commSigma}
+[\Sigma^{ab},\Sigma^{cd}]=-\frac{1}{4}(\eta^{ac}\Sigma^{bd}-\eta^{ad}\Sigma^{bc}-\eta^{bc}\Sigma^{ad}+\eta^{bd}\Sigma^{ac})\\\
+\implies [M,\dd M]=[\Sigma^a{}_bT^b{}_a,\Sigma^c{}_d\dd T^d{}_c]=[\Sigma^a{}_b,\Sigma^c{}_d]T^b{}_a\dd T^d{}_c.\nonumber
+\end{gather}
+Thus, the action is invariant under local Lorentz transformations.
+\end{itemize}
+\cref{eqn:commSigma} implies that the generators $M^{ab}$ of the Lorentz group are related to the $\Sigma$ matrices by $M^{ab}=-2i\Sigma^{ab}$, so
+\[\mathcal A=e^{\Sigma^a{}_bT^b{}_a}=e^{-\frac{i}{2}M^{ab}T_{ab}}\]
+and (let's denote with $\bar M$ the generators in another representation)
+\[\Lambda=e^{-\frac{i}{2}\bar M^{ab}T_{ab}}=e^T,\]
+from which $(\bar M^{ab})_{cd}=i(\delta^a_c\delta^b_d-\delta^a_d\delta^b_c)$.
+
+We can rewrite the kinetic action introducing a covariant derivative:
+\[S\ped{K}=i\int e\dd^4x\,\overline\psi e^\mu_a\gamma^a(\partial_\mu+\tilde\omega_\mu)\psi=i\int e\dd^4x\,\overline\psi e^\mu_a\gamma^a\nabla_\mu\psi,\]
+where $\nabla_\mu\psi=\partial_\mu\psi+\tilde\omega_\mu\psi$, or, suppressing indices and fields,
+\[\nabla=\dd+\tilde\omega=\dd-\frac{1}{8}[\gamma^a,\gamma_b]\omega^b{}_a.\]
+
+The Bianchi identity (which holds under the metric compatibility assumption) reads
+\[\nabla^2\psi=(\dd+\tilde\omega)(\dd+\tilde\omega)\psi=\tilde R\psi,\qquad \tilde R=\tr[\Sigma R]=R^a{}_b\Sigma^b{}_a.\]
+In fact, recalling that $\tilde\omega=\tr[\Sigma\omega]$, and using \cref{eqn:commSigma} together with the metric compatibility condition $\nabla\eta^{ab}=0$,
+\begin{multline*}
+\nabla^2\psi=(\dd+\tilde\omega)(\dd+\tilde\omega)\psi=\dd\tilde\omega\psi-\tilde\omega\dd\psi+\tilde\omega\dd\psi+\tilde\omega\tilde\omega\psi=\\
+=(\dd\tilde\omega+\tilde\omega\tilde\omega)\psi=(\Sigma^a{}_b\dd\omega^b{}_a+\Sigma^a{}_b\omega^b{}_a\Sigma^c{}_d\omega^d{}_c)\psi=\\
+=\biggl(\Sigma^a{}_b\dd\omega^b{}_a+\frac{1}{2}[\Sigma^a{}_b,\Sigma^c{}_d]\omega^b{}_a\omega^d{}_c\biggr)\psi=\biggl(\Sigma^a{}_b\dd\omega^b{}_a+\frac{1}{4}4\omega_{ba}\omega^{da}\Sigma^b{}_d\biggr)\psi=\\
+=\Sigma^a{}_b(\dd\omega^b{}_a+\omega^b{}_c\omega^c{}_a)\psi=\Sigma^a{}_bR^b{}_a\psi.
+\end{multline*}
+
+\section{Infinitesimal tranformations}
+Let's write down how do all the objects we have encountered
+\[\varphi,\ \psi,\ A_\mu,\ e^a_\mu,\ g_{\mu\nu},\ \Gamma^\rho_{\mu\nu},\ \omega^a_{\mu b}\]
+transform under combined infinitesimal
+\begin{itemize}
+\item diffeomorphisms: $x'^\mu=x^\mu-\xi^\mu(x)\implies\frac{\partial x'^\mu}{\partial x^\nu}=\delta^\mu_\nu-\partial_\nu\xi^\mu,\frac{\partial x^\nu}{\partial x'^\rho}=\delta^\nu_\rho+\partial_\rho\xi^\nu$.
+\item local Lorentz tranformations: $e'^a_\mu=\Lambda^a{}_be^b_\mu$, $\Lambda^a{}_b=\delta^a_b+\theta^a{}_b$, $\theta_{ab}=-\theta_{ba}$.
+\end{itemize}
+The computations are straightforward: for example,
+\begin{gather*}
+\varphi'(x')=\varphi(x)=\varphi'(x-\xi)=\varphi'(x)-\xi^\mu\partial_\mu\varphi\varphi\\
+A'_\mu(x')=A_\nu(x)\frac{\partial x^\nu}{\partial x'^\mu}=A'_\mu(x)-\xi^\rho\partial_\rho A_\mu.
+\end{gather*}
+The results are what follows.
+\begin{align*}
+\varphi'&=\varphi+\xi^\mu\partial_\mu\varphi\\
+A'_\mu&=A_\mu+\xi^\rho\partial_\rho A_\mu+\partial_\mu\xi^\rho A_\rho\\
+e'^a_\mu&=e^a_\mu+\xi^\nu\partial_\nu e^a_\mu+\partial_\mu\xi^\nu e^a_\nu+\theta^a{}_b e^b{}_\mu\\
+\psi'&=e^{\Sigma^a{}_b\theta^b{}_a}\psi=\psi+\Sigma^a{}_b\theta^b{}_a\psi\\
+\omega'&=\Lambda\omega\Lambda^{-1}+\Lambda\dd\Lambda^{-1}=\omega+\theta\omega-\omega\theta-\dd\theta=\omega-\nabla\theta\\
+\omega'^a_{\mu b}&=\omega^a_{\mu b}+\xi^\rho\partial_\rho\omega^a_{\mu b}+\partial_\mu\xi^\rho\omega^a_{\rho b}-\nabla_\mu\theta^a{}_b\\
+g'_{\mu\nu}&=g_{\mu\nu}+\delta g_{\mu\nu}=g_{\mu\nu}+\delta(e^a_\mu\eta_{ab}e^b_\nu)=g_{\mu\nu}+\xi^\rho\partial_\rho g_{\mu\nu}+\partial_\nu\xi^\rho g_{\mu\rho}+\partial_\mu\xi^\rho g_{\nu\rho}
+\end{align*}
+If $T=\nabla g=0$, then it is easy to check that $g'_{\mu\nu}=g_{\mu\nu}+\nabla_\mu\xi_\nu+\nabla_\nu\xi_\mu$ (where $\xi_\mu=\xi^\rho g_{\rho\mu}$) by substituting the explicit expressions of the Christoffel symbols. A vector $\xi_\mu$ such that $\nabla_\mu\xi_\nu+\nabla_\nu\xi_\mu=0$ is called \emph{Killing vector} and describes an (infinitesimal) isometry.
+
+\section{Palatini gravitational action}
+\subsection{1\ap{st} order formalism}
+\label{subsec:pal1vierbein}
+The Palatini action is 
+\[S\ped{Pal}=C\int_MR^{ab}\wedge e^c\wedge e^d\ \varepsilon_{abcd}\]
+where $\varepsilon^{0123}=-\varepsilon_{0123}=1$ and
+\[R^a{}_b=(\dd\omega+\omega\wedge\omega)^a{}_b=R^a{}_{bmn}\frac{e^m\wedge e^n}{2}=R^a{}_{b\mu\nu}\frac{\dd x^\mu\wedge\dd x^\nu}{2}.\]
+The integrand is a 4-form and is proporzional to the usual Einstein-Hilbert action. In fact, substituting the expression of $R^{ab}$,
+\[S\ped{Pal}=\frac{C}{2}\int_MR^{ab}{}_{mn}e^me^ne^ce^d\varepsilon_{abcd}\]
+where
+\[e^me^ne^ce^d=e^m_\mu e^n_\nu e^c_\rho e^d_\sigma\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma=\dd^4x\,e^m_\mu e^n_\nu e^c_\rho e^d_\sigma \varepsilon^{\mu\nu\rho\sigma}.\]
+Multiplying by $\varepsilon_{mncd}$ and using $\varepsilon^{mncd}\varepsilon_{mncd}=-24$,
+\[e^me^ne^ce^d\varepsilon_{mncd}=\dd^4x\,e^m_\mu e^n_\nu e^c_\rho e^d_\sigma \varepsilon^{\mu\nu\rho\sigma}\varepsilon_{mncd}=-24e\dd^4 x=-24\sqrt{-g}\dd^4x\]
+and since $e^me^ne^ce^d$ is completely antisymmetric, we have $e^me^ne^ce^d=\varepsilon^{mncd}\sqrt{-g}\dd^4x$ and the action becomes
+\begin{align*}
+S\ped{Pal}&=\frac{C}{2}\int_M\dd^4x\sqrt{-g}R^{ab}{}_{mn}\varepsilon^{mncd}\varepsilon_{abcd}=\\
+&=\frac{C}{2}\int_M\dd^4x\sqrt{-g}R^{ab}{}_{mn}(-2)(\delta^m_a\delta^n_b-\delta^m_b\delta^n_a)=\\
+&=-2C\int_M\dd^4x\sqrt{-g}R,
+\end{align*}
+which is exactly the Hilbert action
+\[S\ped{H}=-\frac{1}{2\kappa^2}\int_M\dd^4x\sqrt{-g}R\]
+if we choose $C=\frac{1}{4\kappa^2}$. The cosmological term can also be included as
+\[\int_Me^ae^be^ce^d\varepsilon_{abcd}=\int_M e\dd^4x\,\varepsilon^{abcd}\varepsilon_{abcd}=-24\int_M\dd^4x\sqrt{-g},\]
+therefore the Einstein-Hilbert action is
+\begin{align}
+\label{eqn:palatinieh}
+S\ped{EH}&=-\frac{1}{2\kappa^2}\int_M\dd^4x\sqrt{-g}(R+2\Lambda)=\\
+&=\frac{1}{4\kappa^2}\int_M\biggl(R^{ab}e^ce^d+\frac{\Lambda}{6}e^ae^be^ce^d\biggr)\varepsilon_{abcd}=\\
+&=\frac{1}{4\kappa^2}\int_M\biggl(R^{ab}+\frac{\Lambda}{6}e^ae^b\biggr)e^ce^d\varepsilon_{abcd}.
+\end{align}
+
+The ``1\ap{st} order formalism'' consists in considering $e^a$ and $\omega^a{}_b$ as independent variables. We assume metric compatibility ($\nabla\eta_{ab}=0$, or equivalently $\omega^{ab}=-\omega^{ba}$), but not vanishing torsion. In fact, $T=0$ implies that the spin connection is a function of the vierbein, and we could not consider them independently.
+
+The condition $T=0$ is actually implied by the field equations obtained by varying with respect to $\omega^a{}_b$. In fact, from \cref{eqn:covariantderivative} with $k=1$,
+\[R=\dd\omega+\omega\omega\implies\delta R=\dd\delta\omega+\delta\omega\omega+\omega\delta\omega=\nabla\delta\omega,\]
+so,
+\[
+\delta S\ped{Pal}=\frac{1}{4\kappa^2}\int_M\delta R^{ab}e^ce^d\varepsilon_{abcd}=\frac{1}{4\kappa^2}\int_M\nabla\delta\omega^a{}_be^ce^d\varepsilon_a{}^b{}_{cd}.
+\]
+Then, we notice that
+\[\nabla\varepsilon^{abcd}=\dd\varepsilon^{abcd}+\omega^a{}_m\varepsilon^{mbcd}+\omega^b{}_m\varepsilon^{amcd}+\omega^c{}_m\varepsilon^{abmd}+\omega^d{}_m\varepsilon^{abcm}=0\]
+because
+\begin{itemize}
+\item $\dd\varepsilon^{abcd}=0$ always;
+\item if $a$, $b$, $c$, $d$ are all different (i.e.: $abcd=0123$) the only non-trivial contribution to $\omega^a{}_m\varepsilon^{mbcd}$ comes from $\omega^0{}_0$ (and similairly for the other three terms), which is zero by metric compatibility;
+\item if two indices are equal (i.e.: $abcd=0012$), the only non trivial terms are $\omega^0{}_3\varepsilon^{3012}+\omega^0{}_3\varepsilon^{0312}=0$;
+\item if three or four indices are equal, all the four terms vanish trivally.
+\end{itemize}
+Therefore,
+\[\delta S\ped{Pal}=\frac{1}{4\kappa^2}\int_M\nabla(\delta\omega^{ab}e^ce^d\varepsilon_{abcd})+\frac{2}{4\kappa^2}\int_M\delta\omega^{ab}(\nabla e^c)e^d\varepsilon_{abcd},\]
+where the minus sign coming from partial integration is cancelled by the covariant derivative crossing a 1-form and we used $\nabla(e^ce^d)=\nabla e^ce^d-e^c\nabla e^d=\nabla e^ce^d-\nabla e^de^c$, the commutation happening because $\nabla e^d$ is a 2-form. Since all indices are contracted, we have
+\[\nabla(\delta\omega^{ab}e^ce^d\varepsilon_{abcd})=\dd(\delta\omega^{ab}e^ce^d\varepsilon_{abcd})\]
+and the first term vanishes thanks to the Stokes' theorem, because $\delta\omega^a{}_b=0$ on $\partial M$ by definition of variation in variational calculus. Requiring that the other term vanishes gives indeed the torsionless condition:
+\begin{gather*}\delta S\ped{Pal}=\frac{1}{2\kappa^2}\int_M\delta\omega^{ab}T^ce^d\varepsilon_{abcd}=\frac{1}{2\kappa^2}\int_M\delta\omega_\mu^{ab}T_{\nu\rho}^ce^d_\sigma\varepsilon^{\mu\nu\rho\sigma}\dd^4x\varepsilon_{abcd}=0\\
+\implies T_{\nu\rho}^ce^d_\sigma\varepsilon^{\mu\nu\rho\sigma}\varepsilon_{abcd}=0.
+\end{gather*}
+We can write everything in flat-space indices multiplying by $e^f_\mu$:
+\[0=T^c_{mn}\varepsilon^{fmnd}\varepsilon_{abcd}=-T^c_{mn}
+\begin{vmatrix}
+\delta^f_a & \delta^m_a & \delta^n_a \\
+\delta^f_b & \delta^m_b & \delta^n_b \\
+\delta^f_c & \delta^m_c & \delta^n_c
+\end{vmatrix}
+=-2T^c_{bc}\delta^f_a+2\delta^f_bT^c_{ac}-2T^f_{ab}.
+\]
+Choosing $b=f$ we finally get
+\[(-2+2\cdot4-2)T^c_{ac}=0\implies T^f_{ab}=0.\]
+
+This was the variation with respect to $\omega^a{}_b$. Varying instead w.r.t.~$e^a_\mu$ gives
+\[\delta S\ped{Pal}=\frac{1}{4\kappa^2}\int_MR^{ab}\delta e^ce^d\varepsilon_{abcd}+\frac{1}{4\kappa^2}\int_MR^{ab} e^c\delta e^d\varepsilon_{abcd}=\frac{1}{2\kappa^2}\int_MR^{ab}\delta e^ce^d\varepsilon_{abcd}.\]
+The most general variation can be written as $\delta e^c=A^c_me^m$ where $A^c_m$ is a generic $4\times4$ real matrix.
+\begin{align*}
+\delta S\ped{Pal}&=\frac{1}{2\kappa^2}\int_MR^{ab}{}_{mn}\frac{e^me^n}{2}A^c_pe^pe^d\varepsilon_{abcd}=\\
+&=\frac{1}{4\kappa^2}\int_MR^{ab}{}_{mn}A^c_p\,e\dd^4x\,\varepsilon^{mnpd}\varepsilon_{abcd}=\\
+&=\frac{1}{4\kappa^2}\int_MR^{ab}{}_{mn}A^c_p\,e\dd^4x\,(-1)
+\begin{vmatrix}
+\delta^m_a & \delta^n_a & \delta^p_a \\
+\delta^m_b & \delta^n_b & \delta^p_b \\
+\delta^m_c & \delta^n_c & \delta^p_c
+\end{vmatrix}=\\
+&=-\frac{1}{4\kappa^2}\int_Me\dd^4x\,(-2A^c_aR^a_c-2A^c_bR^b_c+2A^c_cR)=\\
+&=\frac{1}{4\kappa^2}\int_Me\dd^4x\,A^b_a\biggl(R^a_b-\frac{1}{2}\delta^a_bR\biggr)=0\quad\forall\,A^c_m\\
+\end{align*}
+Notice that from the fouth line, $R^a_b$ stands for the components of the Ricci tensor, not for the 2-form. The field equations are then $R^a_b-\frac{1}{2}\delta^a_bR=0$. We can go to spacetime indices ($R_{\mu\nu}=e^c_\mu R^a_be^b_\nu\eta_{ac}$, etc.), lower them and obtain the familiar Einstein equations in vacuum:
+\[R_{\mu\nu}-\frac{1}{2}g_{\mu\nu}R=0.\]
+
+\subsection{2\ap{nd} order formalism}
+If we assume from the beginning $T=0$, then we know that the $\omega$ equation can be solved $\omega=\omega(e)$. The same action as before now is a function of the vierbein only:
+\[\tilde S\ped{Pal}[e]=S\ped{Pal}[e,\omega(e)].\]
+Its variation gives the same field equations as before, in fact
+\[\frac{\delta\tilde S\ped{Pal}[e]}{\delta e^a_\mu}=\frac{\delta S\ped{Pal}[e,\omega]}{\delta e^a_\mu}\bigg|_{\omega\text{ constant, }\omega=\omega(e)}+\frac{\delta S\ped{Pal}[e,\omega]}{\delta\omega^c_{\nu d}}\bigg|_{e\text{ constant, }\omega=\omega(e)}\frac{\delta\omega^c_{\nu d}(e)}{\delta e^a_\mu}\]
+and the second term vanishes because $\frac{\delta S\ped{Pal}[e,\omega]}{\delta\omega^c_{\nu d}}$ is annihilated by $\omega=\omega(e)$.
+
+\subsection{Cosmological term}
+The variation of the cosmological term
+\[S\ped{\Lambda}=\frac{\Lambda}{24\kappa^2}\int_Me^ae^be^ce^d\varepsilon_{abcd}\]
+does not involve $\omega$, thus it is the same for both formalisms.
+\begin{align*}
+\delta S\ped{\Lambda}&=\frac{\Lambda}{6\kappa^2}\int_M\delta e^ae^be^ce^d\varepsilon_{abcd}=\\
+&=\frac{\Lambda}{6\kappa^2}\int_MA^a_me^me^be^ce^d\varepsilon_{abcd}=\\
+&=\frac{\Lambda}{6\kappa^2}\int_Me\dd^4x\,A^a_m\varepsilon^{mbcd}\varepsilon_{abcd}=\\
+&=-\frac{\Lambda}{\kappa^2}\int_Me\dd^4x\, A^a_a
+\end{align*}
+This contribution has to be added to the field equations:
+\[R^a_b-\frac{1}{2}\delta^a_bR-\delta^a_b\Lambda=0\qquad\text{or}\qquad R_{\mu\nu}-\frac{1}{2}g_{\mu\nu}(R+2\Lambda)=0.\]
+
+\section{Quadratic terms}
+The quantization of gravity will require the addition of higher-order terms to the action. We will focus now on the possible Lorentz-scalars built with two Riemann tensors:
+\begin{equation}
+\label{eqn:quadratic}
+\int\dd^4 x\sqrt{-g}\bigl(aR^2+bR_{\mu\nu}R^{\mu\nu}+cR_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}\bigr).
+\end{equation}
+Are these all the possible terms? When grouping terms of an action, what matters is the dimension of them. Assuming $T=0$ and $\nabla_g=0$, the explicit expression of the Riemann tensor implies that it has mass dimension 2. Therefore, $R^2$, $R_{\mu\nu}R^{\mu\nu}$ and $R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}$ all have mass dimension 4. Operators like $R^3$ and $R\,\Box R$ have dimension 6.
+
+If we want to build a covariant operator of dimension 4 using the Riemann tensor and its derivatives, we have two possibilities: two derivatives and one tensor, or two tensors. In the first case, we have to contract the indices of $\nabla^\mu\nabla^\nu R_{\alpha\beta\gamma\delta}$. The Riemann tensor necessarily has to have two contracted indices, thus forming the Ricci tensor. Then, the two possible ways of contracting the indices of the covariant derivative give $\Box R$ and $\nabla^\mu\nabla^\nu R_{\mu\nu}$. The first one is the integral of a total derivative and can be neglected:
+\[\int\dd^4x\sqrt{-g}\,\Box R=\int\dd^4x\sqrt{-g}\nabla_\mu(\nabla^\mu R)=\int\partial_\mu(\sqrt{-g}\nabla^\mu R)\dd^4x.\]
+The second one can be reduced to the first one, using the contracted Bianchi identity $\nabla^\mu R_{\mu\nu}=\frac12\nabla_\nu R$.
+
+In the second case, we have to contract the indices of $R^{\mu\nu\rho\sigma}R_{\alpha\beta\gamma\delta}$. If one of the two gets indices contracted to form the Ricci tensor, necessarily the other has to do the same, giving $R^{\mu\nu}R_{\alpha\beta}$ and therefore the first two terms of \cref{eqn:quadratic}. Now suppose that no indices are contracted within the same tensor and that, without loss of generality, we contract $\mu$ with $\alpha$. Since $R_{\alpha\beta\gamma\delta}$ is antisymmetric in $\gamma\leftrightarrow\delta$, we may have two qualitatively different contractions of $\nu$ (with $\beta$ or with $\gamma$):
+\[R^{\mu\nu\rho\sigma}R_{\mu\nu\alpha\beta}\qquad\text{or}\qquad R^{\mu\nu\rho\sigma}R_{\mu\alpha\nu\beta}.\]
+Again, thanks to the antisymmetry in $\rho\leftrightarrow\sigma$, there is only one possible contraction for both terms and we remain with
+\[R^{\mu\nu\rho\sigma}R_{\mu\nu\rho\sigma}\qquad\text{or}\qquad R^{\mu\nu\rho\sigma}R_{\mu\rho\nu\sigma}.\]
+However, we can make use of the first Bianchi identity
+\[R_{\mu\nu\rho\sigma}+R_{\mu\sigma\nu\rho}+R_{\mu\rho\sigma\nu}=0\]
+to rewrite the second one as one-half the first one
+\begin{align*}
+R^{\mu\nu\rho\sigma}R_{\mu\rho\nu\sigma}&=-R^{\mu\nu\rho\sigma}(R_{\mu\sigma\rho\nu}+R_{\mu\nu\sigma\rho})=\\
+&=-R^{\mu\nu\rho\sigma}R_{\mu\sigma\rho\nu}-R^{\mu\nu\rho\sigma}R_{\mu\nu\sigma\rho}=\\
+&=-R^{\mu\nu\sigma\rho}R_{\mu\sigma\nu\rho}+R^{\mu\nu\rho\sigma}R_{\mu\nu\rho\sigma}\\
+\implies &R^{\mu\nu\rho\sigma}R_{\mu\rho\nu\sigma}=\frac12R^{\mu\nu\rho\sigma}R_{\mu\nu\rho\sigma}.
+\end{align*}
+\cref{eqn:quadratic} contains thus all possible terms of dimension 4. Actually, these three terms are not independent and can be further simplified.
+\begin{definition}
+The \emph{Euler characteristics} of a 4-manifold $M$ is
+\begin{align*}
+\chi(M)\equiv{}&-\frac1{32\pi^2}\int_MR^{ab}\wedge R^{cd}\epsilon_{abcd}=\\
+={}&-\frac1{32\pi^2}\int_MR^{ab}{}_{mn}\frac{e^me^n}{2}R^{cd}{}_{fg}\frac{e^fe^g}{2}\epsilon_{abcd}=\\
+={}&-\frac1{128\pi^2}\int_MR^{ab}{}_{mn}R^{cd}{}_{fg}\epsilon^{mnfg}\epsilon_{abcd}\,e\dd^4x=\\
+={}&\frac1{128\pi^2}\int_MR^{ab}{}_{mn}R^{cd}{}_{fg}
+\begin{vmatrix}
+\delta^m_a & \delta^n_a & \delta^f_a & \delta^g_a\\
+\delta^m_b & \delta^n_b & \delta^f_b & \delta^g_b\\
+\delta^m_c & \delta^n_c & \delta^f_c & \delta^g_c\\
+\delta^m_d & \delta^n_d & \delta^f_d & \delta^g_d\\
+\end{vmatrix}
+e\dd^4x=\\
+={}&\frac2{128\pi^2}\int_Me\dd^4x\biggl\{R^b_n(2\delta^n_bR-2\delta^f_bR^n_f-2\delta^g_bR^n_g)+{}\\
+&+R^{ab}{}_{mn}R^{md}{}_{fg}
+\begin{vmatrix}
+\delta^n_a & \delta^f_a & \delta^g_a\\
+\delta^n_b & \delta^f_b & \delta^g_b\\
+\delta^n_d & \delta^f_d & \delta^g_d
+\end{vmatrix}
+\biggr\}=\\
+={}&\frac1{64\pi^2}\int_M\sqrt{-g}\dd^4x\bigl\{2R^2-4R_{\mu\nu}R^{\mu\nu}-{}\\
+&-4R_{\mu\nu}R^{\mu\nu}+2R^{\mu\nu\rho\sigma}R_{\mu\nu\rho\sigma}\bigr\}=\\
+={}&\frac1{32\pi^2}\int_M\sqrt{-g}\dd^4x\bigl(R^2-4R_{\mu\nu}R^{\mu\nu}+R^{\mu\nu\rho\sigma}R_{\mu\nu\rho\sigma}\bigr).
+\end{align*}
+\end{definition}
+
+\begin{definition}
+The \emph{Chern-Simons} form is
+\[C=\epsilon_{abcd}\omega^{ab}\biggl(\dd\omega^{cd}+\frac23\omega^c{}_g\omega^{gd}\biggr).\]
+\end{definition}
+
+Since its definition makes use of the spin connection, $C$ depends on the choice of coordinate system. $C$ is invariant under diffeomorphisms but not under local Lorentz transformations ($\delta\omega=-\nabla\theta\implies\delta C\ne0$).
+
+We will now prove that $R^{ab}R^{cd}\epsilon_{abcd}=\dd C$. As for the volume form, this expression does not mean that the 4-form on the LHS is exact, because $C$ is not a globally-defined form; it is defined locally. We can say that the 4-form is ``locally exact''. Therefore $\chi(M)=-\frac1{32\pi^2}\int_M\dd C$ cannot be rewritter using the Stokes' theorem. Let's see first what happens in 2-dimensional manifolds.
+\paragraph{2 dimensions (Riemann surface).}
+\begin{align*}
+\chi(M)&=\frac1{4\pi}\int_MR^{ab}\epsilon_{ab}=\\
+&=\frac1{4\pi}\int_MR^{ab}{}_{mn}\frac{e^me^n}{2}\epsilon_{ab}=\\
+&=\frac1{8\pi}\int_MR^{ab}{}_{mn}e\dd^2x\,\epsilon^{mn}\epsilon_{ab}=\\
+&=\frac1{8\pi}\int_MR^{ab}{}_{mn}(\delta^a_m\delta^n_b-\delta^m_b\delta^n_a)e\dd^2x=\\
+&=\frac1{4\pi}\int_M\dd^2x\sqrt{-g}R=\\
+&=\frac1{4\pi}\int_M(\dd\omega^{ab}+\omega^{ac}\omega_c{}^b)\epsilon_{ab}=\\
+&=\frac1{4\pi}\int_M\dd(\omega^{ab}\epsilon_{ab}),
+\end{align*}
+Where we used the metric compatibility assumption (which implies that $\omega^{ab}=-\omega^{ba}$) to conclude that $\omega^{ac}\omega_c{}^b\epsilon_{ab}=\omega^{1c}\omega_c{}^2-\omega^{2c}\omega_c{}^1=0$.
+
+We conclude that in two dimensions there is no gravity: the Hilbert action is trivial, since $\chi(M)=2-2g$ is a topological quantity.
+
+\paragraph{4 dimensions}
+Using the nihilponency of the exterior derivative,
+\begin{align*}
+\chi(M)&=-\frac1{32\pi^2}\int_MR^{ab}\wedge R^{cd}\epsilon_{abcd}=\\
+&=-\frac1{32\pi^2}\int_M(\dd\omega+\omega\omega)^{ab}(\dd\omega+\omega\omega)^{cd}\epsilon_{abcd}=\\
+&=-\frac1{32\pi^2}\int_M\bigl\{\dd(\omega^{ab}\dd\omega^{cd}\epsilon_{abcd})+2\dd\omega^{ab}\omega^c{}_f\omega^{fd}\epsilon_{abcd}+\omega^a{}_f\omega^{fb}\omega^c{}_g\omega^{gd}\epsilon_{abcd}\bigr\}.
+\end{align*}
+The last term vanishes because, writing $\omega^{af}=\frac12(\delta^a_p\delta^f_q-\delta^a_q\delta^f_p)\omega^{pq}=-\frac14\epsilon^{afmn}\epsilon_{mnpq}\omega^{pq}$, we get
+\begin{align*}
+\omega^{af}\omega_f{}^b\omega^c{}_g\omega^{gd}\epsilon_{abcd}&=-\frac14\epsilon^{afmn}\epsilon_{mnpq}\omega^{pq}\omega_f{}^b\omega^c{}_g\omega^{gd}\epsilon_{abcd}=\\
+&=\frac14\epsilon_{mnpq}\omega^{pq}\omega_f{}^b\omega^c{}_g\omega^{gd}
+\begin{vmatrix}
+\delta^f_b & \delta^m_b & \delta^n_b\\
+\delta^f_c & \delta^m_c & \delta_c^n\\
+\delta^f_d & \delta^m_d & \delta^n_d
+\end{vmatrix}=\\
+&=-\frac12\epsilon_{mnpq}\omega^{pq}\omega_c{}^m\omega^c{}_g\omega^{gn}+\frac12\epsilon_{mnpq}\omega^{pq}\omega_d{}^m\omega^n{}_g\omega^{gd}=\\
+&=\frac12\epsilon_{mnpq}\omega^{pq}\omega^m{}_c\omega^c{}_g\omega^{gn}+\frac12\epsilon_{mnpq}\omega^{pq}\omega^n{}_g\omega^{gd}\omega_d{}^m=\\
+&=\frac12\epsilon_{mnpq}\omega^{pq}(\omega\omega\omega)^{mn}+\frac12\epsilon_{mnpq}\omega^{pq}(\omega\omega\omega)^{nm}=\\
+&=0.
+\end{align*}
+The second term is a total derivative:
+\begin{align*}
+\frac23\dd(\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd})&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac23\omega^{ab}\dd\omega^c{}_g\omega^{gd}\epsilon_{abcd}+\frac23\omega^{ab}\omega^c{}_g\dd\omega^{gd}\epsilon_{abcd}\\
+&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac43\omega^{ab}\dd\omega^c{}_g\omega^{gd}\epsilon_{abcd}\\
+&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac43\biggl(-\frac14\biggr)\omega^{ab}\dd\omega^{pq}\epsilon_{pqmn}\epsilon^{mncg}\omega_g{}^d\epsilon_{abcd}=\\
+&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac13\omega^{ab}\dd\omega^{pq}\omega_g{}^d\epsilon_{pqmn}
+\begin{vmatrix}
+\delta^m_a & \delta^n_a & \delta^g_a\\
+\delta^m_b & \delta^n_b & \delta^g_b\\
+\delta^m_d & \delta^n_d & \delta^g_d
+\end{vmatrix}\\
+&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac43\omega^{ab}\dd\omega^{pq}\omega_a{}^d\epsilon_{pqbd}=\\
+&=\frac23\dd\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}-\frac43\dd\omega^{pq}\omega^{ab}\omega_a{}^d\epsilon_{pqbd}=\\
+&=2\dd\omega^{ab}\omega^c{}_f\omega^{fd}\epsilon_{abcd}.
+\end{align*}
+We remain with
+\[\chi(M)=-\frac1{32\pi^2}\int_M\dd\biggl(\omega^{ab}\dd\omega^{cd}\epsilon_{abcd}+\frac23\omega^{ab}\omega^c{}_g\omega^{gd}\epsilon_{abcd}\biggr)=-\frac1{32\pi^2}\int_M\dd C.\]
+
+\subsection{Chern-Simons action in 3 dimensions}
+In 3 dimensions, $\int_MC$ is invariant under local Lorentz transformations:
+\[\delta_\theta C=\dd\Omega_\theta\implies\delta_\theta\int_MC=0.\]
+Let's see it in the case of QED instead of gravity, in order to simplify the computation.
+
+Recall that, in $d=4$,
+\[\int_MF\wedge F=\frac14\int_MF_{\mu\nu}F_{\rho\sigma}\epsilon^{\mu\nu\rho\sigma}\dd^4x=\int_M\partial_\mu A_\nu\partial_\rho A_\sigma\epsilon^{\mu\nu\rho\sigma}\dd^4x=\int_M\partial_\mu C^\mu\dd^4x\]
+where $C^\mu=\epsilon^{\mu\nu\rho\sigma}A_\nu\partial_\rho A_\sigma$. In $d=3$ we may consider $C^0=\epsilon^{0\nu\rho\sigma}A_\nu\partial_\rho A_\sigma\longrightarrow C=\epsilon^{ijk}A_i\partial_jA_k$ and write down the action
+\[\int_MC\dd^3x=\int_M\epsilon^{ijk}A_i\partial_jA_k\dd^3x.\]
+The integrand is not gauge-invariant, as
+\[\delta A_i=\partial_i\Lambda\implies\delta C=\epsilon^{ijk}\partial_i\Lambda\partial_jA_k=\frac12\partial_i(\epsilon^{ijk}\Lambda F_{jk})\ne0,\]
+however, the action is.
+\[\delta\int_MC\dd^3x=0\]
+
+\subsection{Weyl tensor}
+The Weyl tensor in $d$ spacetime dimensions is ``the Riemann tensor to which we subtract all the traces'':
+\begin{multline*}W_{\mu\nu\rho\sigma}=R_{\mu\nu\rho\sigma}+\frac1{d-2}(R_{\mu\sigma}g_{\nu\rho}-R_{\nu\sigma}g_{\mu\rho}-R_{\mu\rho}g_{\nu\sigma}+R_{\nu\rho}g_{\mu\sigma})+\\+\frac1{(d-1)(d-2)}R(g_{\mu\rho}g_{\nu\sigma}-g_{\mu\sigma}g_{\nu\rho}).\end{multline*}
+With this definition,
+\[W^\mu{}_{\nu\mu\sigma}=R_{\nu\sigma}+\frac1{d-2}(2R_{\nu\sigma}-dR_{\nu\sigma}-Rg_{\nu\sigma})+\frac1{(d-1)(d-2)}R(dg_{\nu\sigma}-g_{\nu\sigma})=0.\]
+The Weyl and Riemann tensor share the same symmetry properties:
+\begin{gather*}
+W_{\mu\nu\rho\sigma}=-W_{\nu\mu\rho\sigma}=W_{\rho\sigma\mu\nu}\\
+W_{\mu\nu\rho\sigma}+W_{\mu\sigma\nu\rho}+W_{\mu\rho\sigma\nu}=0.
+\end{gather*}
+The Weyl tensor is also auto-dual\footnote{We used here the flat-space indices because $\epsilon_{abcd}$ is a tensor, while $\epsilon_{\mu\nu\rho\sigma}$ is not. In fact, $\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma=\epsilon^{\mu\nu\rho\sigma}\dd^4x\implies\epsilon_{\mu\nu\rho\sigma}\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma=-24\dd^4x$ and a Lorentz-scalar action is $\int\sqrt{-g}\dd^4x=-\frac1{24}\int\sqrt{-g}\,\epsilon_{\mu\nu\rho\sigma}\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma$, so the tensor here is $\sqrt{-g}\,\epsilon_{\mu\nu\rho\sigma}$ (components of the differential form).}:
+\[W_{abcd}=-\frac14\epsilon_{abmn}\epsilon_{cdpq}W^{mnpq}.\]
+
+\begin{definition}
+A \emph{Weyl transformation} (or \emph{local conformal transformation}) is a transformation of the metric of the form
+\[g_{\mu\nu}(x)\longrightarrow e^{-2\Omega(x)}g_{\mu\nu}(x).\]
+\end{definition}
+
+$W^\mu{}_{\nu\rho\sigma}$ is invariant under Weyl transformations (in all dimensions). This allows to write the following conformally invariant (but only in four dimensions!) action:
+\[S_W=\int_M\dd^4x\sqrt{-g}\,W^\mu{}_{\nu\rho\sigma}W^\alpha{}_{\beta\gamma\delta}\,g_{\mu\alpha}g^{\nu\beta}g^{\rho\gamma}g^{\sigma\delta}\]
+thanks to the fact that also $\sqrt{-g}\,g_{\mu\alpha}g^{\nu\beta}g^{\rho\gamma}g^{\sigma\delta}$ is conformally invariant. Similarly, the Yang-Mills action
+\[\int\sqrt{-g}F_{\mu\nu}F_{\rho\sigma}g^{\mu\rho}g^{\nu\sigma}\dd^4x\]
+is conformally invariant, because $F_{\mu\nu}$ does not transform.
+
+In order to square the Weyl tensor, let's square the Riemann instead, because every trace of $W_{\mu\nu\rho\sigma}$ on the RHS will vanish. In $d=4$,
+\[R_{\mu\nu\rho\sigma}=W_{\mu\nu\rho\sigma}-\frac12(R_{\mu\sigma}g_{\nu\rho}-R_{\nu\sigma}g_{\mu\rho}-R_{\mu\rho}g_{\nu\sigma}+R_{\nu\rho}g_{\mu\sigma})-\frac16R(g_{\mu\rho}g_{\nu\sigma}-g_{\mu\sigma}g_{\nu\rho}),\]
+so
+\begin{align*}
+R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}={}&W_{\mu\nu\rho\sigma}W^{\mu\nu\rho\sigma}+\frac14\bigl(4R_{\mu\nu}R^{\mu\nu}g_{\rho\sigma}g^{\rho\sigma}-2(1+1+1+1)R_{\mu\nu}R^{\mu\nu}+{}\\
+&+2(1+1)R^2\bigr)+\frac1{36}R^2(16\times 2-2\times 4)+{}\\
+&+2\biggl(-\frac16\biggr)\biggl(-\frac12\biggr)2R(R-4R-4R+R)=\\
+={}&W_{\mu\nu\rho\sigma}W^{\mu\nu\rho\sigma}+2R_{\mu\nu}R^{\mu\nu}-\frac13R^2
+\end{align*}
+therefore
+\[\int_M\sqrt{-g}W_{\mu\nu\rho\sigma}W^{\mu\nu\rho\sigma}\dd^4x=\int_M\sqrt{-g}\dd^4x\biggl(R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}-2R_{\mu\nu}R^{\mu\nu}+\frac13R^2\biggr).\]
+In three dimensions, the Weyl tensor is identically zero. This means that the Riemann tensor is not independent of the Ricci tensor. If $d>3$ and $W_{\mu\nu\rho\sigma}=0$, then the metric is locally conformally flat, i.e.~there (locally) exists a $\phi(x)$ such that
+\[g_{\mu\nu}(x)=e^{2\phi(x)}\eta_{\mu\nu}.\]
+
+\begin{definition}
+A \emph{Codazzi tensor} is any symmetric tensor $\mathcal T_{\mu\nu}$ such that
+\[\nabla_\mu\mathcal T_{\nu\rho}=\nabla_\nu\mathcal T_{\mu\rho},\]
+or, in the language of vector fields, $\nabla_X\mathcal T(Y,Z)=\nabla_Y\mathcal T(X,Z)$.
+\end{definition}
+
+\begin{definition}
+The \emph{Schouten tensor} is
+\[P_{\mu\nu}=\frac1{d-2}R_{\mu\nu}-\frac1{2(d-1)}Rg_{\mu\nu}.\]
+\end{definition}
+
+It is straightforward to verify that
+\[R_{\mu\nu\rho\sigma}=W_{\mu\nu\rho\sigma}+g_{\mu\rho}P_{\nu\sigma}-g_{\nu\rho}P_{\mu\sigma}-g_{\mu\sigma}P_{\nu\rho}+g_{\nu\sigma}P_{\mu\rho}.\]
+
+\begin{definition}
+The \emph{Cotton tensor} is
+\[C_{\mu\nu\rho}=\nabla_\mu P_{\nu\rho}-\nabla_\nu P_{\mu\rho}.\]
+\end{definition}
+
+\begin{theorem}
+In three dimensions, a metric is locally conformally flat if and only if the Schouten tensor is a Codazzi tensor, i.e.~the Cotton tensor vanishes identically.
+\end{theorem}
+
+\section{Hilbert action (Palatini 1\ap{st} order formalism)}
+\[S\ped{H}=-\frac1{2\kappa^2}\int_M\sqrt{-g}\dd^4xR\]
+In this formulation, $g_{\mu\nu}$ and $\Gamma^\rho_{\mu\nu}$ are considered as independent fields. We cannot assume both vanishing torsion and metric compatibility, otherwise $\Gamma^\rho_{\mu\nu}$ would be the Levi-Civita connection. In \cref{subsec:pal1vierbein} we assumed metric compatibility and derived the torsionless condition. Here we will instead assume the torsionless condition ($\Gamma^\rho_{\mu\nu}=\Gamma^\rho_{\nu\mu}$) and derive the metric compatibility ($\nabla_\mu g_{\nu\rho}=0$) from the $\Gamma$-field equation\footnote{The viceversa can also be done.}.
+
+The tensors expressed as function of the connection are
+\begin{gather*}
+R^\mu{}_{\nu\rho\sigma}=\partial_\rho\Gamma^\mu_{\nu\sigma}-\partial_\sigma\Gamma^\mu_{\nu\rho}+\Gamma^\alpha_{\sigma\nu}\Gamma^\mu_{\rho\alpha}-\Gamma^\alpha_{\rho\nu}\Gamma^\mu_{\sigma\alpha}\\
+R_{\nu\sigma}=\partial_\mu\Gamma^\mu_{\nu\sigma}-\partial_\sigma\Gamma^\mu_{\nu\mu}+\Gamma^\alpha_{\sigma\nu}\Gamma^\mu_{\mu\alpha}-\Gamma^\alpha_{\mu\nu}\Gamma^\mu_{\sigma\alpha},
+\end{gather*}
+so the action reads
+\begin{align*}
+S[g,\Gamma]&=-\frac1{2\kappa^2}\int_M\sqrt{-g}\dd^4x\,g^{\mu\nu}R_{\mu\nu}=\\
+&=-\frac1{2\kappa^2}\int_M\sqrt{-g}\dd^4x\,g^{\mu\nu}(\partial_\lambda\Gamma^\lambda_{\mu\nu}-\partial_\nu\Gamma^\lambda_{\lambda\mu}+\Gamma^\alpha_{\nu\mu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha}).
+\end{align*}
+Let's compute $\frac{\delta S}{\delta g^{\mu\nu}}$ first. We have AGGIUNGERE SPIEGAZIONE MAGARI IN APPENDICE
+\begin{gather*}
+\delta g=gg^{\alpha\beta}\delta g_{\alpha\beta}=-gg_{\mu\nu}\delta g^{\mu\nu}\\
+\delta\sqrt{-g}=\frac1{2\sqrt{-g}}gg_{\mu\nu}\delta g^{\mu\nu}=-\frac12\sqrt{-g}g_{\mu\nu}\delta g^{\mu\nu},
+\end{gather*}
+therefore
+\begin{gather*}
+\delta S=-\frac1{2\kappa^2}\int\sqrt{-g}\dd^4x\biggl(R_{\mu\nu}-\frac12g_{\mu\nu}R\biggr)\delta g^{\mu\nu}\\
+\frac{\delta S}{\delta g^{\mu\nu}}=0\implies R_{\mu\nu}-\frac12g_{\mu\nu}R=0.
+\end{gather*}
+We can perform the variation with respect to $\Gamma^\rho_{\mu\nu}$ by integrating by parts the action. Keeping the boundary terms,
+\begin{multline*}
+S(g,\Gamma)=-\frac1{2\kappa^2}\int_M\dd^4x\bigl\{\partial_\lambda(\sqrt{-g}g^{\mu\nu}\Gamma^\lambda_{\mu\nu})-\partial_\nu(\sqrt{-g}g^{\mu\nu}\Gamma^\lambda_{\lambda\mu})-{}\\
+-\partial_\lambda(\sqrt{-g}g^{\mu\nu})\Gamma^\lambda_{\mu\nu}+\partial_\nu(\sqrt{-g}g^{\mu\nu})\Gamma^\lambda_{\lambda\mu}+\sqrt{-g}(\Gamma^\alpha_{\nu\mu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha})g^{\mu\nu}\bigr\}
+\end{multline*}
+\begin{exercise}
+\label{thm:varGamma}
+Neglecting the boundary terms,
+\[\frac{\delta S}{\delta\Gamma^\rho_{\mu\nu}}=0\implies\Gamma^\rho_{\mu\nu}=\frac12g^{\rho\sigma}(\partial_\mu g_{\nu\sigma}+\partial_\nu g_{\mu\sigma}-\partial_\sigma g_{\mu\nu}).\]
+\end{exercise}
+\section{Hilbert action (Palatini 2\ap{nd} order formalism)}
+We define
+\[S\ped{H}[g]=S[g,\Gamma(g)].\]
+Even if now $\Gamma$ is no longer independent of the metric, we do not need to perform the full messy computation of the variation with respect to $g_{\mu\nu}$, in fact
+\[\frac{\delta S\ped{H}[g]}{\delta g_{\mu\nu}}=\frac{\delta S[g,\Gamma]}{\delta g_{\mu\nu}}\Bigg|_{\substack{\Gamma\text{ const.},\\ \Gamma\to\Gamma(g)}}+\frac{\delta S[g,\Gamma]}{\delta \Gamma^\gamma_{\alpha\beta}}\Bigg|_{\substack{g\text{ const.},\\ \Gamma\to\Gamma(g)}}\cdot\frac{\delta\Gamma^\gamma_{\alpha\beta}(g)}{\delta g_{\mu\nu}},\]
+but from \cref{thm:varGamma} we know that
+\[\frac{\delta S[g,\Gamma]}{\delta \Gamma^\gamma_{\alpha\beta}}\Bigg|_{\substack{g\text{ const.},\\ \Gamma\to\Gamma(g)}}=0,\]
+so
+\[\frac{\delta S\ped{H}[g]}{\delta g_{\mu\nu}}=\frac{\delta S[g,\Gamma]}{\delta g_{\mu\nu}}\Bigg|_{\substack{\Gamma\text{ const.},\\ \Gamma\to\Gamma(g)}},\]
+which is just what we did in the 1\ap{st} order formalism. The only new thing is the evaluation $\Gamma=\Gamma(g)$, which can be performed with a simple trick.
+
+Let us consider a generic quadratic action of the form (understanding matrix notation)
+\[S(\chi)=\int\biggl(\frac12\chi^t M\chi+\chi^t A+B\biggr),\]
+where $M$ is symmetric. Then,
+\[\frac{\delta S}{\delta\chi}=M\chi+A=0\implies \chi=-M^{-1}A\]
+and
+\begin{align*}
+S[\chi]\Big|_{\chi=-M^{-1}A}&=\int\biggl(\frac12(-A^tM^{-1})M(-M^{-1}A))-A^tM^{-1}A+B\biggr)\\
+&=\int\biggl(-\frac12A^tM^{-1}A+B\biggr)=\\
+&=\int\biggl(-\frac12\chi^tM\chi+B\biggr)\bigg|_{\chi=-M^{-1}A}.
+\end{align*}
+
+Applying this result,
+\begin{align*}
+S\ped{H}[g]=\frac1{2\kappa^2}\int_M\dd^4x\sqrt{-g}\bigl(\Gamma^\alpha_{\mu\nu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha}\bigr)g^{\mu\nu}-\frac1{2\kappa^2}\int_M\dd^4x\,\partial_\lambda w^\lambda,
+\end{align*}
+where
+\[w^\lambda=\sqrt{-g}(g^{\mu\nu}\Gamma^\lambda_{\mu\nu}-g^{\mu\lambda}\Gamma^\alpha_{\mu\alpha}).\]
+Neglecting the boundary term, this is known as the ``Gamma-Gamma action'' and reproduces the correct equations of motions even if it is not covariant. It is also more well-behaved in the sense of a variational problem. In fact, in a variational problem
+\[\int_{t_1}^{t_2}\mathcal L(q(t),\dot q(t),t)\dd t\]
+we fix $q(t_1)\equiv q_1$ and $q(t_2)\equiv q_2$ and then do the variation. We cannot fix the velocity at the extrema too, because otherwise we would have identified a specific trajectory.
+
+The Gamma-Gamma action is of this form, because it depends only on $g_{\mu\nu}$ and $\partial_\lambda g_{\mu\nu}$. The same is not true for $\int\sqrt{-g}\dd^4xR$, because of terms like $\partial_\rho\Gamma^\mu_{\nu\sigma}$ in the Ricci tensor. Strictily speaking, every variation performed before was ill-defined. We can say that the Hilbert action is only a ``tentative action'' and the right one is the following non-covariant expression:
+\[S_{\Gamma\Gamma}[g]=\frac1{2\kappa^2}\int_M\dd^4x\sqrt{-g}\bigl(\Gamma^\alpha_{\mu\nu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha}\bigr)g^{\mu\nu}.\]
+
+These higher-derivatives terms are peculiar of gravity: for example, in Yang-Mills, the field-strength tensor $F_{\mu\nu}$ (which is the analog of the Riemann tensor) depends only on the first derivative of the field $A_\mu$. The difference is due to the fact that here the connection is exactly $A_\mu$, while in gravity $\Gamma^\rho_{\mu\nu}$ is an ausiliary field, different from the fundamental one, $g_{\mu\nu}$. Just like in special relativity we go from $\mathcal L=\dot q^2/2$ to $\mathcal L=\sqrt{1-\dot q^2}$, in Yang-Mills we can go from $F_{\mu\nu}F^{\mu\nu}$ to $\sqrt{\det(\eta_{\mu\nu}-F_\mu{}^\rho F_{\rho\nu})}$ (Born-Infeld action) without spoiling the good variational properties of the Lagrangian. In general, any function of the field strength would be acceptable. In gravity instead, the Hilbert action (or the Gamma-Gamma one, which is its ``mathematically-purified version'') is the only one with such property: any additional term like $R^2$ has a non-eraseable dependence on $\partial_\mu\partial_\nu g_{\rho\sigma}$. In this sense, classical gravity has only one possible action.
+
+Another peculiarity of gravity is that there are no local invariants. For example, for a scalar field, $\varphi'(x')=\varphi(x)\implies\delta\varphi=\xi^\rho\partial_\rho\varphi$. This is different from other theories, where, for example, $F_{\mu\nu}(x)F^{\mu\nu}(x)$ is a local invariant under gauge transformations. In order to build invariants in gravity, we need to integrate scalar densities over the manifold:
+\[\int_M\dd^4x\sqrt{-g}\,\varphi(x),\]
+where $\varphi(x)$ is a scalar. The infinitesimal transformations of $\varphi$ and $g_{\mu\nu}$ are
+\begin{gather*}
+\delta\varphi=\xi^\rho\partial_\rho\varphi\\
+\delta g_{\mu\nu}=\xi^\rho\partial_\rho g_{\mu\nu}+g_{\mu\rho}\partial_\nu\xi^\rho+g_{\nu\rho}\partial_\mu\xi^\rho=\nabla_\mu\xi_\nu+\nabla_\nu\xi_\mu,
+\end{gather*}
+therefore (by symmetry)
+\[\delta\sqrt{-g}=\frac1{2\sqrt{-g}}(-g)g^{\mu\nu}\delta g_{\mu\nu}=\sqrt{-g}g^{\mu\nu}\nabla_\mu\xi_\nu\]
+and the variation of the integrand is
+\begin{align*}
+\delta(\sqrt{-g}\varphi)&=\sqrt{-g}\xi^\rho\partial_\rho\varphi+\sqrt{-g}g^{\mu\nu}\nabla_\mu\xi_\nu\varphi=\\
+&=\sqrt{-g}\nabla_\mu(g^{\mu\nu}\xi_\nu\varphi)=\\
+&=\sqrt{-g}\nabla_\mu(\xi^\mu\varphi)=\\
+&=\partial_\mu(\sqrt{-g}\xi^\mu\varphi).
+\end{align*}
+This is a total derivative, therefore the variation of the integral depends on the boundary and is zero if the fields vanish sufficiently fast.
+
+\section{Energy-momentum tensor}
+We will assume the torsionless condition and metric compatibility. If
+\[S=-\frac1{2\kappa^2}\int\sqrt{-g}(R+2\Lambda)+S\ped{m},\]
+where $S\ped{m}$ is the matter part, we define
+\[T_{\mu\nu}=\frac2{\sqrt{-g}}\frac{\delta S\ped{m}}{\delta g^{\mu\nu}},\qquad\text{or equivalently}\qquad T^{\mu\nu}=-\frac2{\sqrt{-g}}\frac{\delta S\ped{m}}{\delta g_{\mu\nu}}.\]
+In order to avoid any ambiguity about 1\ap{st} or 2\ap{nd} order formalism, let us replace any possible $\Gamma^\rho_{\mu\nu}$ inside $S\ped{m}$ with the Levi-Civita connection. We have
+\begin{align*}
+\delta S&=-\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}\delta g^{\mu\nu}\biggl(R_{\mu\nu}-\frac12g_{\mu\nu}R-\Lambda g_{\mu\nu}\biggr)+\int\dd^4x\sqrt{-g}\delta g^{\mu\nu}\frac{\delta S\ped{m}}{\delta g^{\mu\nu}}=\\
+&=-\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}\delta g^{\mu\nu}\biggl(R_{\mu\nu}-\frac12g_{\mu\nu}R-\Lambda g_{\mu\nu}-\kappa^2T_{\mu\nu}\biggr)
+\end{align*}
+and the equations of motion
+\[R_{\mu\nu}-\frac12g_{\mu\nu}R-\Lambda g_{\mu\nu}=\kappa^2T_{\mu\nu}.\]
+It follows immediately from the contracted Bianchi identity ($\nabla^\mu R_{\mu\nu}=\frac12\nabla_\nu R$, or equivalently $\nabla^\mu G_{\mu\nu}$ where $G_{\mu\nu}=R_{\mu\nu}-\frac12g_{\mu\nu}R$ is the Einstein tensor) that $\nabla^\mu T_{\mu\nu}=0$.
+
+This procedure doesn't work with fermions. We can deal with them defining
+\[T^\mu_a\equiv-\frac1e\frac{\delta S\ped{m}}{\delta e^a_\mu}.\]
+So, if $S\ped{m}$ depends just on $g_{\mu\nu}$, we recover the previous definition:
+\[T^\mu_a=-\frac1{\sqrt{-g}}\frac{\delta S\ped{m}}{\delta g_{\rho\sigma}}\frac{\delta g_{\rho\sigma}}{\delta e^a_\mu}=\frac12T^{\rho\sigma}\frac{\delta(e^b_\rho\eta_{bc}e^c_\sigma)}{\delta e^a_{\mu}}=T^{\rho\sigma}e^b_\rho\eta_{bc}\delta^c_a\delta^\mu_\sigma=T^{\rho\mu}e_\rho^b\eta_{ab},\]
+or, equivalently, $T^\mu_ae^a_\nu=T^{\rho\mu}g_{\rho\nu}$. Recalling \cref{eqn:palatinieh} and its variation, we have
+\[S=\frac{1}{4\kappa^2}\int_M\biggl(R^{ab}+\frac{\Lambda}{6}e^ae^b\biggr)e^ce^d\varepsilon_{abcd}+S\ped{m},\]
+so, using $\delta e^a_\mu=A^a_be^b_\mu$,
+\begin{align*}
+\delta S&=\frac1{\kappa^2}\int_Me\dd^4xA^b_a\biggl(R^a_b-\frac12\delta^a_b(R+2\Lambda)\biggr)+\int\dd^4x\,\delta e^a_\mu\frac{\delta S\ped{m}}{\delta e^a_\mu}=\\
+&=\frac1{\kappa^2}\int_Me\dd^4xA^b_a\biggl(R^a_b-\frac12\delta^a_b(R+2\Lambda)-\kappa^2e^a_\mu T^\mu_b\biggr),
+\end{align*}
+which gives
+\[R_{ab}-\frac12\eta_{ab}R-\eta_{ab}\Lambda=\kappa^2T_{ab},\qquad T_{ab}\equiv T^\mu_ae_{\mu b}=-\frac1ee_{\mu b}\frac{\delta S\ped{m}}{\delta e^a_\mu}\]
+where $e_{\mu b}\equiv e^a_\mu\eta_{ab}$. In general, $T_{ab}$ is not symmetryc off-shell. However, it is on-shell, in fact the LHS of the field equations is symmetric. In general, the following result holds.
+
+\begin{theorem}
+The theory admits a symmetric energy-momentum tensor (on the solutions of the field equations) if and only if it is (globally) Lorentz invariant.
+\end{theorem}
+\begin{proof}
+Let $S\ped{m}$ be invariant under local Lorentz transformations. Recall that
+\[\delta_\theta e^a_\mu=\theta^a{}_be^b_\mu,\qquad \theta^{ab}=-\theta^{ba}\]
+and, for a generic matter field $\chi$,
+\[\delta_\theta\chi=A^\chi_{ab}\theta^{ab}.\]
+Then, without using the equations of motion,
+\begin{align*}
+0=\delta_\theta S&=\int\dd^4x\biggl(\delta_\theta e^a_\mu\frac{\delta S\ped{m}}{\delta e^a_\mu}+\sum_\chi \frac{\delta S\ped{m}}{\delta\chi}\delta_\theta\chi\biggr)=\\
+&=\int\dd^4x\biggl(-e\theta^{ab}e_{\mu b}T^\mu_a+\sum_\chi\frac{\delta S\ped{m}}{\delta\chi}A^\chi_{ab}\theta^{ab}\biggr)\quad\forall\,\theta^{ab}\text{ arbitrary functions.}
+\end{align*}
+Thanks to the antisymmetry of $\theta^{ab}$, we have
+\[T_{[ab]}=\frac1e\sum_\chi\frac{\delta S\ped{m}}{\delta\chi}A^\chi_{[ab]}\]
+and this is zero on shell because $\delta S\ped{m}/\delta\chi=0$ are the field equations of the matter fields.
+
+If the transformation is global (that is, $\theta^{ab}$ are arbitrary numbers, not functions), then $T_{[ab]}$ is defined up to a total derivative.
+\end{proof}
+
+Is there a stress tensor for gravity? The previous definitions do not work, because $\delta S/\delta g^{\mu\nu}$ by definition vanishes on-shell. The problem is quite serious and is still open. Some gauge-dependent solutions exist and they follow a positivity theorem.
+
+\chapter{Perturbative expansion}
+\section{Expansion around flat-space}
+Quantum field theory is defined and constructed perturbatively. For gravity, the perturbative expansion has to be done around flat-space\footnote{$\eta_{\mu\nu}$ is a solution of the field equations only if $\Lambda=0$, which we will assume here for simplicity.}. Although the mathematical problems of the perturbative expansion are serious, QFT has been very successful in describing Nature: a ton of precision tests of the Standard Model are done every day. Aside from additional, much serious, mathematical problems of gravity as QFT, probably the main issue of this theory is the practical impossibility to make experiments.
+
+Let's define the graviton field $\phi_{\mu\nu}=\phi_{\nu\mu}$ as
+\[g_{\mu\nu}=\eta_{\mu\nu}+2\kappa\phi_{\mu\nu}.\]
+This implies that, for the inverse metric,
+\[g^{\mu\nu}=\eta^{\mu\nu}-2\kappa\phi^{\mu\nu}+\mathcal O(\phi^2).\]
+In the flat-space expansion, indices are raised and lowered with $\eta_{\mu\nu}$. Let's compute the Christoffel symbols:
+\begin{align*}
+\Gamma^\rho_{\mu\nu}&=\frac12g^{\rho\sigma}(\partial_\mu g_{\nu\sigma}+\partial_\nu g_{\mu\sigma}-\partial_\sigma g_{\mu\nu})=\\
+&=\frac122\kappa\eta^{\rho\sigma}(\partial_\mu\phi_{\nu\sigma}+\partial_\nu\phi_{\mu\sigma}-\partial_\sigma\phi_{\mu\nu})+\mathcal O(\phi^2)=\\
+&=\kappa(\partial_\mu\phi^\rho_\nu+\partial_\nu\phi^\rho_\mu-\partial^\rho\phi_{\mu\nu})+\mathcal O(\phi^2).
+\end{align*}
+From here, we notice that some contractions simplify ($\phi\equiv \phi^\mu_\mu$):
+\begin{gather*}
+\Gamma^\lambda_{\mu\lambda}=\kappa(\partial_\mu\phi^\lambda_\lambda+\partial_\lambda\phi^\lambda_\mu-\partial^\lambda\phi_{\mu\lambda})+\mathcal O(\phi^2)=\kappa\partial_\mu\phi+\mathcal O(\phi^2)\\
+\Gamma^\rho_{\mu\nu}\eta^{\mu\nu}=\kappa(\partial_\mu\phi^\rho_\nu+\partial_\nu\phi^\rho_\mu-\partial^\rho\phi_{\mu\nu})\eta^{\mu\nu}+\mathcal O(\phi^2)=\kappa(2\partial^\mu\phi^\rho_\mu-\partial^\rho\phi)+\mathcal O(\phi^2).
+\end{gather*}
+
+The Gamma-Gamma action then becomes, neglecting $\mathcal O(\phi^3)$ and higher,
+\begin{align*}
+S_{\Gamma\Gamma}[\phi_{\mu\nu}]={}&\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}\bigl(\Gamma^\alpha_{\mu\nu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha}\bigr)g^{\mu\nu}=\\
+={}&\frac12\int\dd^4x\,\partial_\rho\phi\,(2\partial^\mu\phi^\rho_\mu-\partial^\rho\phi)-{}\\
+&-\frac12\int\dd^4x(\partial_\mu\phi^\lambda_\alpha+\partial_\alpha\phi^\lambda_\mu-\partial^\lambda\phi_{\mu\alpha})(\partial^\mu\phi^\alpha_\lambda+\partial_\lambda\phi^{\alpha\mu}-\partial^\alpha\phi_\lambda^\mu)=\\
+={}&\frac12\int\dd^4x(2\partial_\mu\phi\partial^\nu\phi^\mu_\nu-\partial_\mu\phi\partial^\mu\phi-{}\\
+&-\partial_\mu\phi^\lambda_\alpha\partial^\mu\phi^\alpha_\lambda-\partial_\mu\phi^\lambda_\alpha\partial_\lambda\phi^{\alpha\mu}+\partial_\mu\phi^\lambda_\alpha\partial^\alpha\phi^\mu_\nu-{}\\
+&-\partial_\alpha\phi^\lambda_\mu\partial^\mu\phi^\alpha_\lambda-\partial_\alpha\phi^\lambda_\mu\partial_\lambda\phi^{\alpha\mu}+\partial_\alpha\phi^\lambda_\mu\partial^\alpha\phi^\mu_\lambda+{}\\
+&+\partial^\lambda\phi_{\mu\alpha}\partial^\mu\phi^\alpha_\lambda+\partial^\lambda\phi_{\mu\alpha}\partial_\lambda\phi^{\mu\alpha}-\partial^\lambda\phi_{\mu\alpha}\partial^\alpha\phi^\mu_\lambda)=\\
+={}&\frac12\int\dd^4x(\partial_\mu\phi_{\nu\rho}\partial^\mu\phi^{\nu\rho}-\partial_\mu\phi\partial^\mu\phi+2\partial_\mu\phi\partial^\nu\phi^\mu_\nu-2\partial_\mu\phi^\mu_\rho\partial_\nu\phi^{\nu\rho}),
+\end{align*}
+where we performed a double integration by parts to permute the derivatives in the last term.
+
+Let's compute the interaction terms between gravity and matter to the lowest order, considering for simplicity the bosonic case. It is of the form $T_{\mu\nu}\phi^{\mu\nu}$, where
+\[T^{\mu\nu}=-\frac2{\sqrt{-g}}\frac{\delta S\ped{m}}{\delta g_{\mu\nu}}=-\frac1\kappa\frac{\delta S\ped{m}}{\delta\phi_{\mu\nu}}+\ldots\]
+Solving this equation, we get
+\[S\ped{m}[\phi]=S\ped{m}[0]+\int\phi_{\mu\nu}\frac{\delta S\ped{m}}{\delta\phi_{\mu\nu}}+\ldots=S\ped{m}[0]-\kappa\int T^{\mu\nu}\phi_{\mu\nu}+\ldots\]
+$S\ped{m}[0]$ is the flat-space matter action. The complete action is then
+\[S[\phi]=\frac12\int\dd^4x(\partial_\mu\phi_{\nu\rho}\partial^\mu\phi^{\nu\rho}-\partial_\mu\phi\partial^\mu\phi+2\partial_\mu\phi\partial^\nu\phi^\mu_\nu-2\partial_\mu\phi^\mu_\rho\partial_\nu\phi^{\nu\rho}-2\kappa T^{\mu\nu}\phi_{\mu\nu}).\]
+Recalling that $\delta\phi=\eta^{\mu\nu}\delta\phi_{\mu\nu}$, its field equations are
+\[-\Box\phi_{\nu\rho}+\eta_{\nu\rho}\Box\phi-(\eta_{\nu\rho}\partial^\mu\partial^\nu\phi_{\mu\nu}+\partial_\nu\partial_\rho\phi)+(\partial_\mu\partial_\nu\phi^\mu_\rho+\partial_\mu\partial_\rho\phi^\mu_\nu)-\kappa T_{\nu\rho}=0.\]
+
+The same result can also be obtained expanding around flat-space the field equations $R_{\mu\nu}-\frac12g_{\mu\nu}R=\kappa^2T_{\mu\nu}$. This is actually easier, in fact
+\begin{align*}
+R_{\nu\sigma}&=\partial_\mu\Gamma^\mu_{\nu\sigma}-\partial_\sigma\Gamma^\mu_{\nu\mu}+\Gamma^\alpha_{\sigma\nu}\Gamma^\mu_{\mu\alpha}-\Gamma^\alpha_{\mu\nu}\Gamma^\mu_{\sigma\alpha}=\\
+&=\kappa\bigl(\partial_\mu(\partial_\nu\phi^\mu_\sigma+\partial_\sigma\phi^\mu_\nu-\partial^\mu\phi_{\nu\sigma})-\partial_\sigma\partial_\nu\phi\bigr)+\mathcal O(\phi^2)=\\
+&=\kappa(-\Box\phi_{\nu\sigma}-\partial_\nu\partial_\sigma\phi+\partial_\nu\partial_\mu\phi^\mu_\sigma+\partial_\sigma\partial_\mu\phi^\mu_\nu)+\mathcal O(\phi^2)
+\end{align*}
+and
+\[g_{\rho\sigma}R=g_{\rho\sigma}g^{\mu\nu}R_{\mu\nu}=2\eta_{\rho\sigma}\kappa(-\Box\phi+\partial_\mu\partial_\nu\phi^{\mu\nu})+\mathcal O(\phi^2),\]
+therefore we get
+\[\kappa\bigl(-\Box\phi_{\nu\sigma}-\partial_\nu\partial_\sigma\phi+\partial_\nu\partial_\mu\phi^\mu_\sigma+\partial_\sigma\partial_\mu\phi^\mu_\nu+\eta_{\nu\sigma}\Box\phi-\eta_{\nu\sigma}\partial_\alpha\partial_\beta\phi^{\alpha\beta}\bigr)=\kappa^2T_{\nu\sigma},\]
+which is the same result obtained above from the Gamma-Gamma action.
+
+Recall that a gauge transformation of the metric is $\delta g_{\mu\nu}=\xi^\rho\partial_\rho g_{\mu\nu}+g_{\mu\rho}\partial_\nu\xi^\rho+g_{\nu\rho}\partial_\mu\xi^\rho$. Using $g_{\mu\nu}=\eta_{\mu\nu}+2\kappa\phi_{\mu\nu}$, we see that the first term on RHS is subleading with respect to the last two and, defining $c_\mu=\xi_\mu/(2\kappa)$, we get
+\begin{equation}
+\label{eqn:phiinfinitc}
+\delta \phi_{\mu\nu}=\partial_\mu c_\nu+\partial_\nu c_\mu,\qquad\delta\phi=2\partial\cdot c.
+\end{equation}
+The field equations and the quadratic action are invariant under these transformations. Actually, there are no other quadratic actions with this property. We can simplify the equations by gauge-fixing the theory. Recall that in QED we have
+\[\Box A_\mu-\partial_\mu(\partial\cdot A)\sim J_\mu\]
+and we fix $\partial\cdot A=0$ to get rid of the second term. The equivalent for gravity is the ``harmonic'' (or ``de Donder'') gauge:
+\[\partial^\mu\phi_{\mu\nu}-\frac12\partial_\nu\phi=0.\]
+The variation of this condition gives the resigual gauge (analogously to $\delta(\partial\cdot A)=\Box\Lambda=0$)
+\[\delta\biggl(\partial^\mu\phi_{\mu\nu}-\frac12\partial_\nu\phi\biggr)=\partial^\mu(\partial_\mu c_\nu+\partial_\nu c_\mu)-\frac12\partial_\nu(2\partial\cdot c)=\Box c_\nu=0.\]
+In the Harmonic gauge, the vacuum field equations become
+\begin{align*}
+-\Box\phi_{\nu\rho}+\eta_{\nu\rho}\Box\phi-\eta_{\nu\rho}\frac12\Box\phi-\partial_\nu\partial_\rho\phi+\frac12\partial_\nu\partial_\rho\phi+\frac12\partial_\rho\partial_\nu\phi&=\\
+-\Box\phi_{\nu\rho}+\frac12\eta_{\rho\nu}\Box\phi&=0.
+\end{align*}
+Tracing this equation we get $-\Box\phi+\frac124\Box\phi=\Box\phi=0$, therefore we can further simplify it to the wave equation
+\[\Box\phi_{\mu\nu}=0.\]
+
+We now move to momentum space ($\partial_\mu\to-ik_\mu$) to find the helicities: $\Box\phi_{\mu\nu}=0\implies k^2\tilde\phi_{\mu\nu}(k)=0\implies k^2=0$. We choose $k^\mu=(k,0,0,k)$. The gauge-fixing conditions become
+\[k^\mu\tilde\phi_{\mu\nu}(k)-\frac12k_\nu\tilde\phi(k)=k(\tilde\phi_{0\nu}+\tilde\phi_{3\nu})-\frac12k_\nu\tilde\phi=0.\]
+\begin{itemize}
+\item If $\nu=0$ we have $(\tilde\phi_{00}+\tilde\phi_{30})-\frac12\tilde\phi=0$.
+\item If $\nu=1$ we have $\tilde\phi_{01}+\tilde\phi_{31}=0$.
+\item If $\nu=2$ we have $\tilde\phi_{02}+\tilde\phi_{32}=0$.
+\item If $\nu=3$ we have (be careful to lower the index!) $(\tilde\phi_{03}+\tilde\phi_{33})+\frac12\tilde\phi=0$.
+\end{itemize}
+These 4 conditions reduce the 10 independent components of $\phi_{\mu\nu}$ down to 6.
+
+Exploiting the residual gauge freedom,
+\begin{gather*}
+\delta\phi_{\mu\nu}=\partial_\mu c_\nu+\partial_\nu c_\mu,\qquad \Box c_\nu=0,\\
+\delta\tilde\phi_{\mu\nu}=-ik_\mu\tilde c_\nu-ik_\nu\tilde c_\mu,\qquad k^2\tilde c_\mu(k)=0,
+\end{gather*}
+we can add 4 additional conditions. Note that the previous conditions are coherently invariant under the residual gauge, for example
+\[\delta(\tilde\phi_{02}+\tilde\phi_{32})=-ik\tilde c_2-ik_3\tilde c_2=0.\]
+We impose
+\begin{itemize}
+\item $\tilde\phi_{02}=0$ using $\tilde c_2$;
+\item $\tilde\phi_{01}=0$ using $\tilde c_1$;
+\item $\tilde\phi_{00}=0$ using $\tilde c_0$ (in fact $\delta\tilde\phi_{00}=-2ik\tilde c_0$);
+\item $\tilde\phi_{33}=0$ using $\tilde c_3$ (in fact $\delta\tilde\phi_{33}=2ik\tilde c_3$).
+\end{itemize}
+These 8 conditions leave as only possibility for the polatization of the graviton
+\[\tilde\phi_{\mu\nu}=
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & a & b & 0\\
+0 & b & -a & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}=
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & (\alpha+\beta) & i(\alpha-\beta) & 0\\
+0 & i(\alpha-\beta) & -\alpha-\beta & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}
+=\alpha\epsilon_++\beta\epsilon_-,\]
+where
+\[\epsilon_+=
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & 1 & i & 0\\
+0 & i & -1 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix},\qquad
+\epsilon_-=\epsilon_+^*.
+\]
+These are the eigenstates of helicity, in fact under a rotation
+\[R_\theta=
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & \cos\theta & \sin\theta & 0\\
+0 & -\sin\theta & \cos\theta & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}\]
+they transform as
+\begin{align*}
+\epsilon_\pm&\to R_\theta\epsilon_\pm R^{-1}_\theta=\\
+&=
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & \cos\theta & \sin\theta & 0\\
+0 & -\sin\theta & \cos\theta & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & 1 & \pm i & 0\\
+0 & \pm i & -1 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & \cos\theta & -\sin\theta & 0\\
+0 & \sin\theta & \cos\theta & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}=\\
+&=
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & e^{\pm i\theta} & \pm ie^{\pm i\theta} & 0\\
+0 & \pm ie^{\pm i\theta} & -e^{\pm i\theta} & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & \cos\theta & -\sin\theta & 0\\
+0 & \sin\theta & \cos\theta & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}=\\
+&=e^{\pm i\theta}
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & 1 & \pm i & 0\\
+0 & \pm i & -1 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & \cos\theta & -\sin\theta & 0\\
+0 & \sin\theta & \cos\theta & 0\\
+0 & 0 & 0 & 1
+\end{pmatrix}=\\
+&=e^{\pm 2i\theta}
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & 1 & \pm i & 0\\
+0 & \pm i & -1 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}=\\
+&=e^{\pm 2i\theta}\epsilon_\pm.
+\end{align*}
+So the graviton propagates two degrees of freedom, with helicities $2$ and $-2$.
+
+In $d$ dimensions,
+\begin{itemize}
+\item a spin-1 particle carries $d-2$ helicities: $A_\mu$ has $d$ independent components, to which we subtract 1 from gauge fixing and 1 from residual gauge; light exists only in $d>2$;
+\item a spin-2 carries $\frac{d(d-3)}2$ helicities: $g_{\mu\nu}$ has $\frac{d(d+1)}2$ independent components, to which we subtract $d$ from gauge fixing and $d$ from residual gauge; gravity exists only in $d>3$.
+\end{itemize}
+
+\section{Quantization}
+The standard way to quantize the theory is to gauge-fix the action:
+\[S\ped{GF}=S\ped{H}+\frac1{2\lambda}\int\dd^4x\,\mathcal G_\mu\eta^{\mu\nu}\mathcal G_\nu+S\ped{ghost},\]
+where
+\begin{itemize}
+\item $\mathcal G_\mu\equiv\partial^\nu\phi_{\mu\nu}-\frac\omega2\partial_\mu\phi$;
+\item $\lambda$ and $\omega$ are two arbitrary gauge-fixing parameters;
+\item \begin{align*}
+S\ped{ghost}&=\int\dd^4x\dd^4y\,\overline c^\mu\frac{\delta\mathcal G_\mu(x)}{\delta\phi_{\rho\sigma}(y)}\delta_c\phi_{\rho\sigma}=\\
+&=\int\dd^4x\,\overline c^\mu\biggl(\partial^\nu\delta_c\phi_{\mu\nu}-\frac\omega2\partial_\mu\delta_c\phi\biggr)% =\\
+%&=\int\dd^4x\,\overline c^\mu\biggl(\partial^\nu(\partial_\mu c_\nu+\partial_\nu c_\mu)\biggr)
+\end{align*}is the action for the Faddeev-Popov ghost $c^\mu$ (which correspond to the gauge freedom) and antighosts $\overline c^\mu$ (which correspond to the residual gauge freedom). They are not physical particles and hence violate the spin-statistic theorem, being anticommuting scalars.
+
+$\delta_c\phi_{\mu\nu}$ and $\delta_c\phi$ are the variation of $\phi_{\mu\nu}$ and $\phi$ under an infinitesimal diffeomorphism $\xi^\mu=2\kappa c^\mu$. We computed them to the lowest order in $\phi_{\mu\nu}$ in \cref{eqn:phiinfinitc}, but here we need their exact form. Plugging $g_{\mu\nu}=\eta_{\mu\nu}+2\kappa\phi_{\mu\nu}$ into $\delta g_{\mu\nu}=\xi^\rho\partial_\rho g_{\mu\nu}+g_{\mu\rho}\partial_\nu\xi^\rho+g_{\nu\rho}\partial_\mu\xi^\rho$ it is straightforward to get
+\begin{gather*}
+\delta_c\phi_{\mu\nu}=\partial_\mu c_\nu+\partial_\nu c_\mu+2\kappa(c^\rho\partial_\rho\phi_{\mu\nu}+\phi_{\mu\rho}\partial_\nu c^\rho+\phi_{\nu\rho}\partial_\mu c^\rho),\\
+\delta_c\phi=2\partial_\mu c^\mu+2\kappa(c^\rho\partial_\rho \phi+2\phi_{\mu\rho}\partial^\mu c^\rho).
+\end{gather*}
+\end{itemize}
+Every physical result is independent of $\lambda$, $\omega$ and even of the particular function $\mathcal G_\mu$. The choice $\omega=1$, $\lambda=\frac12$ simplifies the quadratic terms of the action down to
+\begin{align*}
+S\ped{GF}={}&\frac12\int\dd^4x(\partial_\mu\phi_{\nu\rho}\partial^\mu\phi^{\nu\rho}-\partial_\mu\phi\partial^\mu\phi+2\partial_\mu\phi\partial^\nu\phi^\mu_\nu-2\partial_\mu\phi^\mu_\rho\partial_\nu\phi^{\nu\rho})+{}\\
+&+\frac12\int\dd^4x\,2\biggl(\partial^\nu\phi_{\mu\nu}-\frac\omega2\partial_\mu\phi\biggr)\biggl(\partial^\rho\phi_\rho^\mu-\frac\omega2\partial^\mu\phi\biggr)+S\ped{ghost}=\\
+={}&\frac12\int\dd^4x\biggl(\partial_\mu\phi_{\nu\rho}\partial^\mu\phi^{\nu\rho}-\frac12\partial_\mu\phi\partial^\mu\phi\biggr)+S\ped{ghost}=\\
+={}&\frac12\int\dd^4x\,\phi_{\mu\nu}(-\Box)\biggl(\mathds{1}^{\mu\nu\rho\sigma}-\frac{\eta^{\mu\nu}\eta^{\rho\sigma}}2\biggr)\phi_{\rho\sigma}+S\ped{ghost},
+\end{align*}
+where $\mathds{1}^{\mu\nu\rho\sigma}\equiv\frac{\eta^{\mu\rho}\eta^{\nu\sigma}+\eta^{\mu\sigma}\eta^{\nu\rho}}2$ and $\mathds{1}^{\mu\nu\rho\sigma}\phi_{\rho\sigma}=\phi^{\mu\nu}$.
+
+Keeping also the interaction term, the field equations are
+\[(-\Box)\frac{\eta^{\mu\rho}\eta^{\nu\sigma}+\eta^{\mu\sigma}\eta^{\nu\rho}-\eta^{\mu\nu}\eta^{\rho\sigma}}2\phi_{\rho\sigma}=\kappa T^{\mu\nu}+\mathcal O(\phi^2).\]
+Since this is the gauge-fixed equation, we can invert the differential operator and find the propagator of the graviton. In momentum space ($\Box\to-k^2$), we need to invert
+\[Q_{\mu\nu\rho\sigma}=k^2\biggl(\mathds{1}_{\mu\nu\rho\sigma}-\frac{\eta_{\mu\nu}\eta_{\rho\sigma}}2\biggr).\]
+This is easily done:
+\[P_{\mu\nu\rho\sigma}=\frac1{k^2}\biggl(\mathds{1}_{\mu\nu\rho\sigma}-\frac{\eta_{\mu\nu}\eta_{\rho\sigma}}2\biggr),\]
+in fact
+\begin{align*}
+P_{\mu\nu\rho\sigma}Q^{\rho\sigma}{}_{\alpha\beta}&=\biggl(\mathds{1}_{\mu\nu\rho\sigma}-\frac{\eta_{\mu\nu}\eta_{\rho\sigma}}2\biggr)\biggl(\mathds{1}^{\rho\sigma}{}_{\alpha\beta}-\frac{\eta^{\rho\sigma}\eta_{\alpha\beta}}2\biggr)=\\
+&=\mathds{1}_{\mu\nu\alpha\beta}-\eta_{\mu\nu}\eta_{\alpha\beta}+\frac144\eta_{\mu\nu}\eta_{\alpha\beta}=\\
+&=\mathds{1}_{\mu\nu\alpha\beta}.
+\end{align*}
+
+The graviton propagator is therefore $iP_{\mu\nu\rho\sigma}$:
+\[
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in [label=above:$\rho\sigma$] -- [photon, momentum=$k$] out [label=above:$\mu\nu$];
+};
+=\frac{i}{k^2}\frac{\eta_{\mu\rho}\eta_{\nu\sigma}+\eta_{\mu\sigma}\eta_{\nu\rho}-\eta_{\mu\nu}\eta_{\rho\sigma}}2.
+\]
+The simplest example of scattering amplitude is obtained contracting this object with the graviton polatizations:
+\[
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in [label=right:$\tilde\phi_{\rho\sigma}$] -- [photon, momentum=$k$] out [label=left:$\tilde\phi_{\mu\nu}$];
+};
+=\frac{i}{k^2}\tilde\phi^{\mu\nu}\biggl(\mathds{1}_{\mu\nu\rho\sigma}-\frac{\eta_{\mu\nu}\eta_{\rho\sigma}}2\biggr)\tilde\phi^{\rho\sigma}=\frac{i}{k^2}\tilde\phi_{\mu\nu}\tilde\phi^{\mu\nu}=i\frac{a^2+b^2}{k^2},
+\]
+where $\tilde\phi_{\mu\nu}=
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & a & b & 0\\
+0 & b & -a & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}$. We have a pole with positive residue at $k^2=0$, which is the on-shell-ness condition for the graviton.
+
+Note that while the ghosts have a propagator, their on-shell-ness condition is $\tilde c_\mu=0$, $\tilde{\overline c}_\mu=0$, that is, they cannot appear on the external legs, because they have no physical polarization.
+
+\paragraph{Comparison with QED}
+In QED, with $\lambda=-1$,
+\begin{align*}
+\mathcal L\ped{GF}&=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac1{2\lambda}(\partial\cdot A)^2+\overline c\frac{\delta (\partial\cdot A)}{\delta A_\mu}\partial_\mu c=\\
+&=-\frac12(\partial_\mu A_\nu-\partial_\nu A_\mu)\partial_\mu A_\nu-\frac12(\partial\cdot A)^2+\overline c\,\Box c=\\
+&=-\frac12A_\mu(-\Box)A^\mu+\overline c\,\Box c
+\end{align*} and we have for the propagators
+\[
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in [label=above:$\nu$] -- [photon, momentum=$k$] out [label=above:$\mu$];
+};
+=-\frac{i}{k^2}\eta^{\mu\nu},
+\qquad\qquad
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in -- [charged scalar, momentum=$k$] out;
+};
+=-\frac{i}{k^2}.
+\]
+
+We see that the theory propagates 4 degrees of freedom for the photon and 2 for the ghost, but the latter are in some sense negative. To see this, we can move to the Coulomb gauge, where $\mathcal G=\vec\nabla\cdot\vec A$.
+\begin{align*}
+\mathcal L\ped{GF}&=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac1{2\lambda}(\vec\nabla\cdot\vec A)^2+\overline c\frac{\delta (\vec\nabla\cdot\vec A)}{\delta A_i}\partial_i c=\\
+&=-\frac12(\partial_\mu A_\nu-\partial_\nu A_\mu)\partial_\mu A_\nu-\frac12(\vec\nabla\cdot\vec A)^2+\overline c\triangle c=\\
+&=-\frac12A_\mu(-\Box)A^\mu+\frac12(\partial\cdot A)^2-\frac12(\vec\nabla\cdot\vec A)^2+\overline c\triangle c
+\end{align*}
+The ghost propagator
+\[
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in -- [charged scalar, momentum=$k$] out;
+};
+=-\frac{i}{\vec k^2}
+\]
+does not have any pole, therefore it does not propagate anything. For the photon propagator, we have to invert $Q^{\mu\nu}$, where
+\[-\frac12A_\mu Q^{\mu\nu}A_\nu\equiv-\frac12A_\mu(k^2\eta^{\mu\nu}-k^\mu k^\nu+\eta^{\mu i}k_i\eta^{\nu j}k_j)A_\nu.\]
+We can explicitly write the matrix
+\[
+Q^{\mu\nu}=
+\begin{pmatrix}
+k^2-k^0k^0 & -k^0k^i\\
+-k^0k^j & -k^2\delta^{ij}-k^ik^j+k^ik^j
+\end{pmatrix}=
+\begin{pmatrix}
+-\vec k^2 & -k^0k^i\\
+-k^0k^j & -k^2\delta^{ij}
+\end{pmatrix}
+\]
+and look for an inverse of the form $P_{\mu\nu}=
+\begin{pmatrix}
+a & dk^i\\
+dk^j & b\delta^{ij}+ck^ik^j
+\end{pmatrix}$.
+\begin{align*}
+P_{\mu\nu}Q^{\nu\rho}&=\begin{pmatrix}
+a & dk^i\\
+dk^j & b\delta^{ij}+ck^ik^j
+\end{pmatrix}
+\begin{pmatrix}
+-\vec k^2 & -k^0k^i\\
+-k^0k^j & -k^2\delta^{ij}
+\end{pmatrix}=\\
+&=
+\begin{pmatrix}
+-a\vec k^2-dk^0\vec k^2 & -ak^0k^i-dk^2k^i\\
+-d\vec k^2k^j-bk^0k^j-ck^0k^j\vec k^2 & -dk^0k^ik^j-bk^2\delta^{ij}-ck^2k^ik^j
+\end{pmatrix}=\\
+&=\delta^\rho_\mu
+\end{align*}
+Thus, we obtain the following system for $a$, $b$, $c$, $d$:
+\[\begin{cases}
+-a\vec k^2-dk^0\vec k^2=1\\
+ak^0+dk^2=0\\
+d\vec k^2+bk^0+ck^0\vec k^2=0\\
+dk^0+ck^2=0\\
+-bk^2=1
+\end{cases}\]
+whose solutions are
+\[a=\frac{k^2}{(\vec k^2)^2},\qquad b=-\frac{1}{k^2},\qquad c=\frac{(k^0)^2}{k^2(\vec k^2)^2},\qquad d=-\frac{k^0}{(\vec k^2)^2}.\]
+Therefore, around the pole $k^2=(k^0)^2-\vec k^2=0$,
+\[P_{\mu\nu}=
+-\frac1{k^2}
+\begin{pmatrix}
+0 & 0\\
+0 & \delta^{ij}-\frac{k^ik^j}{\vec k^2}
+\end{pmatrix}=
+-\frac1{k^2}
+\begin{pmatrix}
+0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0
+\end{pmatrix}\]
+where we have chosen for simplicity $k^\mu=(k,0,0,k)$. The two nonzero entries correspond to the two physical helicities.
+
+In gravity, an analogous result can be found in the Prentki gauge: $\mathcal G_\mu=\partial^ig_{\mu i}+\omega\delta^i_\mu\partial_ig_{\rho\sigma}\eta^{\rho\sigma}$.
+
+\section{Amplitudes in a scalar theory}
+Once gauge-fixed, the complications of gauge theories are only technical, so we will study the simple scalar theory
+\[\mathcal L=\frac12\partial_\mu\varphi\partial^\mu\varphi-\frac12m^2\varphi^2-\frac r{3!}\varphi^3-\frac\lambda{4!}\varphi^4.\]
+The propagator is
+\[
+\feynmandiagram [layered layout, baseline=(in.base), horizontal'=out to in] {
+in -- [momentum=$k$] out;
+};
+=\frac{i}{k^2-m^2+i\epsilon}=i\mathcal P\frac{1}{k^2-m^2}+\pi\delta(k^2-m^2),
+\]
+where we have introduced the $i\epsilon$ prescription (which is a consequence of the unitarity of the $S$ matrix) and used the identity
+\[\frac1{x-i\epsilon}=\mathcal P\frac1x+i\pi\delta(x).\]
+The propagator and the vertex rules
+\[
+\feynmandiagram [inline=(mu.base), horizontal=mu to cl] {
+in -- mu -- out,
+mu -- cl,
+};
+=-ir
+\qquad\qquad
+\feynmandiagram [layered layout, inline=(center.base)] {
+one -- center -- two,
+three -- center -- four,
+};
+=-i\lambda
+\]
+are used to compute the amplitudes corresponding to the amputated Feynman diagrams, for example (neglecting combinatoric factors)
+\begin{equation}
+\label{eqn:scalarscattering}
+\feynmandiagram [inline=(mu.base), horizontal=mu to cl] {
+in -- mu -- out,
+mu -- cl,
+in2 -- cl -- out2,
+};
+\propto\frac{-ir^2}{p^2-m^2+i\epsilon}=-ir^2\mathcal P\frac1{p^2-m^2}-\pi r^2\delta(p^2-m^2).
+\end{equation}
+
+Let $S=1+iT$ be the scattering matrix, where $iT$ is the amplitude corresponding to the Feynman diagrams. Its unitarity means
+\[1=S^\dagger S=(1-iT^\dagger)(1+iT)=1+iT-iT^\dagger+T^\dagger T,\]
+or
+\[iT-iT^\dagger=-T^\dagger T	\implies \Re[iT]\le0.\]
+This statement is known as optical theorem. Applying it to \cref{eqn:scalarscattering}, we find correctly
+\[-\pi r^2\delta(p^2-m^2)\le0.\]
+This fixes the sign of $i\epsilon$ or the sign of the propagator. However, we could flip the sign of both: $\frac{-i}{p^2-m^2-i\epsilon}$ would be ok. The two conventions, however, cannot exists in the same theory (one is related to $S$, the other to $S^\dagger$).
+
+Diagrammatically, the optical theorem states the following:
+\begin{gather*}
+\feynmandiagram [inline=(center.base), horizontal = in2 to center] {
+in1 -- center [blob] -- out1,
+in2 [label=left:in] -- center -- out2 [label=right:out],
+in3 -- center -- out3,
+in4 -- [draw = none] center -- [draw = none] out4,
+};
++\Biggl(
+\feynmandiagram [inline=(center.base), horizontal = in2 to center] {
+in1 -- center [blob] -- out1,
+in2 [label=left:out] -- center -- out2 [label=right:in],
+in3 -- center -- out3,
+in4 -- [draw = none] center -- [draw = none] out4,
+};
+\Biggr)^*
+=
+\feynmandiagram [inline=(center1.base), horizontal = center1 to center2] {
+in2 [label=left:in] -- center1 [blob] -- center2 [blob] -- out2 [label=right:out],
+in1 -- center1 -- [quarter left] center2 -- out1,
+in3 -- center1 -- [quarter right] center2 -- out3,
+%center1 -- [half left] center2,
+%center1 -- [half right] center2,
+};
+%\feynmandiagram [inline=(center1.base), horizontal = center1 to center2] {
+%in2 [label=left:in] -- center1 [blob] -- [quarter right] m2 -- [quarter right] center2 [blob] -- out2 [label=right:out],
+%in1 -- center1 -- m1 -- center2 -- out1,
+%in3 -- center1 -- [quarter left] m3 -- [quarter left] center2 -- out3,
+%};
+\end{gather*}
+where the lines between the two blobs in the last diagram contain only pyhsical particles, despite the fact that the theorem says 
+\[\braket{\text{out}|iT|\text{in}}+\braket{\text{out}|(-iT^\dagger)|\text{in}}=-\sum_{\ket{n}}\braket{\text{out}|T^\dagger|n}\braket{n|T|\text{in}}\]
+where $\ket n$ is a complete basis of states (also non-pyhsical ones), since $T$ connects only physical states.
+
+Loop diagarams like
+\[
+\feynmandiagram [baseline=(mu.base), horizontal=mu to cl] {
+in -- [momentum = $p_1$] mu,
+out -- [momentum = $p_2$] mu,
+mu -- [quarter left, momentum = $k$] cl,
+cl -- [quarter left, momentum = $k+p$] mu,
+in2 -- [momentum' = $p_3$] cl,
+out2 -- [momentum' = $p_4$] cl,
+};
+\propto
+\int\frac{\dd^4k}{(2\pi)^4}(-i\lambda)^4\frac{i}{k^2-m^2+i\epsilon}\frac{i}{(p+k)^2-m^2+i\epsilon}
+\]
+are in general divergent in the UV\footnote{The apparent divergences at $k^2=m^2$ are cured by the $i\epsilon$ prescription.}. In fact, putting a UV cutoff $\Lambda$, the previous amplitude behaves as
+\[\int^\Lambda\frac{\dd^4k}{(2\pi)^4}\frac1{(k^2)^2}\sim\log\Lambda.\]
+However, if there is a non-observable way of rewriting the theory (for example, a change of variables) that eliminates these divergences, they are not a problem. Let $g(p,\Lambda)$ be the previous amplitude (apart from factors $i$ or $\lambda$) with the cutoff $\Lambda$ on the integral. Then,
+\[\frac{\partial g(p,\Lambda)}{\partial p^\mu}=\int^\Lambda\frac{\dd^4k}{(2\pi)^4}\frac1{k^2-m^2+i\epsilon}\frac{-2(p-k)^\mu}{((p-k)^2-m^2+i\epsilon)^2}\sim\int^\Lambda\frac{\dd k}{k^2}<\infty.\]
+Therefore, if we completely separate the finite and the divergent part as
+\[g(p,\Lambda)=g\ped{fin}(p,\Lambda)+g\ped{div}(p,\Lambda),\]
+where $g\ped{div}\sim(\log\Lambda)\tilde g(p)$, then
+\[\frac{\partial g(p,\Lambda)}{\partial p^\mu}<\infty\implies \frac{\partial g\ped{div}(p,\Lambda)}{\partial p^\mu}<\infty\implies\frac{\partial \tilde g(p)}{\partial p^\mu}=0,\]
+that is, $g\ped{div}$ is independent of $p$.
+
+The complete 4-point function will be of the form
+\begin{align*}
+\feynmandiagram [layered layout, inline=(center.base)] {
+one -- center [blob] -- two,
+three -- center -- four,
+};
+&=
+\feynmandiagram [layered layout, inline=(center.base)] {
+one -- center -- two,
+three -- center -- four,
+};
++
+\feynmandiagram [inline=(mu.base), horizontal=mu to cl] {
+in -- mu,
+out -- mu,
+mu -- [quarter left] cl,
+cl -- [quarter left] mu,
+in2 -- cl,
+out2 -- cl,
+};
++\ldots
+=\\
+&=-i\lambda+a\lambda^2g\ped{fin}(p,\Lambda)+b\lambda^2\log\Lambda.
+\end{align*}
+Since they are both independent of $p$, we cannot observationally separate $-i\lambda$ and $b\lambda^2\log\Lambda$. A redefinition of $\lambda$ (by way of addition of counterterms) will then cancel the divergence.
+
+\section{Renormalization}
+
+The locality principle states that every term of the Lagrangian (counterterms included) should contain a finite number of derivatives. In momentum space, this means that the divergent parts $g\ped{div}$ of all diagrams are (finite) polynomial in the external momenta\footnote{There is a caveat here: the subtraction of divergences has to be performed loop by loop.} (and also polynomial in the masses, as apparent by taking derivatives with respect to the masses): a sufficient, but finite, number of derivatives will kill the divergent part of $g$.
+
+In short, the counterterms are local, like the terms of the Lagrangian and can be subtracted modifying the Lagrangian. This trick can be done for every theory. So, what's the problem with gravity? There are two possibilities: the starting Lagrangian may or may not contain all the types of local terms it generates as counterterms by means of Feynman diagrams. If yes, the theory is renormalizable. If not, new terms must be added to the Lagrangian. If a finite number of additions is sufficient, the resulting theory is renormalizable. If not, the theory is nonrenormalizable.
+
+For example, the $\varphi^4$ theory
+\[\mathcal L_4=\frac12(\partial_\mu\varphi)(\partial^\mu\varphi)-\frac12m^2\varphi^2-\frac{\lambda_4}{4!}\varphi^4\]
+is renormalizable, while the $\varphi^6$ theory
+\[\mathcal L_6=\frac12(\partial_\mu\varphi)(\partial^\mu\varphi)-\frac12m^2\varphi^2-\frac{\lambda_6}{6!}\varphi^6\]
+is not. To see that, consider the $4\to4$ scattering diagram (whose loop integral is the same as computed above)
+\[
+\feynmandiagram [inline=(mu.base), horizontal=mu to cl] {
+in -- mu,
+out -- mu,
+mu -- [quarter left] cl,
+cl -- [quarter left] mu,
+in2 -- cl,
+out2 -- cl,
+in3 -- mu,
+in4 -- mu,
+out3 -- cl,
+out4 -- cl,
+};
+\sim \lambda_6^2(\log\Lambda).
+\]
+We would need a 8-leg counterterm to subtract this divergence, but this addition would create a divergent $6\to6$ scattering diagram, then $8\to8$ and so on. The Lagrangian would contain infinitely many terms, which sould be multiplied by arbitrary coupling constants, and the theory would become completely arbitrary.
+
+The power counting can be used to guess the renormalizability of a theory. For example, in $\varphi^4$ theory, all parameters ($m$, $\varphi$, $\partial_\mu$, $\lambda$) have non-negative mass dimension and, since they cannot appear in the denominator thanks to the locality, there is no way to build a $\propto\varphi^6$ term. For the $\varphi^6$ theory, instead, we can build infinitely many terms with dimension 4: $\lambda_6^n\varphi^{2n+4}$ for $n\ge0$, $\lambda_6^7\varphi^8\Box\varphi^8$, etc.
+
+Gravity is nonrenormalizable. The reason is that its coupling constant, $\kappa$, has dimension $-1$. Expanding the Hilbert action, we find infinitely many terms:
+\[S\ped{H}=\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}R\sim\int\bigl\{(\partial\phi)^2+\kappa(\partial\phi\partial\phi)^2\phi+\kappa^2(\partial\phi)^2\phi^2+\ldots\bigr\}\dd^4x.\]
+Since $[R]=2$, the candidate counterterms (which are gauge-invariant despite the presence of the gauge-fixing and ghost terms in the Lagrangian) are
+\[\int\dd^4x\sqrt{-g}\bigl\{R^2+R_{\mu\nu}R^{\mu\nu}+\kappa^2R\Box R+\kappa^2R^3+\kappa^4R^4+\ldots\bigr\}\]
+and they are in principle all ``turned on'' by renormalization of loop diagrams. The theory at low energy is okay, because $1/\kappa=M\ped{Pl}\approx\SI{e19}{\GeV}$, which is far greater than the energy of any particle physics experiment, but is ill-defined at high energy.
+
+\paragraph{$\kappa$-power counting.}
+The generic vertex of the Hilbert action comes from a term of the form $\kappa^{n-2}\partial^2\phi^n$. Consider an arbitrary diagram with $L$ loops, $I$ internal legs, $E$ external legs and $V$ vertices. Thanks to the Euler's formula, we know that
+\[L=I-V+1.\]
+The power of $\kappa$ corresponding to the diagram is
+\[\prod_{i\text{ vertices}}\kappa^{n_i-2}=\kappa^{\sum_in_i-2V},\]
+where $n_i$ is the number of legs of the $i$-th vertex. Cutting every line in two, it is easy to see that
+\[\sum_in_i=E+2I,\]
+therefore the power of $\kappa$ is
+\[\kappa^{\sum_in_i-2V}=\kappa^{E+2(I-V)}=\kappa^{E+2L-2}.\]
+With $E$ $\phi$'s attached, this becomes
+\[\kappa^{E+2L-2}\phi^E=(\kappa\phi)^E(\kappa^2)^{L-1}.\]
+$(\kappa\phi)^E$ does not depend on the particular term of the action that generates the interaction, because they always come together: $g_{\mu\nu}=\eta_{\mu\nu}+\kappa\phi_{\mu\nu}$.
+
+Since every term in $\mathcal L$ has to have dimension 4, the candidate counterterms, loop by loop, are then
+\begin{align*}
+&\text{one loop: }\\
+&(\kappa^2)^0\int\dd^4x\sqrt{-g}(\alpha R^2+\beta R_{\mu\nu}R^{\mu\nu})\\
+&\text{two loops: }\\
+&(\kappa^2)\int\dd^4x\sqrt{-g}(a R^3+b R_{\mu\nu}R^{\mu\rho}R^\nu{}_\rho+cR\Box R+R_{\mu\nu\rho\sigma}R^{\rho\sigma\alpha\beta}R^{\mu\nu}{}_{\alpha\beta}+\ldots).
+\end{align*}
+As we said before, the theory is nonrenormalizable, so there is no way to fix the coefficients and we loose predictivity. In other words, every counterterm of new type brings a new, independent coupling constant, unless it is proportional to the field equations (that is, it is zero on-shell).
+
+This last exception actually allows some sort of simplification. In pure gravity, with no matter nor cosmological constant, the field equations imply, $R_{\mu\nu}=0$. Every counterterm that vanishes on-shell can be absorbed by a redefinition of $g_{\mu\nu}$. For example, the one-loop action can be written as
+\begin{multline*}
+S\ped{H}+\int\dd^4x\sqrt{-g}(\alpha R^2+\beta R_{\mu\nu}R^{\mu\nu})=\\
+=S\ped{H}+\int\dd^4x\biggl(\alpha'Rg_{\mu\nu}\frac{\delta S\ped{H}}{\delta g_{\mu\nu}}+\beta'R_{\mu\nu}\frac{\delta S\ped{H}}{\delta g_{\mu\nu}}\biggr)=\\
+=S\ped{H}[g]+\int\Delta g_{\mu\nu}\frac{\delta S\ped{H}}{\delta g_{\mu\nu}}=S\ped{H}[g+\Delta g],
+\end{multline*}
+where, in this case, $\Delta g_{\mu\nu}=\alpha'R_{\mu\nu}+\beta'g_{\mu\nu}R$. Pure gravity is one-loop finite. If this property held at all orders, the theory would be acceptable. Unfortunately, this is not the case, because of terms like\footnote{It can be shown that this is the only two-loop term which is not proportional to the Ricci tensor.}
+\[\int\dd^4x\sqrt{-g}R_{\mu\nu\rho\sigma}R^{\rho\sigma\alpha\beta}R^{\mu\nu}{}_{\alpha\beta}.\]
+Goroff and Sagnotti showed in 1985 that the two-loop renormalization of pure gravity does indeed predict a divergent counterterm of that type.
+
+The theory is not even finite at one loop in the presence of matter ('t~Hooft and Veltman). For example, if we consider a scalar field
+\[-\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}R+\int\dd^4x\sqrt{-g}\frac12g^{\mu\nu}\nabla_\mu\varphi\nabla_\nu\varphi,\]
+some possible counterterms are
+\[R^2,\quad R_{\mu\nu}R^{\mu\nu},\quad R^{\mu\nu}\nabla_\mu\varphi\nabla_\nu\varphi,\quad \Box\varphi\Box\varphi,\quad (\nabla_\mu\varphi\nabla_\nu\varphi)^2.\]
+Now the field equations are
+\[R_{\mu\nu}-\frac12g_{\mu\nu}R=\kappa^2T_{\mu\nu}\sim\nabla_\mu\varphi\nabla_\nu\varphi\]
+and they can be used to make all counterterms disappear, but one.
+
+Anyway, there is another possible simplification.
+\begin{theorem}
+All the counterterms that are quadratic in the curvature tensors can be converted into cubic terms up to total derivatives and terms that vanish on-shell.
+\end{theorem}
+For example, this holds for
+\[R^2,\quad R^{\mu\nu}R^{\mu\nu},\quad R\Box R,\quad R_{\mu\nu}\Box R^{\mu\nu},\quad R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma},\quad R_{\mu\nu\rho\sigma}\Box R^{\mu\nu\rho\sigma}.\]
+We already know that the first four can be dropped because they vanish on-shell (or, if there is matter, they can be converted to matter terms) and that the fifth can be written as a combination of the first two, up to a total derivative. But, thanks to this result, also the sixth term can be dropped. The result is important because the quadratic terms are the ones that affect the propagator, which is then only sensible to the Hilbert term.
+\begin{proof}
+Since Ricci tensors vanish on-shell or are expressed in terms of the matter field, let us consider only (up to total derivatives)
+\[R_{\mu\nu\rho\sigma}\nabla\cdots\nabla R_{\alpha\beta\gamma\delta}.\]
+We can freely commute derivatives up to cubic terms, because $[\nabla,\nabla]\sim R$. Let us move all $\nabla$'s contracted with the Riemann tensor to the right. Thanks to the contracted Bianchi identity,
+\[\nabla^\alpha R_{\alpha\beta\gamma\delta}=-\nabla_\delta R_{\beta\gamma}+\nabla_\gamma R_{\beta\delta},\]
+which vanishes on-shell. If instead $\nabla$'s are contracted among them, we can use the non-contracted Bianchi identity to go back to the previous case:
+\[\nabla^\lambda\nabla_\lambda R_{\mu\nu\rho\sigma}=\nabla^\lambda(-\nabla_\nu R_{\lambda\mu\rho\sigma}-\nabla_\mu R_{\nu\lambda\rho\sigma}).\]
+\end{proof}
+
+The previous arguments can be easily generalized in the presence of a cosmological constant. Recalling that the Weyl and Riemann tensors differ by Ricci tensors, the action up to the cubic order is
+\[-\frac1{2\kappa^2}\int\dd^4x\sqrt{-g}\bigl\{2\Lambda+R+\kappa^4W^3+\ldots\bigr\}+S\ped{m}.\]
+The field equations are
+\[R_{\mu\nu}-\frac12g_{\mu\nu}R-\Lambda g_{\mu\nu}=\kappa^2T\ap{(matter)}_{\mu\nu}+\kappa^2T\ap{(gravity)}_{\mu\nu},\]
+where
+\[T\ap{(gravity)}_{\mu\nu}\sim W^2+\ldots\]
+
+A remarkable solution to these field equations is the Lemaître-Friedmann-Robertson-Walker metric
+\[\dd s^2=\dd t^2-a(t)^2\biggl(\frac{\dd r^2}{1-kr^2}+r^2\dd\theta^2+r^2\sin^2\theta\dd\phi^2\biggr),\qquad k=-1,0,1,\]
+because it has vanishing Weyl tensor.
+
+\section{Higher-derivative theories}
+There are ways to make the theory renormalizable. For example, the action of higher-derivative gravity is
+\[S\ped{HD}=-\frac1{2}\int\dd^4x\sqrt{-g}(2\Lambda+\zeta R+\alpha R_{\mu\nu}R^{\mu\nu}+\beta R^2).\]
+The difference with the previous analysis is that $\alpha$ and $\beta$ are not radiatively generated: we perturbatively expand around all four terms, not just the first two. $\alpha$ and $\beta$ are of order 1. Neglecting the cosmological constant, we can expand around flat-space as always: $g_{\mu\nu}=\eta_{\mu\nu}+2\phi_{\mu\nu}$, but notice that with this choice of units we have $\kappa=1$ and $[\phi]=0$. The quadratic part of the action now contains some other higher-derivative terms:
+\[S\ped{\phi}\sim\int\dd^4x(\zeta(\partial\phi)^2+\alpha\phi\partial^4\phi+\beta\phi\partial^4\phi),\]
+but now there's no coupling with negative dimension, therefore the theory is renormalizable. No term like $\int\dd^4x\sqrt{-g}R^3$ can be generated, as every parameter (but $\alpha$ and $\beta$) must appear polinomially in the counterterms. In fact, the propagator is
+\[P\sim\frac1{\alpha(p^2)^2+\beta(p^2)^2+\zeta p^2+\Lambda}\]
+and since the dominant term in the UV is $(p^2)^2$, we have
+\begin{align*}
+\frac{\partial P}{\partial\Lambda}&\sim-\frac{1}{(\alpha(p^2)^2+\beta(p^2)^2+\zeta p^2+\Lambda)^2}\sim\frac1{(p^2)^4}\\
+\frac{\partial P}{\partial\zeta}&\sim-\frac{p^2}{(\alpha(p^2)^2+\beta(p^2)^2+\zeta p^2+\Lambda)^2}\sim\frac1{(p^2)^3}\\
+\frac{\partial P}{\partial\alpha}&\sim-\frac{(p^2)^2}{(\alpha(p^2)^2+\beta(p^2)^2+\zeta p^2+\Lambda)^2}\sim\frac1{(p^2)^2}.\\
+\end{align*}
+In the first two cases we will obtain a convergent object after a finite number of derivatives and we will be forced to have a polynomial dependence.
+
+One may think that, since $[\phi]=0$, then we could write arbitrary functions of $\phi$ in the Lagrangian. However, they are forbidden by the requirement of Lorentz covariance: $\phi$ has to enter via curvature tensors, which are polynomial because the derivatives are.
+
+There are ways to make the theory even super-renormalizable (parameters with strictly positive dimensions), by adding more quadratic terms:
+\[S\ped{HD}=-\frac{\kappa^2}{2}\int\dd^4x\sqrt{-g}(2\Lambda+\zeta R+\alpha R_{\mu\nu}R^{\mu\nu}+\beta R^2+\gamma R\Box R+\delta R_{\mu\nu}\Box R^{\mu\nu}).\]
+Now the dominant quadratic terms in the UV are $(\gamma+\delta)\phi\Box^3\phi$. Note that now $[\gamma]=[\delta]=0$, $[\alpha]=[\beta]=2$, $[\zeta]=4$, $[\Lambda]=6$ and $[\phi]=-1$. Actually, the choice of parameters in these two higher-derivarive theories are equivalent to a redefinition of $\kappa$ as a constant or a mass (instead of an inverse mass). At $L$ loops the counterterms now carry an extra factor $(1/\kappa^2)^L$. The requirement of $[\mathcal L]=4$ fixes the possible counterterms loop by loop:
+\begin{align*}
+\text{one loop: }&\int(R^2+R_{\mu\nu}R^{\mu\nu}+R+\Lambda)\\
+\text{two loops: }&\frac1{\kappa^2}\int(R+\Lambda)\\
+\text{three loops: }&\frac1{\kappa^4}\int\Lambda\\
+\text{four loops: }&\text{no divergence.}
+\end{align*}
+
+However, all these higher-derivative theories have a serious problem with unitarity. In fact (defining $m$), we have for the propagator
+\[P\sim\frac1{(p^2)^2+p^2}\sim\frac{-m^2}{p^2(p^2-m^2)}=\frac1{p^2}-\frac1{p^2-m^2}.\]
+At low energy ($m\to\infty$) we recover the familiar $1/p^2$; however at $p^2=m^2$ we have a second pole, with negative residue. This is a violation of unitarity. Indeed, recalling the optical theorem, we have
+\[2\Re[iT]=-\pi(\delta(p^2)-\delta(p^2-m^2))\]
+and the RHS is not negative definite.
+
+Higher-derivative theories also have problems at the classical level. A Lagrangian of the type
+\[\mathcal L(q,\dot q, \ddot q, \dddot q,\ldots)\]
+does not produce a well defined Cauchy problem, because we have to specify also initial velocity, acceleration,\ldots We could apparently avoid this problem adding variables in order to get
+\[\mathcal L(q, \dot q, \zeta, \dot\zeta, \xi, \dot\xi,\ldots),\]
+but now the Hamiltonian of the theory will not be bounded from below, leading to instabilities. However, at the classical level there is a way to get past this problem too, at the price of violating microcausality.
+
+Let's consider for example the Abraham-Lorentz force for the radiation reaction force acting on an accelerating particle:
+\[F\ped{ext}=m\biggl(a-\tau\frac{\dd a}{\dd t}\biggr),\qquad \tau=\frac{2e^2}{3m_ec^3}\approx\SI{e-23}{\second}>0.\]
+This theory has runaway solutions even without external forces: if $F\ped{ext}=0$, then
+\begin{align*}
+&a=\ddot x(t)=Ce^{t/\tau}\\
+\implies&\dot x(t)=C\tau(e^{t/\tau}-1)+v_0\\
+\implies&x(t)=C\tau^2(e^{t/\tau}-1)-C\tau t+v_0t+x_0.
+\end{align*}
+For a particle initially at rest in the origin, we have
+\[x(t)=C\tau^2(e^{t/\tau}-1)-C\tau t,\]
+which goes exponentially to infnity.
+
+However, there is a way to get rid of runaway solutions: we can write
+\[F\ped{ext}=m\biggl(1-\tau\frac{\dd}{\dd t}\biggr)a\]
+and invert the operator $\bigl(1-\tau\frac{\dd}{\dd t}\bigr)$, getting
+\[ma=\frac1{1-\tau\frac{\dd}{\dd t}}F\ped{ext}(t)\equiv \braket{F\ped{ext}(t)}.\]
+$\frac1{1-\tau\frac{\dd}{\dd t}}$ is a sort of Green's function, but for now still has a pole, which represents the extra degree of freedom. There is a unique way to choose the Green's function such that it has the correct limit for $\tau\to0$ (zero electric charge). The most general solution of the equation is
+\[ma=-\frac1\tau\int_{-\infty}^t\dd t'e^{(t-t')/\tau}F\ped{ext}(t')+ma_0e^{t/\tau},\]
+where $a_0$ is an arbitrary constant and multiplies the runaway solution. The other integral involves only the past time. The regular solution for $\tau\to0$, which corresponds to a particular choice of $a_0$, is
+\begin{align*}
+ma&=\frac1\tau\int_t^{+\infty}\dd t'e^{(t-t')/\tau}F\ped{ext}(t')=\\
+&=\int_0^{+\infty}\dd u\,e^{-u}F\ped{ext}(t+u\tau)\overset{\tau\to0}{\longrightarrow}F\ped{ext}(t)
+.
+\end{align*}
+The integral here involves the future, but only a little bit of it, because of the exponential. The effects of radiation friction have a timescale so short that they are covered by quantum effects. What we learn is that we can cure the violation of unitarity at the price of loosing microcausality.
+
+\section{Unruh effect}
+An accelerated detector detects particles even in vacuum, with a black body spectrum.
+
+Let's describe the detector as a pointlike particle with discrete energy levels $E_0$, $E_1$, $E_2$, \ldots Let $\tau$ be the proper time of the detector and $x^\mu(\tau)$ its position. Suppose the detector is coupled to a quantized real scalar field $\phi(x)$, with interaction
+\[c(\tau)\chi(\tau)\phi(x(\tau)),\]
+where
+\begin{itemize}
+\item $c(\tau)=\begin{cases}1&\text{if }\abs{\tau}\le\frac\Omega2\\ 0&\text{if }\abs{\tau}\ge\frac\Omega2\end{cases}$ is a ``switch function'' that makes the interaction nonzero only in the interval $-\Omega/2\le\tau\ge\Omega/2$; at the end we will send $\Omega\to\infty$: this is a regularization needed to properly compute probabilities per unit time in quantum mechanics;
+\item $\chi(\tau)$ is a field describing the detector.
+\end{itemize}
+
+Initially, let the detector and the field $\phi$ be in their fundamental state: $\ket{\text{in}}=\ket{E_0}\ket{0}_\phi$. We want to compute $\mathcal A_i=\braket{\text{out}|\text{in}}$, where $\ket{\text{out}}=\ket{E_i}\ket{\psi}_\phi$, for every $i$ and $\psi$. In the Born approximation,
+\begin{align*}
+\mathcal A_i&=i\int_{-\infty}^{+\infty}\dd\tau\,c(\tau) \bra{E_i}\!\tensor[_\phi]{\braket{\psi|\chi(\tau)\phi(x(\tau))|E_0}\ket{0}}{_\phi}=\\
+&=i\int_{-\infty}^{+\infty}\dd\tau c(\tau)\braket{E_i|\chi(\tau)|E_0}\!\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}.
+\end{align*}
+Since $\chi(\tau)=e^{iH\tau}\chi(0)e^{-iH\tau}$, where $H$ is the Hamiltonian of the detector only, we have $\braket{E_i|\chi(\tau)|E_0}=e^{i(E_i-E_0)\tau}\braket{E_i|\chi(0)|E_0}$ and we remain with
+\[A_i=i\braket{E_i|\chi(0)|E_0}\int_{-\infty}^{+\infty}\dd\tau c(\tau)e^{i(E_i-E_0)(\tau-\tau')}\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}.\]
+
+What we actually observe is just the final state of the detector, so we are interested in
+\begin{align*}
+P_i={}&\sum_{\ket{\psi}_\phi}\abs*{\mathcal A_i}^2=\\
+={}&\abs*{\braket{E_i|\chi(0)|E_0}}^2\iint_{-\infty}^{+\infty}\dd\tau\dd\tau'c(\tau)c(\tau')e^{i(E_i-E_0)(\tau-\tau')}\times{}\\
+&\times\sum_{\ket{\psi}_\phi}\tensor[_\phi]{\braket{0|\phi(x(\tau'))|\psi}}{_\phi}\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}=\\
+={}&\abs*{\braket{E_i|\chi(0)|E_0}}^2\iint_{-\infty}^{+\infty}\dd\tau\dd\tau'c(\tau)c(\tau')e^{i(E_i-E_0)(\tau-\tau')}\tensor[_\phi]{\braket{0|\phi(x(\tau'))\phi(x(\tau))|0}}{_\phi}
+\end{align*}
+where we used the completeness relation $\sum_{\ket{\psi}_\phi}\ket{\psi}_\phi\tensor[_\phi]{\bra{\psi}}{}=1$. Assuming that $\phi$ is a free massless field, the last term is similar to the propagator in real space:
+\[\tensor[_\phi]{\braket{0|T[\phi(x)\phi(y)]|0}}{_\phi}=\int\frac{\dd^4p}{(2\pi)^4}\frac{e^{-ip(x-y)}}{p^2+i\epsilon}=-\frac1{4\pi^2}\frac1{(x-y)^2-i\epsilon}.\]
+In our case, we don't have the T-ordered product, but just the 2-point function, which is, for the two cases of retarded/advanced potentials respectively,
+\begin{align*}
+\tensor[_\phi]{\braket{0|\phi(x)\phi(y)|0}}{_\phi}&=\int\frac{\dd^4p}{(2\pi)^4}\frac{e^{-ik(x-y)}}{(p^0\pm i\epsilon)^2-\vec p^2}=\\
+&=-\frac1{4\pi^2}\frac1{(x^0-y^0\mp i\epsilon)^2-(\vec x-\vec y)^2}.
+\end{align*}
+Choosing the retarded potentials prescription, we have
+\[P_i=\frac{\abs*{\braket{E_i|\chi(0)|E_0}}^2}{4\pi^2}\iint_{-\infty}^{+\infty}\dd\tau\dd\tau'\frac{c(\tau)c(\tau')e^{i(E_i-E_0)(\tau-\tau')}}{-(x^0(\tau')-x^0(\tau)-i\epsilon)^2+(\vec x(\tau')-\vec x(\tau))^2}.\]
+
+\paragraph{Straight uniform motion.} If the detector does not accelerate,
+\[x^0(\tau)=t=\gamma\tau,\qquad\vec x(\tau)=\vec x(0)+\vec vt=\vec x(0)+\vec v\gamma\tau,\]the denominator becomes
+\[-(x^0(\tau')-x^0(\tau)-i\epsilon)^2+(\vec x(\tau')-\vec x(\tau))^2=\gamma^2(v^2(\tau-\tau')^2-(\tau-\tau'+i\epsilon)^2).\]
+The integrand only depends on $\tau-\tau'$, so we can factorize the integral over $\tau+\tau'$ and $\tau-\tau'$, getting\footnote{$\int_{-\Omega/2}^{+\Omega/2}\dd\tau\int_{-\Omega/2}^{+\Omega/2}\dd\tau' f(\tau-\tau')=\int_{-\Omega/2}^{+\Omega/2}\dd\tau\int_{-\Omega/2}^{+\Omega/2}\dd\tau'\int_{-M}^{+M}\dd u\,\delta(u-(\tau-\tau')) f(\tau-\tau')=\int_{-\Omega/2}^{+\Omega/2}\dd\tau\int_{-M}^{+M}\dd u\, \chi_{[-\Omega/2+u,+\Omega/2+u]}(\tau)f(u)=\int_{-\Omega}^{+\Omega}\dd u\,f(u)(\Omega-\abs{u})$ $\forall\,M>\Omega$}
+\[P_i=\frac{\abs*{\braket{E_i|\chi(0)|E_0}}^2}{4\pi^2\gamma^2}\int_{-\infty}^{+\infty}\dd u\,e^{i(E_i-E_0)u}\frac{\Omega-\abs{u}}{v^2u^2-(u+i\epsilon)^2}.\]
+The poles are located at
+\[\pm vu=u+i\epsilon\implies u=-\frac{i\epsilon}{1\mp v}.\]
+Since $v<1$ and $\epsilon>0$, these two poles have negative imaginary parts. If $E_i$ is an excited state, we have $E_i-E_0>0$, so we can close the integration in the upper half plane and we get $P_i=0$.
+
+\paragraph{Hyperbolic motion.} Suppose the detector undergoes hyperbolic motion with acceleration $g$,
+\[t=\frac1g\sinh(g\tau),\qquad \abs{\vec x}=\frac1g\cosh(g\tau).\]
+We can easily check that $g$ is indeed the acceleration:
+\begin{gather*}
+\qquad t^2-\vec x^2=-\frac1g\implies 2t\dd t=2x\dd x\implies\frac{\dd x}{\dd t}=\frac t{\abs{\vec x}}=\tanh(g\tau)\\
+\frac{\dd x^\mu}{\dd t}=(1,\tanh(g\tau),0,0),\qquad u^\mu=\frac{\dd x^\mu}{\dd t}\frac{\dd t}{\dd \tau}=(\cosh(g\tau),\sinh(g\tau),0,0)\\
+u^\mu u_\mu=1,\qquad a^\mu=\frac{\dd u^\mu}{\dd\tau}=g(\sinh(g\tau),\cosh(g\tau),0,0),\qquad a^\mu a_\mu=g^2.
+\end{gather*}
+
+The denominator now is (redefining $\epsilon\to g\epsilon$ and neglecting its square)
+\begin{multline*}
+-(x^0(\tau')-x^0(\tau)-i\epsilon)^2+(\vec x(\tau')-\vec x(\tau))^2=\\
+=\frac1{g^2}(\cosh(g\tau')-\cosh(g\tau))^2-\frac1{g^2}(\sinh(g\tau')-\sinh(g\tau)-i\epsilon)^2=\\
+=\frac1{g^2}(2-2\cosh(g\tau')\cosh(g\tau)+2\sinh(g\tau')\sinh(g\tau)+\\
++2i\epsilon(\sinh(g\tau')-\sinh(g\tau)))=\\
+=\frac2{g^2}(1-\cosh(g(\tau-\tau'))+i\epsilon(\sinh(g\tau')-\sinh(g\tau)))=\\
+=-\frac4{g^2}\sinh^2\biggl(\frac{g(\tau-\tau')}{2}\biggr)-\frac{2i\epsilon}{g^2}(\sinh(g\tau)-\sinh(g\tau')).
+\end{multline*}
+An equivalent expression, up to a redefinition of $\epsilon$, is
+\[-\frac4{g^2}\sinh^2\biggl(\frac{g(\tau-\tau'+i\epsilon)}2\biggr).\]
+In fact, its 0\ap{th} order in $\epsilon$ is the same as before, while the coefficient of the linear one is
+\[-\frac4{g^2}2\sinh\biggl(\frac{g(\tau-\tau')}2\biggr)\cosh\biggl(\frac{g(\tau-\tau')}2\biggr)\frac{ig}2=-2i\sinh(g(\tau-\tau')),\]
+which has positive ratio with the one of the previous expression, in fact, if $a=e^x$, $b=e^y$,
+\[\frac{\sinh x+\sinh y}{\sinh(x-y)}=\frac{a-\frac1a-b+\frac1b}{\frac ab-\frac ba}=\frac{1+ab}{a+b}>0.\]
+
+In the end, we remain with
+\[P_i=-\frac{g^2}{16\pi^2}\abs*{\braket{E_i|\chi(0)|E_0}}^2\int_{-\infty}^{+\infty}\dd u\,e^{i(E_i-E_0)u}\frac{\Omega-\abs{u}}{\sinh^2\bigl(\frac{g(u+i\epsilon)}2\bigr)}.\]
+We can easily find its (double) poles with the identity
+\[\frac1{\sinh^2(\pi y)}=\frac1{\pi^2}\sum_{k=-\infty}^{+\infty}\frac1{(y+ik)^2}\]
+and the residues with the formula
+\[f^{(n)}(z)=\frac{n!}{2\pi i}\oint_{C_z}\frac{f(\zeta)\dd\zeta}{(\zeta-z)^{n+1}},\]
+where $C_z$ is a contour around $z$.
+
+The poles are then in $u=-i\epsilon-ik\frac{2\pi}g$ for every $k\in\mathbb Z$. Only the ones in the upper-half plane ($k<0$) contribute to the integral. The term $\abs{u}$ gives a subleading (that is, only finite) contribution to $P_i$ when $\Omega\to+\infty$ with respect to the term $\Omega$.
+\begin{align*}
+P_i&=-\frac{g^2}{16\pi^2}\abs*{\braket{E_i|\chi(0)|E_0}}^2\int_{-\infty}^{+\infty}\dd u\,e^{i(E_i-E_0)u}\frac{\Omega-\abs{u}}{\sinh^2\bigl(\frac{g(u+i\epsilon)}2\bigr)}\overset{\Omega\to\infty}{\longrightarrow}\\
+&\overset{\Omega\to\infty}{\longrightarrow}-\frac{g^2\Omega}{16\pi^2}\abs*{\braket{E_i|\chi(0)|E_0}}^2\int_{-\infty}^{+\infty}\frac1{\pi^2}\frac{2\pi}{g}\dd y\sum_{k=-1}^{-\infty}\frac{e^{i(E_i-E_0)2\pi y/g}}{(y+ik)^2}=\\
+&=-\frac{g\Omega}{8\pi^3}\abs*{\braket{E_i|\chi(0)|E_0}}^2\sum_{k=-1}^{-\infty}\oint\frac{e^{i(E_i-E_0)2\pi y/g}}{(y+ik)^2}\dd y=\\
+&=-\frac{g\Omega}{8\pi^3}\abs*{\braket{E_i|\chi(0)|E_0}}^2\sum_{k=-1}^{-\infty}(2\pi i)i(E_i-E_0)\frac{2\pi}{g}e^{i(E_i-E_0)2\pi (-ik)/g}=\\
+&=\frac{\Omega}{2\pi}\abs*{\braket{E_i|\chi(0)|E_0}}^2(E_i-E_0)\sum_{k=1}^{+\infty}e^{-2\pi(E_i-E_0)k/g}=\\
+&=\frac{\Omega}{2\pi}\abs*{\braket{E_i|\chi(0)|E_0}}^2(E_i-E_0)\frac{e^{-2\pi(E_i-E_0)/g}}{1-e^{-2\pi(E_i-E_0)/g}}=\\
+&=\frac{\Omega}{2\pi}\abs*{\braket{E_i|\chi(0)|E_0}}^2(E_i-E_0)\frac1{e^{2\pi(E_i-E_0)/g}-1}
+\end{align*}
+The probability per unit time is
+\[W_i=\frac{P_i}{\Omega}=\frac{E_i-E_0}{2\pi}\abs*{\braket{E_i|\chi(0)|E_0}}^2\frac1{e^{2\pi(E_i-E_0)/g}-1}.\]
+This is a black body spectrum with temperature
+\[T=\frac{g}{2\pi}.\]
+
+%\chapter{Quantum gravity}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
