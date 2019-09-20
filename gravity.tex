@@ -1228,7 +1228,7 @@ The Palatini action is
 \[S\ped{Pal}=C\int_MR^{ab}\wedge e^c\wedge e^d\ \varepsilon_{abcd}\]
 where $\varepsilon^{0123}=-\varepsilon_{0123}=1$ and
 \[R^a{}_b=(\dd\omega+\omega\wedge\omega)^a{}_b=R^a{}_{bmn}\frac{e^m\wedge e^n}{2}=R^a{}_{b\mu\nu}\frac{\dd x^\mu\wedge\dd x^\nu}{2}.\]
-The integrand is a 4-form and is proporzional to the usual Einstein-Hilbert action. In fact, substituting the expression of $R^{ab}$,
+The integrand is a 4-form and is proportional to the usual Einstein-Hilbert action. In fact, substituting the expression of $R^{ab}$,
 \[S\ped{Pal}=\frac{C}{2}\int_MR^{ab}{}_{mn}e^me^ne^ce^d\varepsilon_{abcd}\]
 where
 \[e^me^ne^ce^d=e^m_\mu e^n_\nu e^c_\rho e^d_\sigma\dd x^\mu\dd x^\nu\dd x^\rho\dd x^\sigma=\dd^4x\,e^m_\mu e^n_\nu e^c_\rho e^d_\sigma \varepsilon^{\mu\nu\rho\sigma}.\]
@@ -1531,7 +1531,7 @@ so the action reads
 S[g,\Gamma]&=-\frac1{2\kappa^2}\int_M\sqrt{-g}\dd^4x\,g^{\mu\nu}R_{\mu\nu}=\\
 &=-\frac1{2\kappa^2}\int_M\sqrt{-g}\dd^4x\,g^{\mu\nu}(\partial_\lambda\Gamma^\lambda_{\mu\nu}-\partial_\nu\Gamma^\lambda_{\lambda\mu}+\Gamma^\alpha_{\nu\mu}\Gamma^\lambda_{\lambda\alpha}-\Gamma^\alpha_{\lambda\mu}\Gamma^\lambda_{\nu\alpha}).
 \end{align*}
-Let's compute $\frac{\delta S}{\delta g^{\mu\nu}}$ first. We have AGGIUNGERE SPIEGAZIONE MAGARI IN APPENDICE
+Let's compute $\frac{\delta S}{\delta g^{\mu\nu}}$ first. By Jacobi's formula, we have
 \begin{gather*}
 \delta g=gg^{\alpha\beta}\delta g_{\alpha\beta}=-gg_{\mu\nu}\delta g^{\mu\nu}\\
 \delta\sqrt{-g}=\frac1{2\sqrt{-g}}gg_{\mu\nu}\delta g^{\mu\nu}=-\frac12\sqrt{-g}g_{\mu\nu}\delta g^{\mu\nu},
@@ -1863,7 +1863,7 @@ where
 S\ped{ghost}&=\int\dd^4x\dd^4y\,\overline c^\mu\frac{\delta\mathcal G_\mu(x)}{\delta\phi_{\rho\sigma}(y)}\delta_c\phi_{\rho\sigma}=\\
 &=\int\dd^4x\,\overline c^\mu\biggl(\partial^\nu\delta_c\phi_{\mu\nu}-\frac\omega2\partial_\mu\delta_c\phi\biggr)% =\\
 %&=\int\dd^4x\,\overline c^\mu\biggl(\partial^\nu(\partial_\mu c_\nu+\partial_\nu c_\mu)\biggr)
-\end{align*}is the action for the Faddeev-Popov ghost $c^\mu$ (which correspond to the gauge freedom) and antighosts $\overline c^\mu$ (which correspond to the residual gauge freedom). They are not physical particles and hence violate the spin-statistic theorem, being anticommuting scalars.
+\end{align*}is the action for the Faddeev-Popov ghost $c^\mu$ (which correspond to the gauge freedom) and antighosts $\overline c^\mu$ (which correspond to the residual gauge freedom). They are not physical particles and hence violate the spin-statistic theorem, being anticommuting vector fields.
 
 $\delta_c\phi_{\mu\nu}$ and $\delta_c\phi$ are the variation of $\phi_{\mu\nu}$ and $\phi$ under an infinitesimal diffeomorphism $\xi^\mu=2\kappa c^\mu$. We computed them to the lowest order in $\phi_{\mu\nu}$ in \cref{eqn:phiinfinitc}, but here we need their exact form. Plugging $g_{\mu\nu}=\eta_{\mu\nu}+2\kappa\phi_{\mu\nu}$ into $\delta g_{\mu\nu}=\xi^\rho\partial_\rho g_{\mu\nu}+g_{\mu\rho}\partial_\nu\xi^\rho+g_{\nu\rho}\partial_\mu\xi^\rho$ it is straightforward to get
 \begin{gather*}
