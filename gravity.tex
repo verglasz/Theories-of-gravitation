@@ -2060,16 +2060,16 @@ This fixes the sign of $i\epsilon$ or the sign of the propagator. However, we co
 Diagrammatically, the optical theorem states the following:
 \begin{gather*}
 \feynmandiagram [inline=(center.base), horizontal = in2 to center] {
-in1 -- center [blob] -- out1,
-in2 [label=left:in] -- center -- out2 [label=right:out],
+in1 -- center [blob] -- out1 [label=right:out],
 in3 -- center -- out3,
+in2 [label=left:in] -- center -- out2,
 in4 -- [draw = none] center -- [draw = none] out4,
 };
 +\Biggl(
 \feynmandiagram [inline=(center.base), horizontal = in2 to center] {
-in1 -- center [blob] -- out1,
-in2 [label=left:out] -- center -- out2 [label=right:in],
+in1 -- center [blob] -- out1 [label=right:in],
 in3 -- center -- out3,
+in2 [label=left:out] -- center -- out2,
 in4 -- [draw = none] center -- [draw = none] out4,
 };
 \Biggr)^*
@@ -2325,7 +2325,7 @@ Initially, let the detector and the field $\phi$ be in their fundamental state: 
 &=i\int_{-\infty}^{+\infty}\dd\tau c(\tau)\braket{E_i|\chi(\tau)|E_0}\!\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}.
 \end{align*}
 Since $\chi(\tau)=e^{iH\tau}\chi(0)e^{-iH\tau}$, where $H$ is the Hamiltonian of the detector only, we have $\braket{E_i|\chi(\tau)|E_0}=e^{i(E_i-E_0)\tau}\braket{E_i|\chi(0)|E_0}$ and we remain with
-\[A_i=i\braket{E_i|\chi(0)|E_0}\int_{-\infty}^{+\infty}\dd\tau c(\tau)e^{i(E_i-E_0)(\tau-\tau')}\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}.\]
+\[A_i=i\braket{E_i|\chi(0)|E_0}\int_{-\infty}^{+\infty}\dd\tau c(\tau)e^{i(E_i-E_0)\tau}\tensor[_\phi]{\braket{\psi|\phi(x(\tau))|0}}{_\phi}.\]
 
 What we actually observe is just the final state of the detector, so we are interested in
 \begin{align*}
