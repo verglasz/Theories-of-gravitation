@@ -2,27 +2,40 @@
 % !TEX TS-program = lualatex
 % !TEX spellcheck = en_US
 \documentclass[a4paper,12pt]{book}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[italian,english]{babel}
 
+\usepackage[T1]{fontenc}
+% \usepackage[utf8]{inputenc}  % unnecessary with lualatex
+\usepackage[italian,english]{babel}
+\usepackage{dsfont}
+
+\usepackage{caption}
 \usepackage{microtype}
-\usepackage{pgf,tikz}
-\usepackage{mathrsfs}
-\usetikzlibrary{arrows}
-\usepackage{amsmath,amssymb,mathtools,xcolor,booktabs,caption,amsthm,dsfont,cancel,braket,tensor}
-\usepackage[separate-uncertainty=true,multi-part-units=single]{siunitx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{pgf}
+\usepackage{tikz}
 \usepackage{tikz-feynman}
+\usetikzlibrary{arrows}
 \tikzfeynmanset{compat=1.0.0}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{braket}
+\usepackage{cancel}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{tensor}
+\usepackage[separate-uncertainty=true,multi-part-units=single]{siunitx}
+
 \usepackage{hyperref}
-\hypersetup{
-  colorlinks   = true,    % Colours links instead of ugly boxes
-  urlcolor     = blue,    % Colour for external hyperlinks
-  linkcolor    = blue,    % Colour of internal links
-  citecolor    = blue      % Colour of citations
-}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\hypersetup{
+    colorlinks = true,    % Colours links instead of ugly boxes
+    urlcolor   = blue,    % Colour for external hyperlinks
+    linkcolor  = blue,    % Colour of internal links
+    citecolor  = blue      % Colour of citations
+}
 
 %\captionsetup[table]{name=Figure}
 %\Crefname{table}{Figure}{Figures}
@@ -68,12 +81,34 @@
 \DeclareMathAccent{\dddot}{0}{mathb}{"3B}
 %%%
 
+\newcommand{\snide}[1]{{#1}}
+\newcommand{\pedantic}[1]{{#1}}
+
+\newcommand{\revisionauthors}{ %
+	\footnotesize{ %
+		Revised with the help of
+		Salvatore Raucci,
+		Valerio Lomanto.	
+	}
+}
+\newcommand{\lectureplaylist}{https://www.youtube.com/watch?v=VRAMDa6kpqw&list=PLlx_2qxtgAiO_FCa3WvC-39J6c_EpE2wK}
+
+\author{
+	Giovanni Maria Tomaselli\\
+	\revisionauthors
+}
+
+\title{
+	Theories of Gravitation\\
+	\vspace{0.5em}
+	\footnotesize{
+		Transcription of Damiano Anselmi's lectures (a.y.~2018/2019).
+	}
+}
+
+\date{}
 
 \begin{document}
-
-\author{Giovanni Maria Tomaselli}
-\title{Theories of Gravitation\\ \vspace{0.5em} \footnotesize{Transcription of Damiano Anselmi's lectures (a.y.~2018/2019).}}
-\date{}
 \maketitle
 
 \emph{Stato e todo delle dispense al \today:
@@ -83,7 +118,7 @@
 \item prima o poi forse vorrò riscrivere gli indici dei tensori col pacchetto tensor (che già uso, ma per altre cose).
 \end{itemize}}
 \vfill
-These notes are a non-official transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{https://www.youtube.com/watch?v=VRAMDa6kpqw&list=PLlx_2qxtgAiO_FCa3WvC-39J6c_EpE2wK}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}. The source code is available on \href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}.
+These notes are an unofficial transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{\lectureplaylist}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}. The source code is available on \href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}.
 
 \vspace{1cm}
 \begin{center}
