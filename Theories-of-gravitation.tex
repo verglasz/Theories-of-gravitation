@@ -85,25 +85,26 @@
 \newcommand{\pedantic}[1]{{#1}}
 
 \newcommand{\revisionauthors}{ %
-	\footnotesize{ %
-		Revised with the help of
-		Salvatore Raucci,
-		Valerio Lomanto.	
-	}
+    \footnotesize{ %
+        Revised with the help of
+        Salvatore Raucci,
+        Valerio Lomanto.    
+    }
 }
 \newcommand{\lectureplaylist}{https://www.youtube.com/watch?v=VRAMDa6kpqw&list=PLlx_2qxtgAiO_FCa3WvC-39J6c_EpE2wK}
+\newcommand{\gimmymail}{\href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}}
 
 \author{
-	Giovanni Maria Tomaselli\\
-	\revisionauthors
+    Giovanni Maria Tomaselli
+    %\\\revisionauthors
 }
 
 \title{
-	Theories of Gravitation\\
-	\vspace{0.5em}
-	\footnotesize{
-		Transcription of Damiano Anselmi's lectures (a.y.~2018/2019).
-	}
+    Theories of Gravitation\\
+    \vspace{0.5em}
+    \footnotesize{ %
+        Transcription of Damiano Anselmi's lectures (a.y.~2018/2019).
+    }
 }
 
 \date{}
@@ -117,8 +118,9 @@
 \item mi piacerebbe avere un check sul termine $\abs{u}$ nell'effetto Unruh (nel caso del moto iperbolico);
 \item prima o poi forse vorrò riscrivere gli indici dei tensori col pacchetto tensor (che già uso, ma per altre cose).
 \end{itemize}}
+
 \vfill
-These notes are an unofficial transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{\lectureplaylist}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}. The source code is available on \href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}.
+These notes are an unofficial transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{\lectureplaylist}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \gimmymail. The source code is available on \href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}.
 
 \vspace{1cm}
 \begin{center}
@@ -2095,7 +2097,7 @@ in2 -- cl -- out2,
 Let $S=1+iT$ be the scattering matrix, where $iT$ is the amplitude corresponding to the Feynman diagrams. Its unitarity means
 \[1=S^\dagger S=(1-iT^\dagger)(1+iT)=1+iT-iT^\dagger+T^\dagger T,\]
 or
-\[iT-iT^\dagger=-T^\dagger T	\implies \Re[iT]\le0.\]
+\[iT-iT^\dagger=-T^\dagger T    \implies \Re[iT]\le0.\]
 This statement is known as optical theorem. Applying it to \cref{eqn:scalarscattering}, we find correctly
 \[-\pi r^2\delta(p^2-m^2)\le0.\]
 This fixes the sign of $i\epsilon$ or the sign of the propagator. However, we could flip the sign of both: $\frac{-i}{p^2-m^2-i\epsilon}$ would be ok. The two conventions, however, cannot exists in the same theory (one is related to $S$, the other to $S^\dagger$).
