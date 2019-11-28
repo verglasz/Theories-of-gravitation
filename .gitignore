@@ -1,6 +1,9 @@
 ## MacOS
 *.DS_Store
 
+## sublime majick
+.fuse_hidden*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
