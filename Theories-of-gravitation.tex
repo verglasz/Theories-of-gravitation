@@ -81,6 +81,7 @@
 \DeclareMathAccent{\dddot}{0}{mathb}{"3B}
 %%%
 
+\newcommand{\tuple}[1]{({#1})}
 \newcommand{\snide}[1]{{#1}}
 \newcommand{\pedantic}[1]{{#1}}
 
@@ -145,15 +146,16 @@ Latest update: \today.
 \section{Manifolds}
 
 \begin{definition}
-A \emph{topological space} is a pair $\{X,V\}$, where
+A \emph{topological space} is a pair $\tuple{X,V}$, where
 \begin{itemize}
 \item $X$ is a non-empty set;
 \item $V$ is a family of subsets of $X$, called \emph{open sets}, such that
 \begin{enumerate}
 \item $X\in V$, $\varnothing\in V$;
 \item $A,B\in V\implies A\cup B\in V$, $A\cap B\in V$;
-\item the union of an infinite number of subsets $A_i\in V$ belongs to $V$.
+\item the union of a countably infinite number of subsets $A_i\in V$ belongs to $V$.
 \end{enumerate}
+These last two properties make $V$ a \emph{\sigma-algebra}.
 \end{itemize}
 \end{definition}
 
@@ -162,20 +164,20 @@ A \emph{closed set} is the complement of an open set.
 \end{definition}
 
 \begin{definition}
-A topological space $\{X,V\}$ is \emph{separated} (or a \emph{Hausdorff space}) if $\forall\, p,q\in X$, $p\ne q$, $\exists\, U_p,U_q\in V$ such that $p\in U_p$, $q\in U_q$, $U_p\cap U_q=\varnothing$.
+A topological space $\tuple{X,V}$ is \emph{separated} (or a \emph{Hausdorff space}) if $\forall\, p,q\in X$, $p\ne q$, $\exists\, U_p,U_q\in V$ such that $p\in U_p$, $q\in U_q$, $U_p\cap U_q=\varnothing$.
 \end{definition}
 
 \begin{definition}
-Given a topological space $\{X,V\}$ and a point $p\in X$, a \emph{neighbourhood} of $p$ is any open set that contains $p$.
+Given a topological space $\tuple{X,V}$ and a point $p\in X$, a \emph{neighbourhood} of $p$ is any open set that contains $p$.
 \end{definition}
 
 \begin{definition}
-A \emph{cover} of a topological space $\{X,V\}$ is a family $\mathcal U$ of open sets $U_i\in V$ such that
+A \emph{cover} of a topological space $\tuple{X,V}$ is a family $\mathcal U$ of open sets $U_i\in V$ such that
 \[\bigcup_i U_i=X.\]
 \end{definition}
 
 \begin{definition}
-A function $f\colon X\to Y$ between two topological spaces $\{X,V\}$ and $\{Y,W\}$ is \emph{continuous} if $A\in W\implies f^{-1}(A)\in V$.
+A function $f\colon X\to Y$ between two topological spaces $\tuple{X,V}$ and $\tuple{Y,W}$ is \emph{continuous} if $A\in W\implies f^{-1}(A)\in V$.
 \end{definition}
 
 \begin{definition}
@@ -670,6 +672,7 @@ In local coordinates, $i_V\omega=kV^i\omega_{i,i_1,\ldots,i_{k-1}}\dd x^{i_1}\we
 \begin{definition}
 The \emph{Lie derivative of a $k$-form} $\omega$ along a vector field $V$ is a $k$-form defined as $\mathcal L_V\omega=\dd i_V\omega+i_V\dd\omega$. Shortening the notation,
 \[\mathcal L_V=\dd i_V+i_V\dd.\]
+\pedantic{This is known as \emph{Cartan's formula} and actually follows from the more general definition of Lie derivative for tensor fields.}
 \end{definition}
 
 \begin{example}
