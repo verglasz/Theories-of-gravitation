@@ -1302,7 +1302,7 @@ The most general variation can be written as $\delta e^c=A^c_me^m$ where $A^c_m$
 \delta^m_c & \delta^n_c & \delta^p_c
 \end{vmatrix}=\\
 &=-\frac{1}{4\kappa^2}\int_Me\dd^4x\,(-2A^c_aR^a_c-2A^c_bR^b_c+2A^c_cR)=\\
-&=\frac{1}{4\kappa^2}\int_Me\dd^4x\,A^b_a\biggl(R^a_b-\frac{1}{2}\delta^a_bR\biggr)=0\quad\forall\,A^c_m\\
+&=\frac{1}{\kappa^2}\int_Me\dd^4x\,A^b_a\biggl(R^a_b-\frac{1}{2}\delta^a_bR\biggr)=0\quad\forall\,A^c_m\\
 \end{align*}
 Notice that from the fouth line, $R^a_b$ stands for the components of the Ricci tensor, not for the 2-form. The field equations are then $R^a_b-\frac{1}{2}\delta^a_bR=0$. We can go to spacetime indices ($R_{\mu\nu}=e^c_\mu R^a_be^b_\nu\eta_{ac}$, etc.), lower them and obtain the familiar Einstein equations in vacuum:
 \[R_{\mu\nu}-\frac{1}{2}g_{\mu\nu}R=0.\]
@@ -1502,7 +1502,7 @@ or, in the language of vector fields, $\nabla_X\mathcal T(Y,Z)=\nabla_Y\mathcal 
 
 \begin{definition}
 The \emph{Schouten tensor} is
-\[P_{\mu\nu}=\frac1{d-2}R_{\mu\nu}-\frac1{2(d-1)}Rg_{\mu\nu}.\]
+\[P_{\mu\nu}=\frac1{d-2}R_{\mu\nu}-\frac1{2(d-1)(d-2)}Rg_{\mu\nu}.\]
 \end{definition}
 
 It is straightforward to verify that
@@ -1548,7 +1548,7 @@ S(g,\Gamma)=-\frac1{2\kappa^2}\int_M\dd^4x\bigl\{\partial_\lambda(\sqrt{-g}g^{\m
 \end{multline*}
 \begin{exercise}
 \label{thm:varGamma}
-Neglecting the boundary terms,
+Neglecting the boundary terms, and recalling that we are assuming the torsionless condition,
 \[\frac{\delta S}{\delta\Gamma^\rho_{\mu\nu}}=0\implies\Gamma^\rho_{\mu\nu}=\frac12g^{\rho\sigma}(\partial_\mu g_{\nu\sigma}+\partial_\nu g_{\mu\sigma}-\partial_\sigma g_{\mu\nu}).\]
 \end{exercise}
 \section{Hilbert action (Palatini 2\ap{nd} order formalism)}
