@@ -8,6 +8,7 @@
 \usepackage[italian,english]{babel}
 \usepackage{dsfont}
 
+\usepackage{xargs}
 \usepackage{caption}
 \usepackage{microtype}
 \usepackage{xcolor}
@@ -80,7 +81,23 @@
 \let\dddot\relax
 \DeclareMathAccent{\dddot}{0}{mathb}{"3B}
 %%%
+%% better cdot
+\makeatletter
+\let\old@cdot\cdot
+\renewcommand{\cdot}{\! \old@cdot \!}
+\makeatother
 
+% convenience for repeated things
+\newcommand{\munu}{{\mu\nu}}
+\newcommand{\detg}{\sqrt{-g}}
+\newcommand{\inv}[1]{\frac{1}{#1}}
+\newcommand{\onehalf}[1][1]{\frac{#1}{2}}
+\newcommand{\lagr}{\mathcal{L}}
+\newcommandx{\wedgeprod}[4][3=\mu, 4=\nu]{ {#1}_{#3} {#2}_{#4} - {#1}_{#4} {#2}_{#3} }
+\newcommandx{\simmprod}[4][3=\mu, 4=\nu]{ {#1}_{#3} {#2}_{#4} + {#1}_{#4} {#2}_{#3} }
+\newcommandx{\extdone}[3][2=\mu, 3=\nu]{\wedgeprod{\partial}{#1}[#2][#3]}
+
+% kinda useless atm
 \newcommand{\tuple}[1]{({#1})}
 \newcommand{\snide}[1]{{#1}}
 \newcommand{\pedantic}[1]{{#1}}
@@ -94,6 +111,7 @@
 }
 \newcommand{\lectureplaylist}{https://www.youtube.com/watch?v=VRAMDa6kpqw&list=PLlx_2qxtgAiO_FCa3WvC-39J6c_EpE2wK}
 \newcommand{\gimmymail}{\href{mailto:giovanni.tomaselli@sns.it}{giovanni.tomaselli@sns.it}}
+\newcommand{\repo}{\href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}}
 
 \author{
     Giovanni Maria Tomaselli
@@ -121,7 +139,7 @@
 \end{itemize}}
 
 \vfill
-These notes are an unofficial transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{\lectureplaylist}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \gimmymail. The source code is available on \href{https://github.com/GimmyTomas/Theories-of-gravitation}{GitHub}.
+These notes are an unofficial transcription of Damiano Anselmi's lectures (Theories of Gravitation A), originally written for personal use. You can find the videos of the lectures at his YouTube channel \href{\lectureplaylist}{Quantum Gravity}. I made some small corrections and changes with respect to the videos; any mistake in these notes is my own fault, since prof.~Anselmi was never called into question. Please, let me know any suggestion, typo or error at \gimmymail. The source code is available on \repo.
 
 \vspace{1cm}
 \begin{center}
@@ -2449,28 +2467,32 @@ The probability per unit time is
 This is a black body spectrum with temperature
 \[T=\frac{g}{2\pi}.\]
 
-%\chapter{Quantum gravity}
+\chapter{Quantum gravity}
+The previous topic marks the end of the first part of the course.
+What follows is the second part, required if you want to take the \SI{9}{CFU} exam.
+
+\section{Proca, Pauli-Fierz, and Rarita-Schwinger}
+We are going to describe the Proca, Pauli-Fierz, and Rarita-Schwinger theories of 
+massive fields of spin 1, 2, and 3/2 respectively, obtaining the action 
+(or equivalently, the propagator) from the analysis of the ``true'' degrees of 
+freedom of the theory.
+
+\subsection{Proca theories}
+The Proca action for a massive spin-1 field is
+\[
+ S_P = \int \detg \left( -\inv{4} F_\munu F^\munu + \onehalf[ m^2 ] A_\mu A^\mu
+	+ \onehalf[ \eta_P ] R^\munu A_\mu A_\nu + \onehalf[ \eta'_P ] R \, A_\mu A^\mu \right)
+\]
+Where the last two terms are non-minimal couplings to gravity, $A_\mu$ is the
+Proca field and as usual $F_\munu = \extdone{A}$
+
+In flat space, this reduces to the lagrangian
+\[
+\lagr_P = \onehalf \partial^\mu A^\nu (\extdone{A}) + \onehalf{m^2} A_\mu A^\mu
+\]
+With E-L equations
+\[
+\box A_\mu - \partial_\mu \partial \cdot A + m^2 A_\mu = 0
+\]
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
