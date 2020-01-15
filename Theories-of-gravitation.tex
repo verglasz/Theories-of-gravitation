@@ -81,11 +81,21 @@
 \let\dddot\relax
 \DeclareMathAccent{\dddot}{0}{mathb}{"3B}
 %%%
+
+%% matrices
+\newcommand{\diagmat}[4]{ %
+	\begin{pmatrix}
+	{#1} & 0 & 0 & 0 \\
+	0 & {#2} & 0 & 0 \\
+	0 & 0 & {#3} & 0 \\
+	0 & 0 & 0 & {#4} 
+	\end{pmatrix}
+}
+
+
 %% better cdot
-\makeatletter
-\let\old@cdot\cdot
-\renewcommand{\cdot}{\! \old@cdot \!}
-\makeatother
+\let\oldcdot\cdot
+\renewcommand{\cdot}{\! \oldcdot \!}
 
 % convenience for repeated things
 \newcommand{\munu}{{\mu\nu}}
@@ -2488,11 +2498,51 @@ Proca field and as usual $F_\munu = \extdone{A}$
 
 In flat space, this reduces to the lagrangian
 \[
-\lagr_P = \onehalf \partial^\mu A^\nu (\extdone{A}) + \onehalf{m^2} A_\mu A^\mu
+\lagr_P = -\onehalf \partial^\mu A^\nu (\extdone{A}) + \onehalf{m^2} A_\mu A^\mu
 \]
 With E-L equations
 \[
-\box A_\mu - \partial_\mu \partial \cdot A + m^2 A_\mu = 0
+\Box A_\mu - \partial_\mu \partial \cdot A + m^2 A_\mu = 0
 \]
+Contracting the above with $\partial^\mu$ gives $\partial \cdot A = 0$,
+thus we can rewrite the equations of motion as 
+\[
+\begin{cases}
+	\partial \cdot A = 0 \\
+	(\Box + m^2) A_\mu = 0
+\end{cases}
+\]
+The lagrangian in momentum space is:
+\[
+\lagr_P = \tilde{A}_\mu (-p)
+		  \left( -p^2 \eta^\munu + p^\mu p^\nu + m^2 \eta^\munu \right)
+		  \tilde{A}_\nu (p)
+\]
+Thus we find the propagator as the inverse of $Q^\munu \equiv (-p^2 +m^2) \eta^\munu + p^\mu p^\nu$
+\[
+\feynmandiagram [inline=(a)] {
+	a [particle={$\mu$}] -- [boson, rmomentum={$p$}] b [particle={$\nu$}]
+};
+\equiv i P_\munu =
+- \frac{i}{p^2 - m^2} \left( \eta_\munu - \frac{ p_\mu p_\nu }{m^2} \right)
+\]
+And it's easy to verify that
+\begin{gather*}
+	& P_\munu Q\indices{^\nu_\rho} & = \eta_{\mu\rho} \\
+	& P_\munu p^\nu & = \frac{p_\mu}{m^2}
+\end{gather*}
+So this is the correct propagator, and the contraction with $p$ has no pole, which means not all components of the field propagate and we do not have 4 degrees of freedom but just 3. This is equivalent to the classical result $\partial \cdot A = 0$ from the equations of motion, which tells us the divergence doesn't propagate.
+
+We can see this more clearly by choosing, at the pole, coordinates such that $p = (m,0,0,0)$; we then see that the residue of the pole in the propagator is
+\[ 
+- \diagmat{1 - \frac{m^2}{m^2}}{-1}{-1}{-1} = \diagmat{0}{1}{1}{1}
+\] 
+
+\subsection{Pauli-Fierz theories}
+We are concerned with a symmetric tensor $\chi_\munu$ (a spin-2 field). Of its 10 components, only 5 will propagate, corresponding to the 5 possible spin polarizations. What happens to the other 5? They are accounted for by the following quantities:
+\begin{itemize}
+	\item $\partial^\mu \chi_\munu$: a vector (and the scalar $\partial^\mu\partial^\nu\chi_\munu$)
+	\item the trace $\chi = \eta^\munu \chi_\munu$: an additional scalar
+\end{itemize}
 
 \end{document}
