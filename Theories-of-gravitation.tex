@@ -8,26 +8,7 @@
 \usepackage[italian,english]{babel}
 \usepackage{dsfont}
 
-\usepackage{xargs}
-\usepackage{caption}
-\usepackage{microtype}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{pgf}
-\usepackage{tikz}
-\usepackage{tikz-feynman}
-\usetikzlibrary{arrows}
-\tikzfeynmanset{compat=1.0.0}
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{braket}
-\usepackage{cancel}
-\usepackage{mathtools}
-\usepackage{mathrsfs}
-\usepackage{tensor}
-\usepackage[separate-uncertainty=true,multi-part-units=single]{siunitx}
+\usepackage{gravities}
 
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev,capitalise]{cleveref}
@@ -38,74 +19,9 @@
     citecolor  = blue      % Colour of citations
 }
 
+
 %\captionsetup[table]{name=Figure}
 %\Crefname{table}{Figure}{Figures}
-
-\newcommand{\ped}[1]{\textormath{\textsubscript{#1}}{_{\mathrm{#1}}}}
-\newcommand{\ap}[1]{\textormath{\textsuperscript{#1}}{^{\mathrm{#1}}}}
-
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
-\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
-\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
-
-\renewcommand{\vec}{\mathbf}
-%\newcommand{\ver}[1]{\vec{\hat #1}}
-
-\newcommand{\dd}{\mathop{\mathrm{d}\!}{}}
-
-\DeclareMathOperator\artanh{artanh}
-\DeclareMathOperator\sgn{sgn}
-\DeclareMathOperator\diag{diag}
-\DeclareMathOperator\tr{tr}
-\DeclareMathOperator\Li{Li}
-\renewcommand{\epsilon}{\varepsilon}
-
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}[theorem]
-\newtheorem{lemma}{Lemma}
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
-\newtheorem{exercise}{Exercise}
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
-
-%for \dddot
-\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
-\DeclareFontShape{U}{mathb}{m}{n}{
-      <5> <6> <7> <8> <9> <10> gen * mathb
-      <10.95> mathb10 <12> <14.4> <17.28> <20.74> <24.88> mathb12
-      }{}
-\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
-\DeclareFontSubstitution{U}{mathb}{m}{n}
-\let\dddot\relax
-\DeclareMathAccent{\dddot}{0}{mathb}{"3B}
-%%%
-
-%% matrices
-\newcommand{\diagmat}[4]{ %
-	\begin{pmatrix}
-	{#1} & 0 & 0 & 0 \\
-	0 & {#2} & 0 & 0 \\
-	0 & 0 & {#3} & 0 \\
-	0 & 0 & 0 & {#4} 
-	\end{pmatrix}
-}
-
-
-%% better cdot
-\let\oldcdot\cdot
-\renewcommand{\cdot}{\! \oldcdot \!}
-
-% convenience for repeated things
-\newcommand{\munu}{{\mu\nu}}
-\newcommand{\detg}{\sqrt{-g}}
-\newcommand{\inv}[1]{\frac{1}{#1}}
-\newcommand{\onehalf}[1][1]{\frac{#1}{2}}
-\newcommand{\lagr}{\mathcal{L}}
-\newcommandx{\wedgeprod}[4][3=\mu, 4=\nu]{ {#1}_{#3} {#2}_{#4} - {#1}_{#4} {#2}_{#3} }
-\newcommandx{\simmprod}[4][3=\mu, 4=\nu]{ {#1}_{#3} {#2}_{#4} + {#1}_{#4} {#2}_{#3} }
-\newcommandx{\extdone}[3][2=\mu, 3=\nu]{\wedgeprod{\partial}{#1}[#2][#3]}
 
 % kinda useless atm
 \newcommand{\tuple}[1]{({#1})}
